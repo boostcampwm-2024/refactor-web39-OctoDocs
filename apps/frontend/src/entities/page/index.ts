@@ -1,10 +1,4 @@
-export {
-  getPage,
-  getPages,
-  createPage,
-  deletePage,
-  updatePage,
-} from "./api/pageApi";
+export { createPage, deletePage } from "./api/pageApi";
 export { useCreatePage, useDeletePage } from "./model/pageMutations";
 
 export { usePageStore } from "./model/pageStore";
