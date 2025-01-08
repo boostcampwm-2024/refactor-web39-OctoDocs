@@ -17,9 +17,9 @@ export class RedisService {
     @Inject(RED_LOCK_TOKEN) private readonly redisLock: Redlock,
   ) {}
 
-  async getAllKeys(pattern) {
-    return await this.redisClient.keys(pattern);
-  }
+  // async getAllKeys(pattern) {
+  //   return await this.redisClient.keys(pattern);
+  // }
 
   createStream() {
     return this.redisClient.scanStream();
