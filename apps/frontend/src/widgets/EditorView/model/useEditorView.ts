@@ -14,13 +14,7 @@ export const useEditorView = () => {
   const { users } = useUserStore();
 
   useEffect(() => {
-    if (currentPage) return;
-    setIsPanelOpen(false);
-  }, [currentPage]);
-
-  useEffect(() => {
-    if (!currentPage) return;
-    setIsPanelOpen(true);
+    setIsPanelOpen(!!currentPage);
   }, [currentPage]);
 
   return {
