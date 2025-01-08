@@ -106,15 +106,15 @@ export function Editor({ ydoc, provider }: EditorProp) {
           }}
           className="flex w-fit max-w-[90vw] overflow-hidden rounded-md border border-muted bg-background shadow-xl"
         >
-          <Separator orientation="vertical" />
+          <Separator />
           <NodeSelector open={openNode} onOpenChange={setOpenNode} />
-          <Separator orientation="vertical" />
+          <Separator />
           <LinkSelector open={openLink} onOpenChange={setOpenLink} />
-          <Separator orientation="vertical" />
+          <Separator />
           <MathSelector />
-          <Separator orientation="vertical" />
+          <Separator />
           <TextButtons />
-          <Separator orientation="vertical" />
+          <Separator />
           <ColorSelector open={openColor} onOpenChange={setOpenColor} />
         </EditorBubble>
       </EditorContent>
