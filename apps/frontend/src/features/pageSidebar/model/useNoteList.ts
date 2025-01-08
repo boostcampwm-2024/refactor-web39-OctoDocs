@@ -10,7 +10,6 @@ export const useNoteList = () => {
   const [pages, setPages] = useState<NoteNodeData[]>();
   const { canvas } = useConnectionStore();
 
-  // TODO: 최적화 필요
   useEffect(() => {
     if (!canvas.provider) return;
     const nodesMap = canvas.provider.doc.getMap("nodes");

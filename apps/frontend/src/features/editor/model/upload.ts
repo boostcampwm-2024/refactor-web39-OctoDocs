@@ -2,7 +2,6 @@ import { createImageUpload } from "novel/plugins";
 
 import { onUploadImage } from "../api/uploadApi";
 
-// TODO: validateFn 수정해야할듯?
 export const uploadFn = createImageUpload({
   onUpload: onUploadImage,
   validateFn: (file) => {

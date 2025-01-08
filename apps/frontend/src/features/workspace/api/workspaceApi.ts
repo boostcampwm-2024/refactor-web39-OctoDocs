@@ -24,7 +24,6 @@ export const removeWorkspace = async (workspaceId: string) => {
   return res.data;
 };
 
-// TODO: /entities/user vs workspace 위치 고민해봐야할듯?
 export const getUserWorkspaces = async () => {
   const url = `${BASE_URL}/user`;
 
@@ -38,7 +37,6 @@ export const getCurrentWorkspace = async (
 ) => {
   const url = `${BASE_URL}/${workspaceId}/${userId}`;
 
-  // Response type 바꾸기
   const res = await Get<GetCurrentUserWorkspaceResponse>(url);
   return res.data;
 };
