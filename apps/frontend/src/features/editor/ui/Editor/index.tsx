@@ -49,7 +49,6 @@ export function Editor({ ydoc, provider }: EditorProp) {
   return (
     <EditorRoot>
       <EditorContent
-        className=""
         enableContentCheck={true}
         onContentError={({ disableCollaboration }) => {
           disableCollaboration();
