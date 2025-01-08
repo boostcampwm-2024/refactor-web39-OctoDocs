@@ -21,7 +21,6 @@ const items: SelectorItem[] = [
     name: "Text",
     icon: TextIcon,
     command: (editor) => editor.chain().focus().clearNodes().run(),
-    // I feel like there has to be a more efficient way to do this – feel free to PR if you know how!
     isActive: (editor) =>
       editor.isActive("paragraph") &&
       !editor.isActive("bulletList") &&
