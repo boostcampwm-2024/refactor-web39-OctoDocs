@@ -1,6 +1,6 @@
 import { Position, Node } from "@xyflow/react";
 
-export const getHandlePosition = (node: Node, handleId: Position) => {
+const getHandlePosition = (node: Node, handleId: Position) => {
   const nodeElement = document.querySelector(`[data-id="${node.id}"]`);
   const nodeRect = nodeElement!.getBoundingClientRect();
   const nodeWidth = nodeRect.width;
