@@ -6,10 +6,14 @@ import { IoAdapter } from '@nestjs/platform-socket.io';
 import * as express from 'express';
 import * as cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
+import { initializeTracing } from './tracing';
 
 dotenv.config();
 
 async function bootstrap() {
+  // OpenTelemetry 활성화
+  initializeTracing();
+
   const app = await NestFactory.create(AppModule);
 
   app.useWebSocketAdapter(new IoAdapter(app));

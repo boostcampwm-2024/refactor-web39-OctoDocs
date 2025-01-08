@@ -3,7 +3,10 @@ import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentation
 import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
 // import { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import { Resource } from '@opentelemetry/resources';
-import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+import {
+  SEMRESATTRS_SERVICE_NAME,
+  SEMRESATTRS_DEPLOYMENT_ENVIRONMENT,
+} from '@opentelemetry/semantic-conventions';
 import * as process from 'process';
 
 export function initializeTracing() {
@@ -28,8 +31,8 @@ export function initializeTracing() {
       }),
     ],
     resource: new Resource({
-      [SemanticResourceAttributes.SERVICE_NAME]: 'OctoDocs Service',
-      [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]:
+      [SEMRESATTRS_SERVICE_NAME]: 'OctoDocs Service',
+      [SEMRESATTRS_DEPLOYMENT_ENVIRONMENT]:
         process.env.NODE_ENV || 'development',
     }),
   });

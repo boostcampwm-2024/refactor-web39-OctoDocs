@@ -61,3 +61,4 @@ db.sqlite
 
 # Production
 data/*
+.vscode/settings.json
