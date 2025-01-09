@@ -9,7 +9,7 @@ interface ProfilePanelProps {
   onClientIdChange: (clientId: string) => void;
 }
 
-export function ProfilePanel({
+export default function ProfilePanel({
   color,
   clientId,
   onColorChange,
@@ -22,7 +22,7 @@ export function ProfilePanel({
   };
 
   return (
-    <div className="flex flex-row gap-4 p-4">
+    <div className="m-2 flex flex-row gap-4 p-4">
       <CursorPreview
         defaultCoors={{ x: 90, y: 80 }}
         clientId={clientId}
