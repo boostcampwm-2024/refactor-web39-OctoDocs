@@ -11,3 +11,4 @@ export { Popover } from "./Popover";
 export { ScrollWrapper } from "./ScrollWrapper";
 export { SideWrapper } from "./SideWrapper";
 export { Switch } from "./Switch";
+export { EditorSkeleton } from "./Skeleton";
