@@ -60,7 +60,7 @@ export function Canvas({ className }: CanvasProps) {
   }, [users]);
 
   return (
-    <div className={cn("", className)} onMouseMove={handleMouseMove}>
+    <div className={cn(className)} onMouseMove={handleMouseMove}>
       <ReactFlow
         nodes={nodes}
         edges={edges}

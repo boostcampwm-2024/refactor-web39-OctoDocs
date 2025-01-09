@@ -11,8 +11,6 @@ import {
 } from "../api/worskspaceInviteApi";
 import { useWorkspace } from "@/shared/lib";
 
-// response로 workspaceId가 오는데 userWorkspace를 어떻게 invalidate 할까?
-// login state에 있는 userId로?
 export const useCreateWorkspace = () => {
   const queryClient = useQueryClient();
 

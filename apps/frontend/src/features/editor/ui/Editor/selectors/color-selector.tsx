@@ -4,7 +4,7 @@ import { EditorBubbleItem, useEditor } from "novel";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
-export interface BubbleColorMenuItem {
+interface BubbleColorMenuItem {
   name: string;
   color: string;
 }

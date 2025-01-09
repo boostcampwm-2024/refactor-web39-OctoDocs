@@ -1,4 +1,3 @@
-// provider: createSocketIOProvider("users", new Y.Doc()),
 import * as Y from "yjs";
 import { createSocketIOProvider } from "@/shared/api";
 import useConnectionStore from "@/shared/model/useConnectionStore";

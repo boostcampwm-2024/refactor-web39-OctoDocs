@@ -326,7 +326,6 @@ export const useCanvas = () => {
     nodes,
     edges,
     users,
-    setCurrentPage,
     handleMouseMove,
     handleNodesChange,
     handleEdgesChange,
