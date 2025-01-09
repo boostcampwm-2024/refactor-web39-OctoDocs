@@ -3,7 +3,7 @@ import { Editor, EditorActionPanel, EditorTitle } from "@/features/editor";
 import { ActiveUser } from "@/shared/ui";
 import { cn } from "@/shared/lib";
 
-export function EditorView() {
+export default function EditorView() {
   const { currentPage, isPanelOpen, isMaximized, provider, users } =
     useEditorView();
 

@@ -1,15 +1,19 @@
+import { lazy, Suspense } from "react";
 import { useSyncedUsers } from "@/entities/user";
 import { useProtectedWorkspace } from "@/features/workspace";
 import { CanvasView } from "@/widgets/CanvasView";
-import { EditorView } from "@/widgets/EditorView";
 import { NodeToolsView } from "@/widgets/NodeToolsView";
 import { PageSideBarView } from "@/widgets/PageSideBarView";
 import { CanvasToolsView } from "@/widgets/CanvasToolsView";
-import { SideWrapper } from "@/shared/ui";
+import { EditorSkeleton, SideWrapper } from "@/shared/ui";
+import { usePageStore } from "@/entities/page";
+
+const EditorView = lazy(() => import("@/widgets/EditorView"));
 
 function App() {
   useSyncedUsers();
   const { isLoading } = useProtectedWorkspace();
+  const { currentPage } = usePageStore();
 
   if (isLoading) {
     return (
@@ -21,9 +25,13 @@ function App() {
 
   return (
     <div className="fixed inset-0 bg-white">
-      <SideWrapper side="right" className="z-50">
-        <EditorView />
-      </SideWrapper>
+      {currentPage && (
+        <SideWrapper side="right" className="z-50">
+          <Suspense fallback={<EditorSkeleton />}>
+            <EditorView />
+          </Suspense>
+        </SideWrapper>
+      )}
       <CanvasView />
       <SideWrapper
         side="left"
