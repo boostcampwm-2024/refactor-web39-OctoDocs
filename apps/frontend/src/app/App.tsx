@@ -5,7 +5,7 @@ import { CanvasView } from "@/widgets/CanvasView";
 import { NodeToolsView } from "@/widgets/NodeToolsView";
 import { PageSideBarView } from "@/widgets/PageSideBarView";
 import { CanvasToolsView } from "@/widgets/CanvasToolsView";
-import { EditorSkeleton, SideWrapper } from "@/shared/ui";
+import { SideWrapper, Skeleton } from "@/shared/ui";
 import { usePageStore } from "@/entities/page";
 
 const EditorView = lazy(() => import("@/widgets/EditorView"));
@@ -27,7 +27,11 @@ function App() {
     <div className="fixed inset-0 bg-white">
       {currentPage && (
         <SideWrapper side="right" className="z-50">
-          <Suspense fallback={<EditorSkeleton />}>
+          <Suspense
+            fallback={
+              <Skeleton className="absolute right-4 top-4 flex h-[720px] w-[520px] flex-col rounded-lg border bg-white shadow-lg" />
+            }
+          >
             <EditorView />
           </Suspense>
         </SideWrapper>
