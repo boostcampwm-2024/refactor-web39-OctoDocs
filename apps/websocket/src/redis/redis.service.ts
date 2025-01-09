@@ -17,10 +17,6 @@ export class RedisService {
     @Inject(RED_LOCK_TOKEN) private readonly redisLock: Redlock,
   ) {}
 
-  async getAllKeys(pattern) {
-    return await this.redisClient.keys(pattern);
-  }
-
   createStream() {
     return this.redisClient.scanStream();
   }
@@ -41,16 +37,6 @@ export class RedisService {
       lock.release();
     }
   }
-
-  // async setField(key: string, field: string, value: string) {
-  //   // 락을 획득할 때까지 기다린다.
-  //   const lock = await this.redisLock.acquire([`user:${key}`], 1000);
-  //   try {
-  //     return await this.redisClient.hset(key, field, value);
-  //   } finally {
-  //     lock.release();
-  //   }
-  // }
 
   async setFields(key: string, map: Record<string, string>) {
     // 락을 획득할 때까지 기다린다.

@@ -18,9 +18,9 @@ export type RedisNode = {
 };
 
 export type RedisEdge = {
-  fromNode: number;
-  toNode: number;
-  type: 'add' | 'delete';
+  fromNode?: number;
+  toNode?: number;
+  type?: 'add' | 'delete';
 };
 
 @Injectable()
