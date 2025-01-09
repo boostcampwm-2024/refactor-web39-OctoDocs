@@ -75,7 +75,7 @@ export function SharePanel() {
   const isDisabled = isGuest || isPending;
 
   return (
-    <div className="w-full">
+    <div className="w-full p-2">
       <div className="flex w-full flex-row justify-between p-1">
         <div className="flex flex-row items-center gap-2">
           <div className="flex-row text-sm text-slate-400">공개 범위</div>

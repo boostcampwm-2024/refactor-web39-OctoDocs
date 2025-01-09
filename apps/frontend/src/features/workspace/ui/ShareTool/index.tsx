@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { Sharebutton } from "./ShareButton";
 import { Popover, Skeleton } from "@/shared/ui";
 
-const SharePanel = lazy(() => delayForDemo(import("./SharePanel")));
+const SharePanel = lazy(() => import("./SharePanel"));
 
 export function ShareTool() {
   return (
@@ -11,7 +11,7 @@ export function ShareTool() {
         <Popover.Trigger>
           <Sharebutton />
         </Popover.Trigger>
-        <Popover.Content className="rounded-lg border border-neutral-200 bg-white p-2 shadow-md">
+        <Popover.Content className="rounded-lg border border-neutral-200 bg-white shadow-md">
           <Suspense fallback={<Skeleton className="h-[92px] w-[240px]" />}>
             <SharePanel />
           </Suspense>
@@ -19,10 +19,4 @@ export function ShareTool() {
       </Popover>
     </div>
   );
-}
-
-function delayForDemo(promise) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, 2000);
-  }).then(() => promise);
 }
