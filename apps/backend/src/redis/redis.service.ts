@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Inject } from '@nestjs/common';
 import Redis from 'ioredis';
-import Redlock from 'redlock';
 const REDIS_CLIENT_TOKEN = 'REDIS_CLIENT';
 const RED_LOCK_TOKEN = 'RED_LOCK';
 
@@ -27,7 +26,6 @@ export type RedisEdge = {
 export class RedisService {
   constructor(
     @Inject(REDIS_CLIENT_TOKEN) private readonly redisClient: Redis,
-    @Inject(RED_LOCK_TOKEN) private readonly redisLock: Redlock,
   ) {}
 
   async getAllKeys(pattern) {
@@ -46,32 +44,14 @@ export class RedisService {
   }
 
   async set(key: string, value: object) {
-    // 락을 획득할 때까지 기다린다.
-    const lock = await this.redisLock.acquire([`user:${key}`], 1000);
-    try {
-      await this.redisClient.hset(key, Object.entries(value));
-    } finally {
-      lock.release();
-    }
+    await this.redisClient.hset(key, Object.entries(value));
   }
 
   async setField(key: string, field: string, value: string) {
-    // 락을 획득할 때까지 기다린다.
-    const lock = await this.redisLock.acquire([`user:${key}`], 1000);
-    try {
-      return await this.redisClient.hset(key, field, value);
-    } finally {
-      lock.release();
-    }
+    return await this.redisClient.hset(key, field, value);
   }
 
   async delete(key: string) {
-    // 락을 획득할 때까지 기다린다.
-    const lock = await this.redisLock.acquire([`user:${key}`], 1000);
-    try {
-      return await this.redisClient.del(key);
-    } finally {
-      lock.release();
-    }
+    return await this.redisClient.del(key);
   }
 }
