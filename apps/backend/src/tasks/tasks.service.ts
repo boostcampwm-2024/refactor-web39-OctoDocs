@@ -226,6 +226,7 @@ export class TasksService {
 
       // 트랜잭션 커밋
       await queryRunner.commitTransaction();
+      await redisRunner.exec();
     } catch (err) {
       // 실패하면 postgres는 roll back하고 redis의 값을 살린다.
       this.logger.error(err.stack);
