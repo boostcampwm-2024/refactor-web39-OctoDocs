@@ -309,6 +309,7 @@ export class YjsService
   ) {
     for (const [key, change] of event.changes.keys) {
       const [fromNode, toNode] = key.slice(1).split('-');
+      // TODO: 여기서 delete 시 edge를 못찾음 (undefined로 가져옴)
       const edge = edgesMap.get(key) as YMapEdge;
 
       if (change.action === 'add') {

@@ -201,13 +201,16 @@ export class TasksService {
         });
       }
 
-      if (redisData.type === 'delete') {
-        const edge = await edgeRepository.findOne({
-          where: { fromNode, toNode },
-        });
+      // if (redisData.type === 'delete') {
+      //   const edge = await edgeRepository.findOne({
+      //     where: { fromNode, toNode },
+      //   });
+      //   console.log(`edge 정보 `);
+      //   console.log(edge);
+      //   console.log(`edge content : ${edge}`);
 
-        await edgeRepository.delete({ id: edge.id });
-      }
+      //   await edgeRepository.delete({ id: edge.id });
+      // }
 
       // redis에서 데이터 삭제
       redisRunner.del(key);
