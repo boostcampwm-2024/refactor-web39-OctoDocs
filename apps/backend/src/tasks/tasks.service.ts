@@ -24,7 +24,7 @@ export class TasksService {
     @InjectDataSource() private readonly dataSource: DataSource,
   ) {}
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
+  @Cron(CronExpression.EVERY_30_SECONDS)
   async handleCron() {
     this.logger.log('스케줄러 시작');
     // 시작 시간
@@ -56,6 +56,8 @@ export class TasksService {
   }
 
   async migratePage(key: string) {
+    // 낙관적 락 적용
+    await this.redisClient.watch(key);
     const data = await this.redisClient.hgetall(key);
     const redisData = Object.fromEntries(
       Object.entries(data).map(([field, value]) => [field, value]),
@@ -110,6 +112,8 @@ export class TasksService {
   }
 
   async migrateNode(key: string) {
+    // 낙관적 락 적용
+    await this.redisClient.watch(key);
     const data = await this.redisClient.hgetall(key);
     const redisData = Object.fromEntries(
       Object.entries(data).map(([field, value]) => [field, value]),
@@ -163,6 +167,8 @@ export class TasksService {
   }
 
   async migrateEdge(key: string) {
+    // 낙관적 락 적용
+    await this.redisClient.watch(key);
     const data = await this.redisClient.hgetall(key);
     const redisData = Object.fromEntries(
       Object.entries(data).map(([field, value]) => [field, value]),
