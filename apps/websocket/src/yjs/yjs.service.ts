@@ -291,15 +291,6 @@ export class YjsService
             y,
             color,
           });
-          // await Promise.all([
-          //   this.redisService.setField(`node:${findPage.node.id}`, 'x', x),
-          //   this.redisService.setField(`node:${findPage.node.id}`, 'y', y),
-          //   this.redisService.setField(
-          //     `node:${findPage.node.id}`,
-          //     'color',
-          //     color,
-          //   ),
-          // ]);
         } catch (error) {
           this.logger.error(
             `노드 업데이트 중 오류 발생 (nodeId: ${id}): ${error.message}`,
@@ -326,21 +317,6 @@ export class YjsService
           `edge:${edge.source}-${edge.target}`,
           { fromNode: edge.source, toNode: edge.target, type: 'add' },
         );
-        // this.redisService.setField(
-        //   `edge:${edge.source}-${edge.target}`,
-        //   'fromNode',
-        //   edge.source,
-        // );
-        // this.redisService.setField(
-        //   `edge:${edge.source}-${edge.target}`,
-        //   'toNode',
-        //   edge.target,
-        // );
-        // this.redisService.setField(
-        //   `edge:${edge.source}-${edge.target}`,
-        //   'type',
-        //   'add',
-        // );
       }
       if (change.action === 'delete') {
         // 엣지가 존재하면 삭제
@@ -349,21 +325,6 @@ export class YjsService
           toNode,
           type: 'delete',
         });
-        // this.redisService.setField(
-        //   `edge:${fromNode}-${toNode}`,
-        //   'fromNode',
-        //   fromNode,
-        // );
-        // this.redisService.setField(
-        //   `edge:${fromNode}-${toNode}`,
-        //   'toNode',
-        //   toNode,
-        // );
-        // this.redisService.setField(
-        //   `edge:${fromNode}-${toNode}`,
-        //   'type',
-        //   'delete',
-        // );
       }
     }
   }
@@ -376,11 +337,6 @@ export class YjsService
       await this.redisService.setFields(`page:${pageId.toString()}`, {
         content: JSON.stringify(yXmlFragmentToProsemirrorJSON(editorDoc)),
       });
-      // await this.redisService.setField(
-      //   `page:${pageId.toString()}`,
-      //   'content',
-      //   JSON.stringify(yXmlFragmentToProsemirrorJSON(editorDoc)),
-      // );
     } catch (error) {
       this.logger.error(
         `에디터 내용 저장 중 오류 발생 (pageId: ${document?.name}): ${error.message}`,

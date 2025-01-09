@@ -33,9 +33,6 @@ export class TasksService {
     const pageKeys = await this.redisClient.keys('page:*');
     const nodeKeys = await this.redisClient.keys('node:*');
     const edgeKeys = await this.redisClient.keys('edge:*');
-    // const pageKeys = await this.redisService.getAllKeys('page:*');
-    // const nodeKeys = await this.redisService.getAllKeys('node:*');
-    // const edgeKeys = await this.redisService.getAllKeys('edge:*');
 
     Promise.allSettled([
       ...pageKeys.map(this.migratePage.bind(this)),
@@ -63,7 +60,6 @@ export class TasksService {
     const redisData = Object.fromEntries(
       Object.entries(data).map(([field, value]) => [field, value]),
     ) as RedisPage;
-    // const redisData = (await this.redisClient.hgetall(key)) as RedisPage;
     // 데이터 없으면 오류
     if (!redisData) {
       throw new Error(`redis에 ${key}에 해당하는 데이터가 없습니다.`);
@@ -95,7 +91,6 @@ export class TasksService {
 
       // redis에서 데이터 삭제
       redisRunner.del(key);
-      // await this.redisService.delete(key);
 
       // 트랜잭션 커밋
       await queryRunner.commitTransaction();
@@ -105,12 +100,6 @@ export class TasksService {
       this.logger.error(err.stack);
       await queryRunner.rollbackTransaction();
       redisRunner.discard();
-      // updateData.title &&
-      //   (await this.redisService.setField(key, 'title', updateData.title));
-      // updateData.content &&
-      //   (await this.redisService.setField(key, 'content', JSON.parse(content)));
-      // updateData.emoji &&
-      //   (await this.redisService.setField(key, 'emoji', updateData.emoji));
 
       // Promise.all에서 실패를 인식하기 위해 에러를 던진다.
       throw err;
@@ -222,7 +211,6 @@ export class TasksService {
 
       // redis에서 데이터 삭제
       redisRunner.del(key);
-      // await this.redisService.delete(key);
 
       // 트랜잭션 커밋
       await queryRunner.commitTransaction();
@@ -232,18 +220,6 @@ export class TasksService {
       this.logger.error(err.stack);
       await queryRunner.rollbackTransaction();
       redisRunner.discard();
-
-      // await this.redisService.setField(
-      //   key,
-      //   'fromNode',
-      //   redisData.fromNode.toString(),
-      // );
-      // await this.redisService.setField(
-      //   key,
-      //   'toNode',
-      //   redisData.toNode.toString(),
-      // );
-      // await this.redisService.setField(key, 'type', redisData.type);
 
       // Promise.all에서 실패를 인식하기 위해 에러를 던진다.
       throw err;
