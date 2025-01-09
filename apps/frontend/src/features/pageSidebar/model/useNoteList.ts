@@ -14,11 +14,21 @@ export const useNoteList = () => {
     if (!canvas.provider) return;
     const nodesMap = canvas.provider.doc.getMap("nodes");
 
-    nodesMap.observe(() => {
+    const initializePages = () => {
       const yNodes = Array.from(nodesMap.values()) as Node[];
       const data = yNodes.map((yNode) => yNode.data) as NoteNodeData[];
       setPages(data);
+    };
+
+    initializePages();
+
+    nodesMap.observe(() => {
+      initializePages();
     });
+
+    return () => {
+      nodesMap.unobserve(initializePages);
+    };
   }, [canvas.provider]);
 
   const [noteIdToDelete, setNoteIdToDelete] = useState<number | null>(null);

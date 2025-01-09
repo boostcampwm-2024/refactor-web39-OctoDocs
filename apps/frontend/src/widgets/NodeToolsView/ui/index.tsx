@@ -1,7 +1,7 @@
 import { usePageStore } from "@/entities/page";
 import { NodePanel } from "@/features/canvasTools/ui/NodePanel";
 
-export function NodeToolsView() {
+export default function NodeToolsView() {
   const { currentPage } = usePageStore();
 
   if (!currentPage) return null;
