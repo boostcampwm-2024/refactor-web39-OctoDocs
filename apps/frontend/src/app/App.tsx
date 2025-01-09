@@ -2,13 +2,13 @@ import { lazy, Suspense } from "react";
 import { useSyncedUsers } from "@/entities/user";
 import { useProtectedWorkspace } from "@/features/workspace";
 import { CanvasView } from "@/widgets/CanvasView";
-import { NodeToolsView } from "@/widgets/NodeToolsView";
 import { PageSideBarView } from "@/widgets/PageSideBarView";
 import { CanvasToolsView } from "@/widgets/CanvasToolsView";
 import { SideWrapper, Skeleton } from "@/shared/ui";
 import { usePageStore } from "@/entities/page";
 
 const EditorView = lazy(() => import("@/widgets/EditorView"));
+const NodeToolsView = lazy(() => import("@/widgets/NodeToolsView"));
 
 function App() {
   useSyncedUsers();
@@ -43,7 +43,13 @@ function App() {
       >
         <PageSideBarView />
         <CanvasToolsView />
-        <NodeToolsView />
+        {currentPage && (
+          <Suspense
+            fallback={<Skeleton className="h-[48px] w-[48px] rounded-xl" />}
+          >
+            <NodeToolsView />
+          </Suspense>
+        )}
       </SideWrapper>
     </div>
   );

@@ -1,1 +1,1 @@
-export { NodeToolsView } from "./ui";
+export { default } from "./ui";
