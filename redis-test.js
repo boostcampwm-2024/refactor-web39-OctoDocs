@@ -12,17 +12,17 @@ async function insertData() {
   const pages = [];
 
   // node:1부터 node:100까지 생성
-  for (let i = 1; i <= 500; i++) {
+  for (let i = 1; i <= 1000; i++) {
     const x = 180;
     const y = 479;
     const color = "#FFFFFF";
 
-    nodes.push({
-      id: i,
-      x: x,
-      y: y,
-      color: color,
-    });
+    // nodes.push({
+    //   id: i,
+    //   x: x,
+    //   y: y,
+    //   color: color,
+    // });
 
     const content = `{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"페이지 내용 ${i}"}]}]}`;
     const title = `페이지 제목 ${i}`;
@@ -35,18 +35,18 @@ async function insertData() {
   }
 
   // node 정보 삽입
-  for (const node of nodes) {
-    await redis.hmset(
-      `node:${node.id}`,
-      "x",
-      node.x,
-      "y",
-      node.y,
-      "color",
-      node.color
-    );
-    console.log(`Inserted node:${node.id}`);
-  }
+  // for (const node of nodes) {
+  //   await redis.hmset(
+  //     `node:${node.id}`,
+  //     "x",
+  //     node.x,
+  //     "y",
+  //     node.y,
+  //     "color",
+  //     node.color
+  //   );
+  //   console.log(`Inserted node:${node.id}`);
+  // }
 
   // page 정보 삽입
   for (const page of pages) {
