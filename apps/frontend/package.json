@@ -30,6 +30,7 @@
     "@xyflow/react": "^12.3.4",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.7",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "elkjs": "^0.9.3",
