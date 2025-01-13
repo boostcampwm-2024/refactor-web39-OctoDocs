@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Inject } from '@nestjs/common';
-import Redis, { Command } from 'ioredis';
+import Redis from 'ioredis';
 const REDIS_CLIENT_TOKEN = 'REDIS_CLIENT';
-const RED_LOCK_TOKEN = 'RED_LOCK';
 
 export type RedisPage = {
   title?: string;
@@ -40,16 +39,20 @@ export class RedisService {
     retryCount = 10,
     retryDelay = 100,
   ) {
+    key = 'lock:' + key;
     // retryCount만큼 시도
     for (let i = 0; i < retryCount; i++) {
       const value = Date.now().toString();
-      console.log(`redis key : ${value}`);
+      Logger.log(`redis lock info ${key} : ${value}`);
       const acquireResult = await redisClient.set(key, value, 'EX', 10, 'NX');
+      Logger.log(acquireResult);
 
       // 락 획득 성공
       if (acquireResult == 'OK') {
-        console.log(`시도 횟수 : ${i}`);
-        return async function release() {
+        Logger.log(`시도 횟수 : ${i}`);
+        const release = async () => {
+          Logger.log(`release 하려는 key : ${key}`);
+          Logger.log(`release 하려는 value : ${value}`);
           const releaseResult = await redisClient.eval(
             releaseScript,
             1,
@@ -57,12 +60,16 @@ export class RedisService {
             value,
           );
           // 락 해제 성공
+          Logger.log(`락 해제 결과 : ${releaseResult}`);
           if (releaseResult === 1) {
+            Logger.log('락 해제 성공');
             return true;
           }
           // 락 해제 실패
+          Logger.log('락 해제 실패');
           return false;
         };
+        return release;
       }
 
       // 락 획득 실패하면 retryDelay이후 다시 획득 시도
