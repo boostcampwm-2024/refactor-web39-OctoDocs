@@ -1,0 +1,24 @@
+# 빌드 스테이지
+FROM node:20-alpine as builder
+
+WORKDIR /app/apps/frontend
+
+# 소스 코드 복사
+COPY . .
+
+# 리액트 빌드
+RUN yarn build
+
+# 프로덕션 스테이지
+FROM nginx:alpine
+
+# 필요한 설정 파일 복사
+COPY services/nginx/conf.d/prod_nginx.conf /etc/nginx/conf.d/prod_nginx.conf
+
+# 리액트 정적 파일 복사
+COPY --from=builder /app/apps/frontend/dist /usr/share/nginx/html:ro
+
+# SSL 설정 및 권한 조정
+RUN mkdir -p /etc/nginx/ssl && \
+    chown -R nginx:nginx /etc/nginx/ssl && \
+    chmod 700 /etc/nginx/ssl

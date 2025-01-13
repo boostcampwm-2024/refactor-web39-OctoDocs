@@ -8,15 +8,20 @@
   "scripts": {
     "dev": "turbo run dev --parallel",
     "build": "turbo run build",
+    "build:frontend": "cd ./apps/frontend && yarn build",
     "start": "node apps/backend/dist/main.js",
     "start:backend": "node apps/backend/dist/main.js",
     "start:websocket": "node apps/websocket/dist/main.js",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "docker:dev": "docker build -t octodocs_modules -f ./Dockerfile.module . && docker compose -f compose.local.yml up",
+    "docker:dev": "docker build -t octodocs_modules -f ./Dockerfile . && docker compose -f compose.local.yml up",
     "docker:dev:down": "docker compose -f compose.local.yml down",
     "docker:dev:clean": "docker compose -v -f compose.local.yml down",
     "docker:dev:fclean": "docker compose -v -f compose.local.yml down --rmi all",
+    "docker:prod": "yarn run build:frontend && docker compose -f compose.prod.yml up",
+    "docker:prod:down": "docker compose -f compose.prod.yml down",
+    "docker:prod:clean": "docker compose -v -f compose.prod.yml down",
+    "docker:prod:fclean": "docker compose -v -f compose.prod.yml down --rmi all",
     "ssl:generate": "cd services/nginx/ssl && bash ./generate-cert.sh"
   },
   "dependencies": {
