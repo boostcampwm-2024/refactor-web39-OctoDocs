@@ -42,10 +42,6 @@ export class RedisService {
   ) {
     // retryCount만큼 시도
     for (let i = 0; i < retryCount; i++) {
-      // mili초 단위 timestamp + client id
-      const clientId = await this.redisClient.sendCommand(
-        new Command('client id'),
-      );
       const value = Date.now().toString();
       console.log(`redis key : ${value}`);
       const acquireResult = await redisClient.set(key, value, 'EX', 10, 'NX');
