@@ -80,7 +80,7 @@ export function Canvas({ className }: CanvasProps) {
         <div
           className={cn(
             status === "connected" && "text-green-500",
-            status === "connecting" && "text-amber-500",
+            status === "connecting" && "text-yellow-700",
             status === "disconnected" && "text-red-500",
             "fixed bottom-5 left-16 z-30 text-xs hover:cursor-pointer",
           )}
@@ -89,7 +89,7 @@ export function Canvas({ className }: CanvasProps) {
             <div
               className={cn(
                 status === "connected" && "bg-green-500",
-                status === "connecting" && "bg-amber-500",
+                status === "connecting" && "bg-yellow-700",
                 status === "disconnected" && "bg-red-500",
                 "h-2 w-2 rounded-full",
               )}
