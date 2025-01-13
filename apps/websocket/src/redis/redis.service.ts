@@ -102,7 +102,19 @@ export class RedisService {
     // 락 해제
     await release();
   }
-
+  async setFields(key: string, map: Record<string, string>) {
+    // 락 획득할 수 있을 때만 set
+    const release = await this.acquireLock(this.redisClient, key);
+    // fieldValueArr 배열을 평탄화하여 [field, value, field, value, ...] 형태로 변환
+    const flattenedFields = Object.entries(map).flatMap(([field, value]) => [
+      field,
+      value,
+    ]);
+    // 락 해제
+    await release();
+    // hset을 통해 한 번에 여러 필드를 설정
+    return await this.redisClient.hset(key, ...flattenedFields);
+  }
   async setField(key: string, field: string, value: string) {
     // 락 획득할 수 있을 때만 set
     const release = await this.acquireLock(this.redisClient, key);
