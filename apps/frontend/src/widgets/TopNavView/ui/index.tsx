@@ -31,7 +31,7 @@ export function TopNavView({ onExpand, isExpanded }: TopNavProps) {
         </Suspense>
       </div>
       <div className="flex h-7 w-7 items-center justify-center">
-        <button onClick={onExpand}>
+        <button onClick={onExpand} aria-label="MenuBtn">
           {isExpanded ? (
             <X color="#3F3F3F" />
           ) : (

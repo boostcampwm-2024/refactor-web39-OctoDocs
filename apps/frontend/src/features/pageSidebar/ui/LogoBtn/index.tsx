@@ -9,6 +9,7 @@ export function LogoBtn({ onClick }: LogoBtnProps) {
     <button
       className="h-8 w-8 overflow-clip rounded-md bg-[#231f20] p-1"
       onClick={onClick}
+      aria-label="LogoBtn"
     >
       <img src={logo} />
     </button>
