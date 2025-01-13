@@ -11,7 +11,7 @@ export function LogoBtn({ onClick }: LogoBtnProps) {
       onClick={onClick}
       aria-label="LogoBtn"
     >
-      <img src={logo} />
+      <img src={logo} alt="logo" />
     </button>
   );
 }
