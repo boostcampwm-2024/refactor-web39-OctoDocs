@@ -109,7 +109,7 @@ services:
         bind:
           create_host_path: true
           propagation: rprivate
-      - ./services/nginx/conf.d:/etc/nginx/conf.d
+      - ./services/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
 
 networks:
   net:

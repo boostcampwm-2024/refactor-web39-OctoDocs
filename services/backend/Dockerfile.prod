@@ -1,27 +1,24 @@
 # 빌드 스테이지
-FROM node:20-alpine as builder
-
-WORKDIR /app/apps/backend
+FROM octodocs-modules:latest as builder
 
 # 소스 코드 복사
 COPY . .
+WORKDIR /app/apps/backend
 
-# 백엔드 빌드
+
+# 빌드
 RUN yarn build
 
-# 실행 스테이지
-FROM octodocs-modules:latest
+# 프로덕션 스테이지
+FROM builder
 
-WORKDIR /app
+WORKDIR /app/apps/backend
 
-# wget 설치
-RUN apk add --no-cache wget
+COPY --from=builder /app/apps/backend/dist ./dist
 
-# 프로덕션에 필요한 파일만 복사
-COPY --from=builder /app/apps/backend/dist ./apps/backend/dist
-
+# 프로덕션 모드로 실행
 ENV NODE_ENV=production
 
 EXPOSE 3000
 
-CMD ["yarn", "start:backend"]
+CMD ["yarn", "start:prod"]
