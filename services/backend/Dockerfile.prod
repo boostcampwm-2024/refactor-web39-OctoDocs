@@ -3,6 +3,8 @@ FROM octodocs-modules:latest as builder
 
 # 소스 코드 복사
 COPY . .
+COPY ./.env.server /app/apps/backend/.env
+
 WORKDIR /app/apps/backend
 
 

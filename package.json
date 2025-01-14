@@ -19,7 +19,7 @@
     "docker:dev:down": "docker compose -f compose.local.yml down",
     "docker:dev:clean": "docker compose -v -f compose.local.yml down",
     "docker:dev:fclean": "docker compose -v -f compose.local.yml down --rmi all",
-    "docker:prod": "docker build -t octodocs-modules -f ./Dockerfile.module . && yarn run build:frontend && docker compose -f compose.prod.yml up",
+    "docker:prod": "docker build -t octodocs-modules -f ./Dockerfile.module . && docker compose -f compose.prod.yml up",
     "docker:prod:down": "docker compose -f compose.prod.yml down",
     "docker:prod:clean": "docker compose -v -f compose.prod.yml down",
     "docker:prod:fclean": "docker compose -v -f compose.prod.yml down --rmi all",
