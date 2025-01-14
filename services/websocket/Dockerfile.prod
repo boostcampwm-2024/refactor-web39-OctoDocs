@@ -1,5 +1,4 @@
-# 빌드 스테이지
-FROM octodocs-modules:latest as builder
+FROM octodocs-modules:latest
 
 # 소스 코드 복사 
 COPY . .
@@ -7,16 +6,8 @@ COPY ./.env.server /app/apps/websocket/.env
 
 WORKDIR /app/apps/websocket
 
-
 # 빌드
 RUN yarn build
-
-# 프로덕션 스테이지
-FROM builder
-
-WORKDIR /app/apps/websocket
-
-COPY --from=builder /app/apps/websocket/dist ./dist
 
 # 프로덕션 모드로 실행
 ENV NODE_ENV=production
