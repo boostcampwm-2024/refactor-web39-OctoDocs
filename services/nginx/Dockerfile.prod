@@ -16,7 +16,7 @@ FROM nginx:alpine
 
 # 리액트 정적 파일 복사
 COPY ./services/nginx/conf.d/prod_nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/apps/frontend/dist /usr/share/nginx/html:ro
+COPY --from=builder /app/apps/frontend/dist /usr/share/nginx/html
 
 # SSL 설정 및 권한 조정
 RUN mkdir -p /etc/nginx/ssl && \
