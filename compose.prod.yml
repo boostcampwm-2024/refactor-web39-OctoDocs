@@ -2,9 +2,6 @@ version: "3.8"
 
 services:
   nginx:
-    build:
-      context: .
-      dockerfile: ./services/nginx/Dockerfile.prod
     image: octodocs-nginx
     restart: always
     ports:
@@ -22,10 +19,7 @@ services:
         condition: service_healthy
 
   backend:
-    build:
-      context: .
-      dockerfile: ./services/backend/Dockerfile.prod
-    image: backend:latest
+    image: octodocs-backend:latest
     expose:
       - "3000"
     networks:
@@ -51,10 +45,7 @@ services:
     restart: always
 
   websocket:
-    build:
-      context: .
-      dockerfile: ./services/websocket/Dockerfile.prod
-    image: websocket:latest
+    image: octodocs-websocket:latest
     expose:
       - "4242"
     networks:

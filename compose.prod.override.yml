@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./services/nginx/Dockerfile.prod
+    image: octodocs-nginx
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./services/backend/Dockerfile.prod
+    image: octodocs-backend:latest
+
+  websocket:
+    build:
+      context: .
+      dockerfile: ./services/websocket/Dockerfile.prod
+    image: octodocs-websocket:latest
