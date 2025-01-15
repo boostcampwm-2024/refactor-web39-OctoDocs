@@ -1,0 +1,24 @@
+# 빌드 스테이지
+FROM octodocs-modules:latest as builder
+
+# 소스 코드 및 환경 변수 복사
+COPY . .
+COPY ./.env.client /app/apps/frontend/.env
+
+WORKDIR /app/apps/frontend
+
+
+# 리액트 빌드
+RUN yarn build
+
+# 프로덕션 스테이지
+FROM nginx:alpine
+
+# 리액트 정적 파일 복사
+COPY ./services/nginx/conf.d/prod_nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/apps/frontend/dist /usr/share/nginx/html
+
+# SSL 설정 및 권한 조정
+RUN mkdir -p /etc/nginx/ssl && \
+    chown -R nginx:nginx /etc/nginx/ssl && \
+    chmod 700 /etc/nginx/ssl
