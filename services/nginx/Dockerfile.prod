@@ -3,6 +3,8 @@ FROM summersummerwhy/octodocs-modules:latest as builder
 
 # 소스 코드 복사
 COPY . .
+COPY ./.env.client /app/apps/frontend/.env
+COPY ./.env.client /app/apps/frontend/.env.local
 
 WORKDIR /app/apps/frontend
 
