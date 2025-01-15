@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "turbo run dev --parallel",
+    "build": "turbo run build --parallel",
     "build:frontend": "cd ./apps/frontend && yarn build",
     "build:backend": "cd ./apps/backend && yarn build",
     "build:websocket": "cd ./apps/websocket && yarn build",
