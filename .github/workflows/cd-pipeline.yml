@@ -32,7 +32,7 @@ jobs:
         run: |
           docker build -f ./services/module/Dockerfile -t summersummerwhy/octodocs-modules .
           docker build -f ./services/backend/Dockerfile.prod -t summersummerwhy/octodocs-backend .
-          docker build -f ./services/nginx/Dockerfile.prpod -t summersummerwhy/octodocs-nginx .
+          docker build -f ./services/nginx/Dockerfile.prod -t summersummerwhy/octodocs-nginx .
           docker build -f ./services/websocket/Dockerfile.prod -t summersummerwhy/octodocs-websocket .
 
       # Docker 이미지 푸시
