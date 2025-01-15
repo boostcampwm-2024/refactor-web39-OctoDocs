@@ -20,6 +20,8 @@ services:
 
   backend:
     image: summersummerwhy/octodocs-backend:latest
+    volumes:
+      - ./.env.server:/app/apps/backend/.env
     expose:
       - "3000"
     networks:
@@ -46,6 +48,8 @@ services:
 
   websocket:
     image: summersummerwhy/octodocs-websocket:latest
+    volumes:
+      - ./.env.server:/app/apps/websocket/.env
     expose:
       - "4242"
     networks:

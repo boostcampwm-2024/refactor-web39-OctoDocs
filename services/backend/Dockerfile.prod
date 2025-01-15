@@ -2,7 +2,6 @@ FROM octodocs-modules:latest
 
 # 소스 코드 복사
 COPY . .
-COPY ./.env.server /app/apps/backend/.env
 
 WORKDIR /app/apps/backend
 
