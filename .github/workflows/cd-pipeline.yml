@@ -27,23 +27,21 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # octodocs-modules 이미지 빌드
-      - name: octodocs-modules image build
-        run: docker build -f ./services/module/Dockerfile -t summersummerwhy/octodocs-modules .
-
-      # octodocs-modules 이미지 푸시
-      - name: octodocs-modules image push
-        run: docker push summersummerwhy/octodocs-modules
-
       # Docker 이미지 빌드
       - name: docker image build
         run: |
-          docker-compose -f compose.prod.yml -f compose.prod.override.yml build
+          docker build -f ./services/module/Dockerfile -t summersummerwhy/octodocs-modules .
+          docker build -f ./services/backend/Dockerfile.prod -t summersummerwhy/octodocs-backend .
+          docker build -f ./services/nginx/Dockerfile.prpod -t summersummerwhy/octodocs-nginx .
+          docker build -f ./services/websocket/Dockerfile.prod -t summersummerwhy/octodocs-websocket .
 
       # Docker 이미지 푸시
       - name: docker image push
         run: |
-          docker-compose -f compose.prod.yml -f compose.prod.override.yml push
+          docker push summersummerwhy/octodocs-modules
+          docker push summersummerwhy/octodocs-backend
+          docker push summersummerwhy/octodocs-nginx
+          docker push summersummerwhy/octodocs-websocket
 
   deploy:
     needs: image-build-and-push
@@ -65,4 +63,4 @@ jobs:
             cd /root/octodocs
             docker-compose -f compose.prod.yml down
             docker-compose -f compose.prod.yml pull
-            docker-compose -f compose.prod.yml up
+            docker-compose -f compose.prod.yml up -d
