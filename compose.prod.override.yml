@@ -5,16 +5,16 @@ services:
     build:
       context: .
       dockerfile: ./services/nginx/Dockerfile.prod
-    image: octodocs-nginx
+    image: summersummerwhy/octodocs-nginx
 
   backend:
     build:
       context: .
       dockerfile: ./services/backend/Dockerfile.prod
-    image: octodocs-backend:latest
+    image: summersummerwhy/octodocs-backend
 
   websocket:
     build:
       context: .
       dockerfile: ./services/websocket/Dockerfile.prod
-    image: octodocs-websocket:latest
+    image: summersummerwhy/octodocs-websocket

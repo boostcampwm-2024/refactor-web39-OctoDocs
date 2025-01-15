@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   nginx:
-    image: octodocs-nginx
+    image: summersummerwhy/octodocs-nginx:latest
     restart: always
     ports:
       - "80:80"
@@ -19,7 +19,7 @@ services:
         condition: service_healthy
 
   backend:
-    image: octodocs-backend:latest
+    image: summersummerwhy/octodocs-backend:latest
     expose:
       - "3000"
     networks:
@@ -45,7 +45,7 @@ services:
     restart: always
 
   websocket:
-    image: octodocs-websocket:latest
+    image: summersummerwhy/octodocs-websocket:latest
     expose:
       - "4242"
     networks:
