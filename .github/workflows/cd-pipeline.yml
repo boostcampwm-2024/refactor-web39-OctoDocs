@@ -3,7 +3,7 @@ name: auto  Workflow
 on:
   push:
     branches:
-      - main
+      - refactor-be-#33
   workflow_dispatch:
 jobs:
   image-build-and-push:
@@ -46,7 +46,7 @@ jobs:
           docker-compose -f compose.prod.yml -f compose.prod.override.yml push
 
   deploy:
-    needs: deploy
+    needs: image-build-and-push
     runs-on: ubuntu-latest
 
     steps:
