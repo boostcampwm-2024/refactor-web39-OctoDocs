@@ -7,7 +7,7 @@ import { Page } from '../page/page.entity';
 import { Node } from '../node/node.entity';
 import { Edge } from '../edge/edge.entity';
 import { Inject } from '@nestjs/common';
-import Redis, { Command } from 'ioredis';
+import Redis from 'ioredis';
 
 const REDIS_CLIENT_TOKEN = 'REDIS_CLIENT';
 
