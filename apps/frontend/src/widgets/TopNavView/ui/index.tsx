@@ -11,10 +11,10 @@ interface TopNavProps {
   isExpanded: boolean;
 }
 export function TopNavView({ onExpand, isExpanded }: TopNavProps) {
-  const { data, isLoading } = useCurrentWorkspace();
+  const { data } = useCurrentWorkspace();
 
   const getWorkspaceTitle = () => {
-    if (!data || isLoading) return "로딩 중";
+    if (!data) return "";
 
     if (data.workspace.workspaceId === "main") return "공용 워크스페이스";
 
