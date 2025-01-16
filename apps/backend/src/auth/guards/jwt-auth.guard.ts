@@ -70,7 +70,7 @@ export class JwtAuthGuard implements CanActivate {
 
   // 제대로 로그인이 안되어있으면 exception 대신 false return
   // 쿠키 처리해줌
-  async isLoggedIn(request: any, response: any): Promise<boolean> {
+  async isLoggedIn(request, response): Promise<boolean> {
     const cookies = request.cookies;
 
     // 쿠키가 없는 경우 false 반환

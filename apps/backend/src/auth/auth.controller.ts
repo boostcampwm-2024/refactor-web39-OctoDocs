@@ -13,12 +13,14 @@ import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { Response } from 'express';
 import { MessageResponseDto } from './dtos/messageResponse.dto';
+import { LoginResponseDto } from './dtos/loginResponse.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { TokenService } from './token/token.service';
 import { UpdateUserDto } from './dtos/UpdateUser.dto';
 
 export enum AuthResponseMessage {
   AUTH_LOGGED_OUT = '로그아웃하였습니다.',
+  AUTH_STATUS = '로그인 여부를 확인하였습니다',
 }
 
 @Controller('auth')
@@ -26,6 +28,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly tokenService: TokenService,
+    private readonly jwtAuthGuard: JwtAuthGuard,
   ) {}
 
   @Get('naver')
@@ -91,6 +94,19 @@ export class AuthController {
     this.tokenService.deleteRefreshToken(req.user.sub);
     return res.status(200).json({
       message: AuthResponseMessage.AUTH_LOGGED_OUT,
+    });
+  }
+
+  // 클라이언트가 사용자가 로그인되어 있는지 확인할 수 있는 엔드포인트
+  // auth/status
+  @ApiResponse({ type: LoginResponseDto })
+  @ApiOperation({ summary: '사용자가 로그인 여부를 체크합니다.' })
+  @Get('status')
+  async checkLogin(@Req() req, @Res() res: Response) {
+    const isLoggedIn = await this.jwtAuthGuard.isLoggedIn(req, res);
+    return res.status(200).json({
+      message: AuthResponseMessage.AUTH_STATUS,
+      loggedIn: isLoggedIn,
     });
   }
 
