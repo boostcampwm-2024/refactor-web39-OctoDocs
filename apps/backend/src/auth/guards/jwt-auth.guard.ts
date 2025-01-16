@@ -67,4 +67,48 @@ export class JwtAuthGuard implements CanActivate {
       }
     }
   }
+
+  // 제대로 로그인이 안되어있으면 exception 대신 false return
+  // 쿠키 처리해줌
+  async isLoggedIn(request: any, response: any): Promise<boolean> {
+    const cookies = request.cookies;
+
+    // 쿠키가 없는 경우 false 반환
+    if (!cookies || !cookies.accessToken || !cookies.refreshToken) {
+      return false;
+    }
+
+    const { accessToken, refreshToken } = cookies;
+
+    try {
+      // JWT 검증
+      this.jwtService.verify(accessToken, {
+        secret: process.env.JWT_SECRET,
+      });
+
+      return true;
+    } catch (error) {
+      // accessToken이 만료된 경우
+      if (error instanceof TokenExpiredError) {
+        try {
+          // 새로운 accessToken 발급받기
+          const newAccessToken =
+            await this.tokenService.refreshAccessToken(refreshToken);
+
+          // 쿠키 업데이트
+          this.tokenService.setAccessTokenCookie(response, newAccessToken);
+
+          return true;
+        } catch (refreshError) {
+          // refreshToken 디코딩 실패 시 처리 쿠키 비워줌
+          this.tokenService.clearCookies(response);
+          return false;
+        }
+      } else {
+        // accessToken 디코딩(만료가 아닌 이유로) 실패 시 처리 쿠키 비워줌
+        this.tokenService.clearCookies(response);
+        return false;
+      }
+    }
+  }
 }
