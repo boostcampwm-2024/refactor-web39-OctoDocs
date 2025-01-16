@@ -2,10 +2,7 @@ version: "3.8"
 
 services:
   nginx:
-    build:
-      context: .
-      dockerfile: ./services/nginx/Dockerfile.prod
-    image: octodocs-nginx
+    image: summersummerwhy/octodocs-nginx:latest
     restart: always
     ports:
       - "80:80"
@@ -22,10 +19,9 @@ services:
         condition: service_healthy
 
   backend:
-    build:
-      context: .
-      dockerfile: ./services/backend/Dockerfile.prod
-    image: backend:latest
+    image: summersummerwhy/octodocs-backend:latest
+    volumes:
+      - ./.env.server:/app/apps/backend/.env
     expose:
       - "3000"
     networks:
@@ -51,10 +47,9 @@ services:
     restart: always
 
   websocket:
-    build:
-      context: .
-      dockerfile: ./services/websocket/Dockerfile.prod
-    image: websocket:latest
+    image: summersummerwhy/octodocs-websocket:latest
+    volumes:
+      - ./.env.server:/app/apps/websocket/.env
     expose:
       - "4242"
     networks:
