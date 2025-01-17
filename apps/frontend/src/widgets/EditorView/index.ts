@@ -1,1 +1,1 @@
-export { EditorView } from "./ui";
+export { default } from "./ui";

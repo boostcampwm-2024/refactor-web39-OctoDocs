@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 
 import { getUserWorkspaces, getCurrentWorkspace } from "../api/workspaceApi";
 import { useGetUser } from "@/features/auth";
@@ -17,10 +17,9 @@ export const useCurrentWorkspace = () => {
 
   const snowflakeId = isError ? "null" : (user?.snowflakeId ?? "null");
 
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["currentWorkspace", workspaceId, snowflakeId],
     queryFn: () => getCurrentWorkspace(workspaceId, snowflakeId),
-    enabled: Boolean(workspaceId),
     retry: false,
     refetchOnWindowFocus: false,
   });

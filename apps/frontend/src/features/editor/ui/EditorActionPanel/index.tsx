@@ -6,14 +6,9 @@ import {
 } from "lucide-react";
 
 import { useEditorStore } from "../../model/editorStore";
-import SaveStatus from "../SaveStatus";
 import { cn } from "@/shared/lib";
 
-interface EditorActionPanelProps {
-  saveStatus: "saved" | "unsaved";
-}
-
-export function EditorActionPanel({ saveStatus }: EditorActionPanelProps) {
+export function EditorActionPanel() {
   const { isPanelOpen, togglePanel, isMaximized, toggleMaximized } =
     useEditorStore();
 
@@ -51,7 +46,6 @@ export function EditorActionPanel({ saveStatus }: EditorActionPanelProps) {
             )}
           </button>
         </div>
-        <SaveStatus saveStatus={saveStatus} />
       </div>
     </div>
   );

@@ -7,7 +7,6 @@ type WorkspaceRemoveModalProps = {
   onCloseModal: () => void;
 };
 
-// TODO: RemoveModal도 리팩토링해도 될듯?
 export function WorkspaceRemoveModal({
   isOpen,
   onConfirm,

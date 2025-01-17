@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 
-import { NoteList, Tools } from "@/features/pageSidebar";
 import { TopNavView } from "@/widgets/TopNavView";
-import { ScrollWrapper } from "@/shared/ui";
+import { Skeleton } from "@/shared/ui";
+
+const PageListPanel = lazy(
+  () => import("@/features/pageSidebar/ui/PageListPanel"),
+);
 
 export function PageSideBarView() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -16,14 +19,13 @@ export function PageSideBarView() {
       <div className="p-2">
         <TopNavView onExpand={handleExpand} isExpanded={isExpanded} />
       </div>
-      <div className={`${isExpanded ? "flex flex-col" : "hidden"} gap-3 pb-4`}>
-        <div className="w-full px-4">
-          <Tools />
-        </div>
-        <ScrollWrapper className="max-h-[604px] overflow-x-clip scrollbar scrollbar-track-transparent scrollbar-thumb-[#d9d9d9]">
-          <NoteList className="p-4 pb-0 pt-0" />
-        </ScrollWrapper>
-      </div>
+      {isExpanded && (
+        <Suspense
+          fallback={<Skeleton className="mx-4 mb-4 h-[30px] w-[206px]" />}
+        >
+          <PageListPanel />
+        </Suspense>
+      )}
     </div>
   );
 }

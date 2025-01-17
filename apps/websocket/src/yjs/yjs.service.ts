@@ -247,20 +247,18 @@ export class YjsService
   private async observeTitle(event: Y.YEvent<any>[]) {
     // path가 존재할 때만 페이지 갱신
     event[0].path.toString().split('_')[1] &&
-      this.redisService.setField(
+      (await this.redisService.setFields(
         `page:${event[0].path.toString().split('_')[1]}`,
-        'title',
-        event[0].target.toString(),
-      );
+        { title: event[0].target.toString() },
+      ));
   }
 
   private async observeEmoji(event: Y.YEvent<any>[]) {
     // path가 존재할 때만 페이지 갱신
     event[0].path.toString().split('_')[1] &&
-      this.redisService.setField(
+      this.redisService.setFields(
         `page:${event[0].path.toString().split('_')[1]}`,
-        'emoji',
-        event[0].target.toString(),
+        { emoji: event[0].target.toString() },
       );
   }
 
@@ -288,15 +286,11 @@ export class YjsService
 
           const findPage = pageResponse.data.page;
 
-          await Promise.all([
-            this.redisService.setField(`node:${findPage.node.id}`, 'x', x),
-            this.redisService.setField(`node:${findPage.node.id}`, 'y', y),
-            this.redisService.setField(
-              `node:${findPage.node.id}`,
-              'color',
-              color,
-            ),
-          ]);
+          await this.redisService.setFields(`node:${findPage.node.id}`, {
+            x,
+            y,
+            color,
+          });
         } catch (error) {
           this.logger.error(
             `노드 업데이트 중 오류 발생 (nodeId: ${id}): ${error.message}`,
@@ -315,43 +309,23 @@ export class YjsService
   ) {
     for (const [key, change] of event.changes.keys) {
       const [fromNode, toNode] = key.slice(1).split('-');
+      // TODO: 여기서 delete 시 edge를 못찾음 (undefined로 가져옴)
       const edge = edgesMap.get(key) as YMapEdge;
 
       if (change.action === 'add') {
         // 연결된 노드가 없을 때만 edge 생성
-        this.redisService.setField(
+        await this.redisService.setFields(
           `edge:${edge.source}-${edge.target}`,
-          'fromNode',
-          edge.source,
-        );
-        this.redisService.setField(
-          `edge:${edge.source}-${edge.target}`,
-          'toNode',
-          edge.target,
-        );
-        this.redisService.setField(
-          `edge:${edge.source}-${edge.target}`,
-          'type',
-          'add',
+          { fromNode: edge.source, toNode: edge.target, type: 'add' },
         );
       }
       if (change.action === 'delete') {
         // 엣지가 존재하면 삭제
-        this.redisService.setField(
-          `edge:${fromNode}-${toNode}`,
-          'fromNode',
+        await this.redisService.setFields(`edge:${fromNode}-${toNode}`, {
           fromNode,
-        );
-        this.redisService.setField(
-          `edge:${fromNode}-${toNode}`,
-          'toNode',
           toNode,
-        );
-        this.redisService.setField(
-          `edge:${fromNode}-${toNode}`,
-          'type',
-          'delete',
-        );
+          type: 'delete',
+        });
       }
     }
   }
@@ -361,11 +335,9 @@ export class YjsService
     try {
       const pageId = parseInt(document.name.split('-')[1]);
 
-      await this.redisService.setField(
-        `page:${pageId.toString()}`,
-        'content',
-        JSON.stringify(yXmlFragmentToProsemirrorJSON(editorDoc)),
-      );
+      await this.redisService.setFields(`page:${pageId.toString()}`, {
+        content: JSON.stringify(yXmlFragmentToProsemirrorJSON(editorDoc)),
+      });
     } catch (error) {
       this.logger.error(
         `에디터 내용 저장 중 오류 발생 (pageId: ${document?.name}): ${error.message}`,

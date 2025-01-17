@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 import { PopoverContent } from "../ui/popover";
 import { cn } from "@/shared/lib";
 
-export function isValidUrl(url: string) {
+function isValidUrl(url: string) {
   try {
     new URL(url);
     return true;
@@ -15,7 +15,7 @@ export function isValidUrl(url: string) {
     return false;
   }
 }
-export function getUrlFromString(str: string) {
+function getUrlFromString(str: string) {
   if (isValidUrl(str)) return str;
   try {
     if (str.includes(".") && !str.includes(" ")) {

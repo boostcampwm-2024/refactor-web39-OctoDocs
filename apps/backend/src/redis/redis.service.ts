@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Inject } from '@nestjs/common';
 import Redis from 'ioredis';
-import Redlock from 'redlock';
 const REDIS_CLIENT_TOKEN = 'REDIS_CLIENT';
-const RED_LOCK_TOKEN = 'RED_LOCK';
 
 export type RedisPage = {
   title?: string;
@@ -18,18 +16,16 @@ export type RedisNode = {
 };
 
 export type RedisEdge = {
-  fromNode: number;
-  toNode: number;
-  type: 'add' | 'delete';
+  fromNode?: number;
+  toNode?: number;
+  type?: 'add' | 'delete';
 };
 
 @Injectable()
 export class RedisService {
   constructor(
     @Inject(REDIS_CLIENT_TOKEN) private readonly redisClient: Redis,
-    @Inject(RED_LOCK_TOKEN) private readonly redisLock: Redlock,
   ) {}
-
   async getAllKeys(pattern) {
     return await this.redisClient.keys(pattern);
   }
@@ -46,32 +42,25 @@ export class RedisService {
   }
 
   async set(key: string, value: object) {
-    // 락을 획득할 때까지 기다린다.
-    const lock = await this.redisLock.acquire([`user:${key}`], 1000);
-    try {
-      await this.redisClient.hset(key, Object.entries(value));
-    } finally {
-      lock.release();
-    }
+    await this.redisClient.hset(key, Object.entries(value));
   }
-
+  async setFields(key: string, map: Record<string, string>) {
+    // fieldValueArr 배열을 평탄화하여 [field, value, field, value, ...] 형태로 변환
+    const flattenedFields = Object.entries(map).flatMap(([field, value]) => [
+      field,
+      value,
+    ]);
+    // hset을 통해 한 번에 여러 필드를 설정
+    return await this.redisClient.hset(key, ...flattenedFields);
+  }
   async setField(key: string, field: string, value: string) {
-    // 락을 획득할 때까지 기다린다.
-    const lock = await this.redisLock.acquire([`user:${key}`], 1000);
-    try {
-      return await this.redisClient.hset(key, field, value);
-    } finally {
-      lock.release();
-    }
+    const result = await this.redisClient.hset(key, field, value);
+
+    return result;
   }
 
   async delete(key: string) {
-    // 락을 획득할 때까지 기다린다.
-    const lock = await this.redisLock.acquire([`user:${key}`], 1000);
-    try {
-      return await this.redisClient.del(key);
-    } finally {
-      lock.release();
-    }
+    const result = await this.redisClient.del(key);
+    return result;
   }
 }

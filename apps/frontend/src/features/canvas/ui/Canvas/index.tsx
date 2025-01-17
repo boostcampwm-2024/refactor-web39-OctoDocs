@@ -60,7 +60,7 @@ export function Canvas({ className }: CanvasProps) {
   }, [users]);
 
   return (
-    <div className={cn("", className)} onMouseMove={handleMouseMove}>
+    <div className={cn(className)} onMouseMove={handleMouseMove}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -79,8 +79,8 @@ export function Canvas({ className }: CanvasProps) {
         <Controls />
         <div
           className={cn(
-            status === "connected" && "text-green-500",
-            status === "connecting" && "text-amber-500",
+            status === "connected" && "text-green-700",
+            status === "connecting" && "text-yellow-700",
             status === "disconnected" && "text-red-500",
             "fixed bottom-5 left-16 z-30 text-xs hover:cursor-pointer",
           )}
@@ -88,8 +88,8 @@ export function Canvas({ className }: CanvasProps) {
           <div className="flex items-center gap-1">
             <div
               className={cn(
-                status === "connected" && "bg-green-500",
-                status === "connecting" && "bg-amber-500",
+                status === "connected" && "bg-green-700",
+                status === "connecting" && "bg-yellow-700",
                 status === "disconnected" && "bg-red-500",
                 "h-2 w-2 rounded-full",
               )}

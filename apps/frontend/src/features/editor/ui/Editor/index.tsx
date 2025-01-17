@@ -7,7 +7,6 @@ import {
   type JSONContent,
   EditorCommandList,
   EditorBubble,
-  type EditorInstance,
 } from "novel";
 import { ImageResizer, handleCommandNavigation } from "novel/extensions";
 import Collaboration from "@tiptap/extension-collaboration";
@@ -28,19 +27,14 @@ import { ColorSelector } from "./selectors/color-selector";
 import { uploadFn } from "../../model/upload";
 import { useEditor } from "../../model/useEditor";
 
-type EditorUpdateEvent = {
-  editor: EditorInstance;
-};
-
 interface EditorProp {
   pageId: number;
   initialContent?: JSONContent;
-  onEditorUpdate?: (event: EditorUpdateEvent) => void;
   ydoc: Y.Doc;
   provider: SocketIOProvider;
 }
 
-export function Editor({ onEditorUpdate, ydoc, provider }: EditorProp) {
+export function Editor({ ydoc, provider }: EditorProp) {
   const {
     openNode,
     openColor,
@@ -55,7 +49,6 @@ export function Editor({ onEditorUpdate, ydoc, provider }: EditorProp) {
   return (
     <EditorRoot>
       <EditorContent
-        className=""
         enableContentCheck={true}
         onContentError={({ disableCollaboration }) => {
           disableCollaboration();
@@ -81,7 +74,6 @@ export function Editor({ onEditorUpdate, ydoc, provider }: EditorProp) {
           },
         }}
         slotAfter={<ImageResizer />}
-        onUpdate={onEditorUpdate}
       >
         <EditorCommand className="z-50 h-auto max-h-[330px] overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 shadow-md transition-all">
           <EditorCommandEmpty className="px-2 text-muted-foreground">
@@ -114,15 +106,15 @@ export function Editor({ onEditorUpdate, ydoc, provider }: EditorProp) {
           }}
           className="flex w-fit max-w-[90vw] overflow-hidden rounded-md border border-muted bg-background shadow-xl"
         >
-          <Separator orientation="vertical" />
+          <Separator />
           <NodeSelector open={openNode} onOpenChange={setOpenNode} />
-          <Separator orientation="vertical" />
+          <Separator />
           <LinkSelector open={openLink} onOpenChange={setOpenLink} />
-          <Separator orientation="vertical" />
+          <Separator />
           <MathSelector />
-          <Separator orientation="vertical" />
+          <Separator />
           <TextButtons />
-          <Separator orientation="vertical" />
+          <Separator />
           <ColorSelector open={openColor} onOpenChange={setOpenColor} />
         </EditorBubble>
       </EditorContent>
