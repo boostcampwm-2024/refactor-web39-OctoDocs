@@ -1,4 +1,4 @@
-name: auto  Workflow
+name: OctoDocs CD Pipeline
 
 on:
   push:
@@ -53,7 +53,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: deploy
+      # octodocs-modules먼저 pull 한 뒤 나머지 이미지 pull
+      # octodocs-modules를 base로 하는 이미지가 있기 때문
+      - name: image-pulling
         env:
           REMOTE_HOST: ${{ secrets.REMOTE_SERVER_IP }}
           REMOTE_USER: ${{ secrets.REMOTE_SERVER_USER }}
@@ -66,6 +68,16 @@ jobs:
 
           ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
             cd /root/octodocs
-            docker-compose -f compose.prod.yml down
+            docker pull summersummerwhy/octodocs-modules
             docker-compose -f compose.prod.yml pull
-            docker-compose -f compose.prod.yml up -d
+      - name: deploy
+        env:
+          REMOTE_HOST: ${{ secrets.REMOTE_SERVER_IP }}
+          REMOTE_USER: ${{ secrets.REMOTE_SERVER_USER }}
+          SSH_KEY: ${{ secrets.REMOTE_PRIVATE_KEY }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: |
+          ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
+            cd /root/octodocs
+            docker-compose -f compose.prod.yml down
+            docker-compose -f compose.prod.yml up
