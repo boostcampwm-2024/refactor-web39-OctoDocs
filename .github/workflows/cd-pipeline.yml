@@ -36,17 +36,19 @@ jobs:
       # Docker 이미지 빌드
       - name: docker image build
         run: |
-          docker build -f ./services/backend/Dockerfile.prod -t summersummerwhy/octodocs-backend .
-          docker build -f ./services/nginx/Dockerfile.prod -t summersummerwhy/octodocs-nginx .
-          docker build -f ./services/websocket/Dockerfile.prod -t summersummerwhy/octodocs-websocket .
+          docker build -f ./services/backend/Dockerfile.prod -t summersummerwhy/octodocs-backend . &
+          docker build -f ./services/nginx/Dockerfile.prod -t summersummerwhy/octodocs-nginx . &
+          docker build -f ./services/websocket/Dockerfile.prod -t summersummerwhy/octodocs-websocket . &
+          wait
 
       # Docker 이미지 푸시
       - name: docker image push
         run: |
-          docker push summersummerwhy/octodocs-modules
-          docker push summersummerwhy/octodocs-backend
-          docker push summersummerwhy/octodocs-nginx
-          docker push summersummerwhy/octodocs-websocket
+          docker push summersummerwhy/octodocs-modules &
+          docker push summersummerwhy/octodocs-backend &
+          docker push summersummerwhy/octodocs-nginx &
+          docker push summersummerwhy/octodocs-websocket &
+          wait
 
   deploy:
     needs: image-build-and-push
