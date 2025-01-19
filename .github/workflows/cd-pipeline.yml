@@ -80,4 +80,4 @@ jobs:
           ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
             cd /root/octodocs
             docker-compose -f compose.prod.yml down
-            docker-compose -f compose.prod.yml up
+            docker-compose -f compose.prod.yml up -d
