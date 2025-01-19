@@ -27,10 +27,15 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      # 패키지 이미지부터 빌드 후 푸시
+      # 이 이미지를 base로 backend와 websocket 이미지를 만들기 때문
+      - name: package docker image build and push
+        run: |
+          docker build -f ./services/module/Dockerfile -t summersummerwhy/octodocs-modules .
+
       # Docker 이미지 빌드
       - name: docker image build
         run: |
-          docker build -f ./services/module/Dockerfile -t summersummerwhy/octodocs-modules .
           docker build -f ./services/backend/Dockerfile.prod -t summersummerwhy/octodocs-backend .
           docker build -f ./services/nginx/Dockerfile.prod -t summersummerwhy/octodocs-nginx .
           docker build -f ./services/websocket/Dockerfile.prod -t summersummerwhy/octodocs-websocket .
