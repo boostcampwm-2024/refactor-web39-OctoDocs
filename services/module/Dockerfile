@@ -1,7 +1,7 @@
 # node_modules를 가지고 있는 이미지
 # 이 이미지를 기반으로 각 workspace 별 이미지를 만들면 
 # yarn install 레이어를 공유하게 된다.
-FROM node:20-alpine
+FROM summersummerwhy/octodocs-modules:latest
 
 WORKDIR /app
 
@@ -12,4 +12,4 @@ COPY apps/frontend/package.json ./apps/frontend/
 COPY apps/websocket/package.json ./apps/websocket/
 
 # 의존성 설치
-RUN yarn install
+RUN yarn install --check-files

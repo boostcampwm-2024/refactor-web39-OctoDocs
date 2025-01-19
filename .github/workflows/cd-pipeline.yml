@@ -3,7 +3,7 @@ name: auto  Workflow
 on:
   push:
     branches:
-      - main
+      - refactor-be-#47
   workflow_dispatch:
 jobs:
   image-build-and-push:
