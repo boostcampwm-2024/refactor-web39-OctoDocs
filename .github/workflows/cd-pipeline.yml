@@ -91,8 +91,6 @@ jobs:
         env:
           REMOTE_HOST: ${{ secrets.REMOTE_SERVER_IP }}
           REMOTE_USER: ${{ secrets.REMOTE_SERVER_USER }}
-          SSH_KEY: ${{ secrets.REMOTE_PRIVATE_KEY }}
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
           ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
             cd /root/octodocs
@@ -103,6 +101,6 @@ jobs:
         env:
           REMOTE_HOST: ${{ secrets.REMOTE_SERVER_IP }}
           REMOTE_USER: ${{ secrets.REMOTE_SERVER_USER }}
-          SSH_KEY: ${{ secrets.REMOTE_PRIVATE_KEY }}
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        run: docker system prune -f --all
+        run: |
+          ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
+            docker system prune -f --all
