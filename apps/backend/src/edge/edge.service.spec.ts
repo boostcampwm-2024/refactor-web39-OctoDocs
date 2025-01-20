@@ -36,6 +36,7 @@ describe('EdgeService', () => {
           useValue: {
             save: jest.fn(),
             findOneBy: jest.fn(),
+            findOne: jest.fn(),
           },
         },
         {
@@ -87,19 +88,19 @@ describe('EdgeService', () => {
         id: 1,
         fromNode: fromNode,
         toNode: toNode,
+        workspace: null,
       } as Edge;
 
-      jest
-        .spyOn(nodeRepository, 'findOneBy')
-        .mockResolvedValueOnce(fromNode) // 첫 번째 호출: fromNode
-        .mockResolvedValueOnce(toNode); // 두 번째 호출: toNode
+      jest.spyOn(nodeRepository, 'findOne').mockResolvedValueOnce(fromNode); // 첫 번째 호출: fromNode
+      jest.spyOn(nodeRepository, 'findOneBy').mockResolvedValueOnce(toNode); // 두 번째 호출: toNode
       jest.spyOn(edgeRepository, 'save').mockResolvedValue(edge);
 
       const result = await service.createEdge(dto);
 
       expect(result).toEqual(edge);
       expect(edgeRepository.save).toHaveBeenCalledTimes(1);
-      expect(nodeRepository.findOneBy).toHaveBeenCalledTimes(2);
+      expect(nodeRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(nodeRepository.findOneBy).toHaveBeenCalledTimes(1);
     });
   });
 
