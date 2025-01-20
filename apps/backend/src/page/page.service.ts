@@ -83,6 +83,11 @@ export class PageService {
 
   async findPageById(id: number): Promise<Page> {
     // 페이지를 조회한다.
+    // const page = await this.pageRepository.findOne({
+    //   where: { id },
+    //   relations: ['node'],
+    // });
+
     const page = await this.pageRepository
       .createQueryBuilder('page')
       .leftJoinAndSelect('page.node', 'node')
@@ -90,7 +95,7 @@ export class PageService {
       .getOne();
 
     // 페이지가 없으면 NotFound 에러
-    if (page) {
+    if (!page) {
       throw new PageNotFoundException();
     }
     return page;
