@@ -3,8 +3,13 @@ export interface Edge {
   toNode: number;
 }
 
-export interface CreatePageRequest {
+export interface CreateEdgeRequest {
   fromNode: number;
   toNode: number;
   workspaceId: string;
+}
+
+export interface DeleteEdgeRequest {
+  fromNode: number;
+  toNode: number;
 }

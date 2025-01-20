@@ -11,6 +11,6 @@ export const createPage = async (pageData: CreatePageRequest) => {
 export const deletePage = async (id: number) => {
   const url = `/api/page/${id}`;
 
-  const res = await Delete<null>(url);
+  const res = await Delete<null, null>(url);
   return res.data;
 };
