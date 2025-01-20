@@ -29,10 +29,18 @@ jobs:
 
       # 패키지 이미지부터 빌드 후 푸시
       # 이 이미지를 base로 backend와 websocket 이미지를 만들기 때문
+      # 만약 octodocs-modules 이미지가 존재하면 그 이미지를 base로 하고
+      # 그렇지 않으면 node:20-alpine 버전 사용
       - name: package docker image build and push
         run: |
-          docker build -f ./services/module/Dockerfile -t summersummerwhy/octodocs-modules .
-
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hub.docker.com/v2/repositories/summersummerwhy/octodocs-modules)
+          if [ "$STATUS" -eq 404 ]; then
+            echo "octodocs-modules not found"
+            docker build -f ./services/module/Dockerfile.init -t summersummerwhy/octodocs-modules .
+          else
+            echo "octodocs-modules found"
+            docker build -f ./services/module/Dockerfile -t summersummerwhy/octodocs-modules .
+          fi
       # Docker 이미지 빌드
       - name: docker image build
         run: |
