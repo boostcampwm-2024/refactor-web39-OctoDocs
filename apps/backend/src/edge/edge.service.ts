@@ -19,11 +19,17 @@ export class EdgeService {
     const { fromNode, toNode } = dto;
 
     // 출발 노드를 조회한다.
-    const existingFromNode = await this.nodeRepository.findOneBy({
-      id: fromNode,
+    const existingFromNode = await this.nodeRepository.findOne({
+      where: { id: fromNode },
+      relations: ['workspace'], // workspace 관계를 포함
     });
+
     // 도착 노드를 조회한다.
     const existingToNode = await this.nodeRepository.findOneBy({ id: toNode });
+
+    console.log(existingFromNode);
+    console.log(existingFromNode.workspace);
+    console.log(existingToNode);
 
     // 엣지를 생성한다.
     return await this.edgeRepository.save({
