@@ -7,10 +7,10 @@ import {
   Body,
   HttpCode,
   HttpStatus,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { EdgeService } from './edge.service';
 import { CreateEdgeDto } from './dtos/createEdge.dto';
-import { DeleteEdgeDto } from './dtos/deleteEdge.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { MessageResponseDto } from './dtos/messageResponse.dto';
 import { FindEdgesResponseDto } from './dtos/findEdgesResponse.dto';
@@ -39,10 +39,13 @@ export class EdgeController {
 
   @ApiResponse({ type: MessageResponseDto })
   @ApiOperation({ summary: '엣지를 삭제합니다.' })
-  @Delete('/')
+  @Delete('/:fromNode/:toNode') // URL 경로에서 fromNode와 toNode를 추출
   @HttpCode(HttpStatus.OK)
-  async deleteEdge(@Body() body: DeleteEdgeDto) {
-    await this.edgeService.deleteEdge(body);
+  async deleteEdge(
+    @Param('fromNode', ParseIntPipe) fromNode: number,
+    @Param('toNode', ParseIntPipe) toNode: number,
+  ) {
+    await this.edgeService.deleteEdge(fromNode, toNode);
 
     return {
       message: EdgeResponseMessage.EDGE_DELETED,

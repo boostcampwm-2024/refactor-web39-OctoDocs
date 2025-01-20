@@ -3,7 +3,6 @@ import { EdgeRepository } from './edge.repository';
 import { NodeRepository } from '../node/node.repository';
 import { Edge } from './edge.entity';
 import { CreateEdgeDto } from './dtos/createEdge.dto';
-import { DeleteEdgeDto } from './dtos/deleteEdge.dto';
 import { EdgeNotFoundException } from '../exception/edge.exception';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { WorkspaceNotFoundException } from '../exception/workspace.exception';
@@ -34,10 +33,8 @@ export class EdgeService {
     });
   }
 
-  async deleteEdge(dto: DeleteEdgeDto): Promise<void> {
+  async deleteEdge(fromNode: number, toNode: number): Promise<void> {
     // fromNode와 toNode로 매치되는 엣지를 검색
-
-    const { fromNode, toNode } = dto;
 
     // 출발 노드를 조회한다.
     const existingFromNode = await this.nodeRepository.findOneBy({

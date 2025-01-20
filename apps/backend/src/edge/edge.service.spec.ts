@@ -3,7 +3,6 @@ import { EdgeService } from './edge.service';
 import { EdgeRepository } from './edge.repository';
 import { NodeRepository } from '../node/node.repository';
 import { CreateEdgeDto } from './dtos/createEdge.dto';
-import { DeleteEdgeDto } from './dtos/deleteEdge.dto';
 import { Edge } from './edge.entity';
 import { Node } from '../node/node.entity';
 import { EdgeNotFoundException } from '../exception/edge.exception';
@@ -111,9 +110,7 @@ describe('EdgeService', () => {
         .mockResolvedValue({ affected: true } as any);
       jest.spyOn(edgeRepository, 'findOne').mockResolvedValue(new Edge());
 
-      const dto: DeleteEdgeDto = { fromNode: 1, toNode: 3 };
-
-      await service.deleteEdge(dto);
+      await service.deleteEdge(1, 3);
 
       expect(edgeRepository.remove).toHaveBeenCalledTimes(1);
     });
@@ -121,8 +118,7 @@ describe('EdgeService', () => {
     it('삭제할 엣지가 존재하지 않으면 EdgeNotFoundException을 throw한다.', async () => {
       jest.spyOn(edgeRepository, 'findOne').mockResolvedValue(undefined);
 
-      const dto: DeleteEdgeDto = { fromNode: 1, toNode: 3 };
-      await expect(service.deleteEdge(dto)).rejects.toThrow(
+      await expect(service.deleteEdge(1, 3)).rejects.toThrow(
         EdgeNotFoundException,
       );
       expect(edgeRepository.remove).toHaveBeenCalledTimes(0);

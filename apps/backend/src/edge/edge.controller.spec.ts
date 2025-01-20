@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EdgeController } from './edge.controller';
 import { EdgeService } from './edge.service';
 import { CreateEdgeDto } from './dtos/createEdge.dto';
-import { DeleteEdgeDto } from './dtos/deleteEdge.dto';
 import { EdgeResponseMessage } from './edge.controller';
 import { EdgeNotFoundException } from '../exception/edge.exception';
 import { Edge } from './edge.entity';
@@ -53,25 +52,23 @@ describe('EdgeController', () => {
 
   describe('deleteEdge', () => {
     it('fromNode, toNode에 해당하는 엣지를 찾아 삭제한다.', async () => {
-      const dto: DeleteEdgeDto = { fromNode: 1, toNode: 3 };
       const expectedResponse = {
         message: EdgeResponseMessage.EDGE_DELETED,
       };
 
       jest.spyOn(edgeService, 'deleteEdge').mockResolvedValue(undefined);
-      const result = await controller.deleteEdge(dto);
+      const result = await controller.deleteEdge(1, 3);
 
-      expect(edgeService.deleteEdge).toHaveBeenCalledWith(dto);
+      expect(edgeService.deleteEdge).toHaveBeenCalledWith(1, 3);
       expect(result).toEqual(expectedResponse);
     });
 
     it('fromNode, toNode에 해당하는 엣지가 존재하지 않으면 NodeNotFoundException을 throw한다.', async () => {
-      const dto: DeleteEdgeDto = { fromNode: 1, toNode: 3 };
       jest
         .spyOn(edgeService, 'deleteEdge')
         .mockRejectedValue(new EdgeNotFoundException());
 
-      await expect(controller.deleteEdge(dto)).rejects.toThrow(
+      await expect(controller.deleteEdge(1, 3)).rejects.toThrow(
         EdgeNotFoundException,
       );
     });
