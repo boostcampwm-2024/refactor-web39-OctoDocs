@@ -91,3 +91,11 @@ jobs:
             cd /root/octodocs
             docker-compose -f compose.prod.yml down
             docker-compose -f compose.prod.yml up -d
+      # 사용하지 않는 도커 리소스를 정리한다.
+      - name: cleanup
+        env:
+          REMOTE_HOST: ${{ secrets.REMOTE_SERVER_IP }}
+          REMOTE_USER: ${{ secrets.REMOTE_SERVER_USER }}
+          SSH_KEY: ${{ secrets.REMOTE_PRIVATE_KEY }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: docker system prune -f --all
