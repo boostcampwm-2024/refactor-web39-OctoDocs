@@ -31,15 +31,22 @@ jobs:
       # 이 이미지를 base로 backend와 websocket 이미지를 만들기 때문
       # 만약 octodocs-modules 이미지가 존재하면 그 이미지를 base로 하고
       # 그렇지 않으면 node:20-alpine 버전 사용
+      # 그리고 layer 수가 너무 많으면 node:20-alpine 버전 사용 (50개 이상)
       - name: package docker image build and push
         run: |
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hub.docker.com/v2/repositories/summersummerwhy/octodocs-modules)
           if [ "$STATUS" -eq 404 ]; then
             echo "octodocs-modules not found"
             docker build -f ./services/module/Dockerfile.init -t summersummerwhy/octodocs-modules .
+
           else
             echo "octodocs-modules found"
             docker build -f ./services/module/Dockerfile -t summersummerwhy/octodocs-modules .
+            LAYERS=$(docker inspect --format '{{len .RootFS.Layers}}' summersummerwhy/octodocs-modules)
+              if [ $LAYERS -gt 50 ]; then
+                echo "too many layers"
+                docker build -f ./services/module/Dockerfile.init -t summersummerwhy/octodocs-modules .
+              fi
           fi
       # Docker 이미지 빌드
       - name: docker image build
