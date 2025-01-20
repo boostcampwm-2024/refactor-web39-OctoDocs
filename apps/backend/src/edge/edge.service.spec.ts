@@ -3,6 +3,7 @@ import { EdgeService } from './edge.service';
 import { EdgeRepository } from './edge.repository';
 import { NodeRepository } from '../node/node.repository';
 import { CreateEdgeDto } from './dtos/createEdge.dto';
+import { DeleteEdgeDto } from './dtos/deleteEdge.dto';
 import { Edge } from './edge.entity';
 import { Node } from '../node/node.entity';
 import { EdgeNotFoundException } from '../exception/edge.exception';
@@ -25,8 +26,9 @@ describe('EdgeService', () => {
           useValue: {
             create: jest.fn(),
             save: jest.fn(),
-            delete: jest.fn(),
+            remove: jest.fn(),
             findOneBy: jest.fn(),
+            findOne: jest.fn(),
             findEdgesByWorkspace: jest.fn(),
           },
         },
@@ -105,22 +107,25 @@ describe('EdgeService', () => {
   describe('deleteEdge', () => {
     it('엣지를 성공적으로 삭제한다.', async () => {
       jest
-        .spyOn(edgeRepository, 'delete')
+        .spyOn(edgeRepository, 'remove')
         .mockResolvedValue({ affected: true } as any);
-      jest.spyOn(edgeRepository, 'findOneBy').mockResolvedValue(new Edge());
+      jest.spyOn(edgeRepository, 'findOne').mockResolvedValue(new Edge());
 
-      await service.deleteEdge(1);
+      const dto: DeleteEdgeDto = { fromNode: 1, toNode: 3 };
 
-      expect(edgeRepository.delete).toHaveBeenCalledWith(1);
+      await service.deleteEdge(dto);
+
+      expect(edgeRepository.remove).toHaveBeenCalledTimes(1);
     });
 
     it('삭제할 엣지가 존재하지 않으면 EdgeNotFoundException을 throw한다.', async () => {
-      jest
-        .spyOn(edgeRepository, 'delete')
-        .mockResolvedValue({ affected: false } as any);
-      await expect(service.deleteEdge(1)).rejects.toThrow(
+      jest.spyOn(edgeRepository, 'findOne').mockResolvedValue(undefined);
+
+      const dto: DeleteEdgeDto = { fromNode: 1, toNode: 3 };
+      await expect(service.deleteEdge(dto)).rejects.toThrow(
         EdgeNotFoundException,
       );
+      expect(edgeRepository.remove).toHaveBeenCalledTimes(0);
     });
   });
 
