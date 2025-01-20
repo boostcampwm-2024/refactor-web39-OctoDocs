@@ -256,22 +256,37 @@ describe('PageService', () => {
         emoji: null,
         workspace: null,
       };
-      jest.spyOn(pageRepository, 'findOne').mockResolvedValue(expectedPage);
+      // createQueryBuilder를 모킹
+      const createQueryBuilderMock = jest.fn().mockReturnThis();
+      const leftJoinAndSelectMock = jest.fn().mockReturnThis();
+      const whereMock = jest.fn().mockReturnThis();
+      const getOneMock = jest.fn().mockResolvedValue(expectedPage);
 
+      // pageRepository의 메서드 체이닝을 모킹
+      pageRepository.createQueryBuilder = createQueryBuilderMock;
+      createQueryBuilderMock.mockReturnValueOnce({
+        leftJoinAndSelect: leftJoinAndSelectMock,
+        where: whereMock,
+        getOne: getOneMock,
+      });
       await expect(service.findPageById(1)).resolves.toEqual(expectedPage);
     });
 
     it('id에 해당하는 페이지가 없을 경우 PageNotFoundException을 throw한다.', async () => {
-      jest.spyOn(pageRepository, 'findOne').mockResolvedValue(undefined);
+      const createQueryBuilderMock = jest.fn().mockReturnThis();
+      const leftJoinAndSelectMock = jest.fn().mockReturnThis();
+      const whereMock = jest.fn().mockReturnThis();
+      const getOneMock = jest.fn().mockResolvedValue(undefined);
 
+      pageRepository.createQueryBuilder = createQueryBuilderMock;
+      createQueryBuilderMock.mockReturnValueOnce({
+        leftJoinAndSelect: leftJoinAndSelectMock,
+        where: whereMock,
+        getOne: getOneMock,
+      });
       await expect(service.findPageById(1)).rejects.toThrow(
         PageNotFoundException,
       );
-
-      expect(pageRepository.findOne).toHaveBeenCalledWith({
-        where: { id: 1 },
-        relations: ['node'],
-      });
     });
   });
 
