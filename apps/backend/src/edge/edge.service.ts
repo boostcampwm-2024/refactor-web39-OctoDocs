@@ -32,14 +32,29 @@ export class EdgeService {
     });
   }
 
-  async deleteEdge(id: number): Promise<void> {
-    // 엣지를 삭제한다
-    const deleteResult = await this.edgeRepository.delete(id);
+  async deleteEdge(dto: CreateEdgeDto): Promise<void> {
+    // fromNode와 toNode로 매치되는 엣지를 검색
 
-    // 삭제된 엣지가 없으면 노드를 찾지 못한 것
-    if (!deleteResult.affected) {
+    const { fromNode, toNode } = dto;
+
+    // 출발 노드를 조회한다.
+    const existingFromNode = await this.nodeRepository.findOneBy({
+      id: fromNode,
+    });
+    // 도착 노드를 조회한다.
+    const existingToNode = await this.nodeRepository.findOneBy({ id: toNode });
+
+    const edge = await this.edgeRepository.findOne({
+      where: { fromNode: existingFromNode, toNode: existingToNode },
+    });
+
+    // 엣지가 없으면 예외를 발생시킴
+    if (!edge) {
       throw new EdgeNotFoundException();
     }
+
+    // 엣지를 삭제
+    await this.edgeRepository.remove(edge);
   }
 
   async findEdgeByFromNodeAndToNode(fromNodeId: number, toNodeId: number) {

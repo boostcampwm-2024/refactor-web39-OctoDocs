@@ -7,10 +7,10 @@ import {
   Body,
   HttpCode,
   HttpStatus,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { EdgeService } from './edge.service';
 import { CreateEdgeDto } from './dtos/createEdge.dto';
+import { DeleteEdgeDto } from './dtos/deleteEdge.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { MessageResponseDto } from './dtos/messageResponse.dto';
 import { FindEdgesResponseDto } from './dtos/findEdgesResponse.dto';
@@ -39,12 +39,10 @@ export class EdgeController {
 
   @ApiResponse({ type: MessageResponseDto })
   @ApiOperation({ summary: '엣지를 삭제합니다.' })
-  @Delete('/:id')
+  @Delete('/')
   @HttpCode(HttpStatus.OK)
-  async deleteEdge(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<{ message: string }> {
-    await this.edgeService.deleteEdge(id);
+  async deleteEdge(@Body() body: DeleteEdgeDto) {
+    await this.edgeService.deleteEdge(body);
 
     return {
       message: EdgeResponseMessage.EDGE_DELETED,
