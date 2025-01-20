@@ -38,7 +38,11 @@ describe('EdgeController', () => {
 
   describe('createEdge', () => {
     it('엣지가 성공적으로 만들어진다', async () => {
-      const dto: CreateEdgeDto = { fromNode: 1, toNode: 3 };
+      const dto: CreateEdgeDto = {
+        fromNode: 1,
+        toNode: 3,
+        workspaceId: 'snow-flake',
+      };
       const expectedResponse = {
         message: EdgeResponseMessage.EDGE_CREATED,
       };

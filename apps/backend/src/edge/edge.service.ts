@@ -3,6 +3,7 @@ import { EdgeRepository } from './edge.repository';
 import { NodeRepository } from '../node/node.repository';
 import { Edge } from './edge.entity';
 import { CreateEdgeDto } from './dtos/createEdge.dto';
+import { DeleteEdgeDto } from './dtos/deleteEdge.dto';
 import { EdgeNotFoundException } from '../exception/edge.exception';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { WorkspaceNotFoundException } from '../exception/workspace.exception';
@@ -16,7 +17,14 @@ export class EdgeService {
   ) {}
 
   async createEdge(dto: CreateEdgeDto): Promise<Edge> {
-    const { fromNode, toNode } = dto;
+    const { fromNode, toNode, workspaceId } = dto;
+
+    const workspace = await this.workspaceRepository.findOneBy({
+      snowflakeId: workspaceId,
+    });
+    if (!workspace) {
+      throw new WorkspaceNotFoundException();
+    }
 
     // 출발 노드를 조회한다.
     const existingFromNode = await this.nodeRepository.findOneBy({
@@ -29,10 +37,11 @@ export class EdgeService {
     return await this.edgeRepository.save({
       fromNode: existingFromNode,
       toNode: existingToNode,
+      workspace,
     });
   }
 
-  async deleteEdge(dto: CreateEdgeDto): Promise<void> {
+  async deleteEdge(dto: DeleteEdgeDto): Promise<void> {
     // fromNode와 toNode로 매치되는 엣지를 검색
 
     const { fromNode, toNode } = dto;

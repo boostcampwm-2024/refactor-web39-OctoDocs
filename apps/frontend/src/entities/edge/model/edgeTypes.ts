@@ -1,22 +1,10 @@
-import { JSONContent } from "novel";
-
 export interface Edge {
-  id: number;
-  title: string;
-  content: JSONContent;
-  emoji: string | null;
+  fromNode: number;
+  toNode: number;
 }
 
 export interface CreatePageRequest {
-  title: string;
-  content: JSONContent;
-  emoji: string | null;
-  x: number;
-  y: number;
+  fromNode: number;
+  toNode: number;
   workspaceId: string;
-}
-
-export interface CreatePageResponse {
-  message: string;
-  pageId: number;
 }
