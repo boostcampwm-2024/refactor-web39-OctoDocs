@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazy, memo } from "react";
 import { LogoBtn } from "@/features/pageSidebar";
 import { Popover, Skeleton } from "@/shared/ui";
 import { Suspense } from "react";
@@ -7,7 +7,7 @@ const WorkspacePanel = lazy(
   () => import("@/features/workspace/ui/WorkspacePanel"),
 );
 
-export function UserInfoView() {
+function UserInfoViewComponent() {
   return (
     <div className="flex flex-row items-center gap-2">
       <Popover align="start" offset={{ x: -7, y: 16 }}>
@@ -23,3 +23,5 @@ export function UserInfoView() {
     </div>
   );
 }
+
+export const UserInfoView = memo(UserInfoViewComponent);

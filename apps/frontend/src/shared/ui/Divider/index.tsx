@@ -1,11 +1,12 @@
 import { cn } from "@/shared/lib";
+import { memo } from "react";
 
 interface DividerProps {
   className?: string;
   direction: "horizontal" | "vertical";
 }
 
-export function Divider({ className, direction }: DividerProps) {
+function DividerComponent({ className, direction }: DividerProps) {
   return (
     <div
       className={cn(
@@ -16,3 +17,5 @@ export function Divider({ className, direction }: DividerProps) {
     ></div>
   );
 }
+
+export const Divider = memo(DividerComponent);
