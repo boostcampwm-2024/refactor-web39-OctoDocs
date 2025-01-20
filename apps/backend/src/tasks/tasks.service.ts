@@ -59,8 +59,9 @@ export class TasksService {
   }
 
   async migratePage(key: string) {
-    // migrate 하는 동안 redis의 값이 수정되지 않도록 분산 락을 건다.
-    const release = await this.acquireLock(key);
+    // 낙관적 락 적용
+    await this.redisClient.watch(key);
+
     const data = await this.redisClient.hgetall(key);
     const redisData = Object.fromEntries(
       Object.entries(data).map(([field, value]) => [field, value]),
@@ -111,13 +112,13 @@ export class TasksService {
     } finally {
       // 리소스 정리
       await queryRunner.release();
-      await release();
     }
   }
 
   async migrateNode(key: string) {
-    // migrate 하는 동안 redis의 값이 수정되지 않도록 분산 락을 건다.
-    const release = await this.acquireLock(key);
+    // 낙관적 락 적용
+    await this.redisClient.watch(key);
+
     const data = await this.redisClient.hgetall(key);
     const redisData = Object.fromEntries(
       Object.entries(data).map(([field, value]) => [field, value]),
@@ -167,13 +168,13 @@ export class TasksService {
     } finally {
       // 리소스 정리
       await queryRunner.release();
-      await release();
     }
   }
 
   async migrateEdge(key: string) {
-    // migrate 하는 동안 redis의 값이 수정되지 않도록 분산 락을 건다.
-    const release = await this.acquireLock(key);
+    // 낙관적 락 적용
+    await this.redisClient.watch(key);
+
     const data = await this.redisClient.hgetall(key);
     const redisData = Object.fromEntries(
       Object.entries(data).map(([field, value]) => [field, value]),
@@ -240,48 +241,6 @@ export class TasksService {
     } finally {
       // 리소스 정리
       await queryRunner.release();
-      await release();
     }
-  }
-  private async acquireLock(key: string, retryCount = 10, retryDelay = 100) {
-    // retryCount만큼 시도
-    for (let i = 0; i < retryCount; i++) {
-      // mili초 단위 timestamp + 랜덤 숫자
-      const value = Date.now().toString() + Math.random().toString();
-      const acquireResult = await this.redisClient.set(
-        'user:' + key,
-        value,
-        'EX',
-        10,
-        'NX',
-      );
-
-      // 락 획득 성공
-      if (acquireResult == 'OK') {
-        const release = async () => {
-          const releaseResult = await this.redisClient.eval(
-            releaseScript,
-            1,
-            'user:' + key,
-            value,
-          );
-          // 락 해제 성공
-          if (releaseResult !== 1) {
-            // 락 해제 실패
-            throw new Error('락 해제 실패');
-          }
-        };
-        return release;
-      }
-
-      // 락 획득 실패하면 retryDelay이후 다시 획득 시도
-      await new Promise<void>((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, retryDelay);
-      });
-    }
-    console.log('실패!');
-    throw new Error('락 획득 실패');
   }
 }
