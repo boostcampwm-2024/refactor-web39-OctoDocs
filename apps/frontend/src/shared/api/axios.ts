@@ -21,16 +21,11 @@ export const Post = async <T, D>(
   return response;
 };
 
-export const Delete = async <T, D>(
+export const Delete = async <T>(
   url: string,
-  data?: D,
   config?: AxiosRequestConfig,
 ): Promise<AxiosResponse<T>> => {
-  const finalConfig: AxiosRequestConfig = {
-    ...config,
-    data,
-  };
-  const response = await axiosInstance.delete(url, finalConfig);
+  const response = await axiosInstance.delete(url, config);
   return response;
 };
 

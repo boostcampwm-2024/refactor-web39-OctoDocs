@@ -61,11 +61,7 @@ describe('EdgeService', () => {
 
   describe('createEdge', () => {
     it('새로운 엣지를 만들어 노드와 노드를 연결하는 연결한다.', async () => {
-      const dto: CreateEdgeDto = {
-        fromNode: 3,
-        toNode: 5,
-        workspaceId: 'snowflake-id',
-      };
+      const dto: CreateEdgeDto = { fromNode: 3, toNode: 5 };
       const fromNode = {
         id: 3,
         x: 0,
@@ -99,9 +95,6 @@ describe('EdgeService', () => {
         .mockResolvedValueOnce(fromNode) // 첫 번째 호출: fromNode
         .mockResolvedValueOnce(toNode); // 두 번째 호출: toNode
       jest.spyOn(edgeRepository, 'save').mockResolvedValue(edge);
-      jest
-        .spyOn(workspaceRepository, 'findOneBy')
-        .mockResolvedValue(new Workspace());
 
       const result = await service.createEdge(dto);
 

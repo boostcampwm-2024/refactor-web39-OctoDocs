@@ -17,14 +17,7 @@ export class EdgeService {
   ) {}
 
   async createEdge(dto: CreateEdgeDto): Promise<Edge> {
-    const { fromNode, toNode, workspaceId } = dto;
-
-    const workspace = await this.workspaceRepository.findOneBy({
-      snowflakeId: workspaceId,
-    });
-    if (!workspace) {
-      throw new WorkspaceNotFoundException();
-    }
+    const { fromNode, toNode } = dto;
 
     // 출발 노드를 조회한다.
     const existingFromNode = await this.nodeRepository.findOneBy({
@@ -37,7 +30,7 @@ export class EdgeService {
     return await this.edgeRepository.save({
       fromNode: existingFromNode,
       toNode: existingToNode,
-      workspace,
+      workspace: existingFromNode.workspace,
     });
   }
 
