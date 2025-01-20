@@ -14,7 +14,7 @@ import {
   prosemirrorJSONToYXmlFragment,
 } from 'y-prosemirror';
 import { novelEditorSchema } from './yjs.schema';
-import { YMapEdge } from './yjs.type';
+// import { YMapEdge } from './yjs.type';
 import type { Node } from './types/node.entity';
 import type { Edge } from './types/edge.entity';
 import { RedisService } from '../redis/redis.service';
@@ -159,9 +159,9 @@ export class YjsService
       });
 
       // edge의 변경 사항을 감지한다.
-      edgesMap.observe(async (event) => {
-        this.observeEdgeMap(event, edgesMap);
-      });
+      // edgesMap.observe(async (event) => {
+      //   this.observeEdgeMap(event, edgesMap);
+      // });
     } catch (error) {
       this.logger.error(
         `워크스페이스 초기화 중 오류 발생 (workspaceId: ${workspaceId}): ${error.message}`,
@@ -303,32 +303,32 @@ export class YjsService
     }
   }
 
-  private async observeEdgeMap(
-    event: Y.YMapEvent<unknown>,
-    edgesMap: Y.Map<unknown>,
-  ) {
-    for (const [key, change] of event.changes.keys) {
-      const [fromNode, toNode] = key.slice(1).split('-');
-      // TODO: 여기서 delete 시 edge를 못찾음 (undefined로 가져옴)
-      const edge = edgesMap.get(key) as YMapEdge;
+  // private async observeEdgeMap(
+  //   event: Y.YMapEvent<unknown>,
+  //   edgesMap: Y.Map<unknown>,
+  // ) {
+  //   for (const [key, change] of event.changes.keys) {
+  //     const [fromNode, toNode] = key.slice(1).split('-');
+  //     // TODO: 여기서 delete 시 edge를 못찾음 (undefined로 가져옴)
+  //     const edge = edgesMap.get(key) as YMapEdge;
 
-      if (change.action === 'add') {
-        // 연결된 노드가 없을 때만 edge 생성
-        await this.redisService.setFields(
-          `edge:${edge.source}-${edge.target}`,
-          { fromNode: edge.source, toNode: edge.target, type: 'add' },
-        );
-      }
-      if (change.action === 'delete') {
-        // 엣지가 존재하면 삭제
-        await this.redisService.setFields(`edge:${fromNode}-${toNode}`, {
-          fromNode,
-          toNode,
-          type: 'delete',
-        });
-      }
-    }
-  }
+  //     if (change.action === 'add') {
+  //       // 연결된 노드가 없을 때만 edge 생성
+  //       await this.redisService.setFields(
+  //         `edge:${edge.source}-${edge.target}`,
+  //         { fromNode: edge.source, toNode: edge.target, type: 'add' },
+  //       );
+  //     }
+  //     if (change.action === 'delete') {
+  //       // 엣지가 존재하면 삭제
+  //       await this.redisService.setFields(`edge:${fromNode}-${toNode}`, {
+  //         fromNode,
+  //         toNode,
+  //         type: 'delete',
+  //       });
+  //     }
+  //   }
+  // }
 
   private async observeEditor(editorDoc: Y.XmlFragment) {
     const document = editorDoc.doc as CustomDoc;
