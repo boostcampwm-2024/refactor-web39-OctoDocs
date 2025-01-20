@@ -1,11 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { RedisEdge, RedisPage, RedisNode } from '../redis/redis.service';
+import { RedisPage, RedisNode } from '../redis/redis.service';
 import { DataSource } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { Page } from '../page/page.entity';
 import { Node } from '../node/node.entity';
-import { Edge } from '../edge/edge.entity';
 import { Inject } from '@nestjs/common';
 import Redis from 'ioredis';
 
@@ -162,77 +161,4 @@ export class TasksService {
       await queryRunner.release();
     }
   }
-
-  // async migrateEdge(key: string) {
-  //   // 낙관적 락 적용
-  //   await this.redisClient.watch(key);
-
-  //   const data = await this.redisClient.hgetall(key);
-  //   const redisData = Object.fromEntries(
-  //     Object.entries(data).map(([field, value]) => [field, value]),
-  //   ) as RedisEdge;
-
-  //   // 데이터 없으면 오류
-  //   if (!redisData) {
-  //     throw new Error(`redis에 ${key}에 해당하는 데이터가 없습니다.`);
-  //   }
-
-  //   // 트랜잭션 시작
-  //   const queryRunner = this.dataSource.createQueryRunner();
-  //   const redisRunner = this.redisClient.multi();
-
-  //   try {
-  //     await queryRunner.startTransaction();
-
-  //     // 갱신 시작
-  //     const edgeRepository = queryRunner.manager.getRepository(Edge);
-  //     const nodeRepository = queryRunner.manager.getRepository(Node);
-
-  //     const fromNode = await nodeRepository.findOne({
-  //       where: { id: redisData.fromNode },
-  //       relations: ['workspace'],
-  //     });
-
-  //     const toNode = await nodeRepository.findOne({
-  //       where: { id: redisData.toNode },
-  //     });
-
-  //     if (redisData.type === 'add') {
-  //       await edgeRepository.save({
-  //         fromNode,
-  //         toNode,
-  //         workspace: fromNode.workspace,
-  //       });
-  //     }
-
-  //     // if (redisData.type === 'delete') {
-  //     //   const edge = await edgeRepository.findOne({
-  //     //     where: { fromNode, toNode },
-  //     //   });
-  //     //   console.log(`edge 정보 `);
-  //     //   console.log(edge);
-  //     //   console.log(`edge content : ${edge}`);
-
-  //     //   await edgeRepository.delete({ id: edge.id });
-  //     // }
-
-  //     // redis에서 데이터 삭제
-  //     redisRunner.del(key);
-
-  //     // 트랜잭션 커밋
-  //     await queryRunner.commitTransaction();
-  //     await redisRunner.exec();
-  //   } catch (err) {
-  //     // 실패하면 postgres는 roll back하고 redis의 값을 살린다.
-  //     this.logger.error(err.stack);
-  //     await queryRunner.rollbackTransaction();
-  //     redisRunner.discard();
-
-  //     // Promise.all에서 실패를 인식하기 위해 에러를 던진다.
-  //     throw err;
-  //   } finally {
-  //     // 리소스 정리
-  //     await queryRunner.release();
-  //   }
-  // }
 }
