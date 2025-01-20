@@ -38,7 +38,6 @@ export class Page {
   @OneToOne(() => Node, (node) => node.page, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn()
   node: Node;
 
   @ManyToOne(() => Workspace, (workspace) => workspace.pages, {
