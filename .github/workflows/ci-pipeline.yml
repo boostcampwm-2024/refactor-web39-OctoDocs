@@ -75,6 +75,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "23"
+
       # 루트 의존성 캐시 설정
       - name: Cache Yarn dependencies for root
         id: cache-deps
@@ -82,11 +83,6 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-
-      # 캐시 복원 후 의존성 설치 누락시 다시 설치
-      - name: Install backend dependencies
-        if: steps.cache-deps.outputs.cache-hit != 'true'
-        run: yarn install
 
       # 환경변수 build에 필요한 .env 생성
       - name: Set up .env file
@@ -114,6 +110,10 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+
+      # 의존성 설치
+      - name: Install dependencies
+        run: yarn install
 
       # 테스트 실행
       - name: Run tests
