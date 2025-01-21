@@ -112,9 +112,9 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
 
-      # 의존성 설치
-      - name: Install dependencies for all workspaces
-        run: yarn install --production=false
+      # test에 필요한 의존성 설치
+      - name: Install Jest dependencies from test package
+        run: cd test && yarn install
 
       # 테스트 실행
       - name: Run tests
