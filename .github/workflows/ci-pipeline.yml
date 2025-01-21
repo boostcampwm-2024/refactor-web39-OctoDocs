@@ -106,6 +106,7 @@ jobs:
 
       # 의존성 캐시 복원
       - name: Restore Yarn dependencies
+        id: cache-deps
         uses: actions/cache@v3
         with:
           path: node_modules
@@ -113,6 +114,7 @@ jobs:
 
       # 의존성 설치
       - name: Install dependencies
+        if: steps.cache-deps.outputs.cache-hit != 'true'
         run: yarn install
 
       # 테스트 실행
