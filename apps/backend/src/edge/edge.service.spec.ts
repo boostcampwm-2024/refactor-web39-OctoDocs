@@ -25,8 +25,9 @@ describe('EdgeService', () => {
           useValue: {
             create: jest.fn(),
             save: jest.fn(),
-            delete: jest.fn(),
+            remove: jest.fn(),
             findOneBy: jest.fn(),
+            findOne: jest.fn(),
             findEdgesByWorkspace: jest.fn(),
           },
         },
@@ -35,6 +36,7 @@ describe('EdgeService', () => {
           useValue: {
             save: jest.fn(),
             findOneBy: jest.fn(),
+            findOne: jest.fn(),
           },
         },
         {
@@ -86,41 +88,41 @@ describe('EdgeService', () => {
         id: 1,
         fromNode: fromNode,
         toNode: toNode,
+        workspace: null,
       } as Edge;
 
-      jest
-        .spyOn(nodeRepository, 'findOneBy')
-        .mockResolvedValueOnce(fromNode) // 첫 번째 호출: fromNode
-        .mockResolvedValueOnce(toNode); // 두 번째 호출: toNode
+      jest.spyOn(nodeRepository, 'findOne').mockResolvedValueOnce(fromNode); // 첫 번째 호출: fromNode
+      jest.spyOn(nodeRepository, 'findOneBy').mockResolvedValueOnce(toNode); // 두 번째 호출: toNode
       jest.spyOn(edgeRepository, 'save').mockResolvedValue(edge);
 
       const result = await service.createEdge(dto);
 
       expect(result).toEqual(edge);
       expect(edgeRepository.save).toHaveBeenCalledTimes(1);
-      expect(nodeRepository.findOneBy).toHaveBeenCalledTimes(2);
+      expect(nodeRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(nodeRepository.findOneBy).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('deleteEdge', () => {
     it('엣지를 성공적으로 삭제한다.', async () => {
       jest
-        .spyOn(edgeRepository, 'delete')
+        .spyOn(edgeRepository, 'remove')
         .mockResolvedValue({ affected: true } as any);
-      jest.spyOn(edgeRepository, 'findOneBy').mockResolvedValue(new Edge());
+      jest.spyOn(edgeRepository, 'findOne').mockResolvedValue(new Edge());
 
-      await service.deleteEdge(1);
+      await service.deleteEdge(1, 3);
 
-      expect(edgeRepository.delete).toHaveBeenCalledWith(1);
+      expect(edgeRepository.remove).toHaveBeenCalledTimes(1);
     });
 
     it('삭제할 엣지가 존재하지 않으면 EdgeNotFoundException을 throw한다.', async () => {
-      jest
-        .spyOn(edgeRepository, 'delete')
-        .mockResolvedValue({ affected: false } as any);
-      await expect(service.deleteEdge(1)).rejects.toThrow(
+      jest.spyOn(edgeRepository, 'findOne').mockResolvedValue(undefined);
+
+      await expect(service.deleteEdge(1, 3)).rejects.toThrow(
         EdgeNotFoundException,
       );
+      expect(edgeRepository.remove).toHaveBeenCalledTimes(0);
     });
   });
 

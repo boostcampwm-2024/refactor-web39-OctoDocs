@@ -51,24 +51,24 @@ describe('EdgeController', () => {
   });
 
   describe('deleteEdge', () => {
-    it('id에 해당하는 엣지를 찾아 삭제한다.', async () => {
-      const id = 2;
+    it('fromNode, toNode에 해당하는 엣지를 찾아 삭제한다.', async () => {
       const expectedResponse = {
         message: EdgeResponseMessage.EDGE_DELETED,
       };
 
-      const result = await controller.deleteEdge(id);
+      jest.spyOn(edgeService, 'deleteEdge').mockResolvedValue(undefined);
+      const result = await controller.deleteEdge(1, 3);
 
-      expect(edgeService.deleteEdge).toHaveBeenCalledWith(id);
+      expect(edgeService.deleteEdge).toHaveBeenCalledWith(1, 3);
       expect(result).toEqual(expectedResponse);
     });
 
-    it('id에 해당하는 엣지가 존재하지 않으면 NodeNotFoundException을 throw한다.', async () => {
+    it('fromNode, toNode에 해당하는 엣지가 존재하지 않으면 NodeNotFoundException을 throw한다.', async () => {
       jest
         .spyOn(edgeService, 'deleteEdge')
         .mockRejectedValue(new EdgeNotFoundException());
 
-      await expect(controller.deleteEdge(1)).rejects.toThrow(
+      await expect(controller.deleteEdge(1, 3)).rejects.toThrow(
         EdgeNotFoundException,
       );
     });
