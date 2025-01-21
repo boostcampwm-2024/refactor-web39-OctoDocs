@@ -83,6 +83,11 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
 
+      # 환경변수 build에 필요한 .env 생성
+      - name: Set up .env file
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
+
       # 빌드 실행
       - name: Run build
         run: yarn build
