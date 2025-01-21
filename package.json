@@ -24,7 +24,8 @@
     "docker:prod:down": "docker compose -f compose.prod.yml down",
     "docker:prod:clean": "docker compose -v -f compose.prod.yml down",
     "docker:prod:fclean": "docker compose -v -f compose.prod.yml down --rmi all",
-    "ssl:generate": "cd services/nginx/ssl && bash ./generate-cert.sh"
+    "ssl:generate": "cd services/nginx/ssl && bash ./generate-cert.sh",
+    "reinstall": "rm -rf ./node_modules ./apps/frontend/node_modules ./apps/backend/node_modules ./apps/websocket/node_modules ./yarn.lock && yarn install"
   },
   "dependencies": {
     "turbo": "^2.3.0"

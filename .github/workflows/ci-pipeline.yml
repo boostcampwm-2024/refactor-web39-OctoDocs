@@ -75,6 +75,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "23"
+
       # 루트 의존성 캐시 설정
       - name: Cache Yarn dependencies for root
         id: cache-deps
@@ -82,6 +83,12 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+
+      # 환경변수 build에 필요한 .env 생성
+      - name: Set up .env file
+        run: |
+          cd /home/runner/work/refactor-web39-OctoDocs/refactor-web39-OctoDocs/apps/frontend
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
 
       # 빌드 실행
       - name: Run build
@@ -100,10 +107,18 @@ jobs:
 
       # 의존성 캐시 복원
       - name: Restore Yarn dependencies
+        id: cache-deps
         uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+
+      # test에 필요한 의존성 설치
+      - name: Install Jest dependencies from test package
+        run: |
+          cd /home/runner/work/refactor-web39-OctoDocs/refactor-web39-OctoDocs/apps/backend/test
+          yarn install
+          mv node_modules ../
 
       # 테스트 실행
       - name: Run tests

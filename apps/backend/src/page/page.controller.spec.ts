@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PageController } from './page.controller';
 import { PageService } from './page.service';
 import { CreatePageDto } from './dtos/createPage.dto';
-import { UpdatePageDto } from './dtos/updatePage.dto';
 import { PageResponseMessage } from './page.controller';
 import { PageNotFoundException } from '../exception/page.exception';
 import { Page } from './page.entity';
@@ -23,7 +22,6 @@ describe('PageController', () => {
             deletePage: jest.fn(),
             updatePage: jest.fn(),
             findPageById: jest.fn(),
-            findPagesByWorkspace: jest.fn(),
           },
         },
       ],
@@ -116,31 +114,6 @@ describe('PageController', () => {
     });
   });
 
-  describe('updatePage', () => {
-    it('id에 해당하는 페이지를 찾아 갱신한다.', async () => {
-      const id = 2;
-      const dto: UpdatePageDto = { title: 'Updated Node', content: {} as JSON };
-      const expectedResponse = {
-        message: PageResponseMessage.PAGE_UPDATED,
-      };
-
-      const result = await controller.updatePage(id, dto);
-
-      expect(pageService.updatePage).toHaveBeenCalledWith(id, dto);
-      expect(result).toEqual(expectedResponse);
-    });
-
-    it('id에 해당하는 페이지가 존재하지 않으면 PageNotFoundException을 throw한다.', async () => {
-      jest
-        .spyOn(pageService, 'updatePage')
-        .mockRejectedValue(new PageNotFoundException());
-
-      await expect(
-        controller.updatePage(1, new UpdatePageDto()),
-      ).rejects.toThrow(PageNotFoundException);
-    });
-  });
-
   describe('findPageById', () => {
     it('id에 해당하는 페이지의 상세 정보를 반환한다.', async () => {
       const expectedPage: Page = {
@@ -161,46 +134,6 @@ describe('PageController', () => {
         message: PageResponseMessage.PAGE_RETURNED,
         page: expectedPage,
       });
-    });
-  });
-
-  describe('findPagesByWorkspace', () => {
-    it('특정 워크스페이스에 존재하는 페이지들을 반환한다.', async () => {
-      const workspaceId = 'workspace-id';
-      const expectedPages = [
-        { id: 1, title: 'Page 1', emoji: '📄' },
-        { id: 2, title: 'Page 2', emoji: '✏️' },
-      ] as Partial<Page>[];
-
-      jest
-        .spyOn(pageService, 'findPagesByWorkspace')
-        .mockResolvedValue(expectedPages);
-
-      const result = await controller.findPagesByWorkspace(workspaceId);
-
-      expect(pageService.findPagesByWorkspace).toHaveBeenCalledWith(
-        workspaceId,
-      );
-      expect(result).toEqual({
-        message: PageResponseMessage.PAGES_RETURNED,
-        pages: expectedPages,
-      });
-    });
-
-    it('워크스페이스가 존재하지 않을 경우 WorkspaceNotFoundException을 throw한다.', async () => {
-      const workspaceId = 'invalid-workspace-id';
-
-      jest
-        .spyOn(pageService, 'findPagesByWorkspace')
-        .mockRejectedValue(new WorkspaceNotFoundException());
-
-      await expect(
-        controller.findPagesByWorkspace(workspaceId),
-      ).rejects.toThrow(WorkspaceNotFoundException);
-
-      expect(pageService.findPagesByWorkspace).toHaveBeenCalledWith(
-        workspaceId,
-      );
     });
   });
 });
