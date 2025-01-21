@@ -58,16 +58,6 @@ export class EdgeService {
     await this.edgeRepository.remove(edge);
   }
 
-  async findEdgeByFromNodeAndToNode(fromNodeId: number, toNodeId: number) {
-    return this.edgeRepository.findOne({
-      where: {
-        fromNode: { id: fromNodeId },
-        toNode: { id: toNodeId },
-      },
-      relations: ['fromNode', 'toNode'],
-    });
-  }
-
   async findEdgesByWorkspace(workspaceId: string): Promise<Edge[]> {
     // 워크스페이스 DB에서 해당 워크스페이스의 내부 id를 찾는다
     const workspace = await this.workspaceRepository.findOneBy({
