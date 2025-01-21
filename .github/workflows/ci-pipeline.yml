@@ -86,6 +86,7 @@ jobs:
       # 환경변수 build에 필요한 .env 생성
       - name: Set up .env file
         run: |
+          touch ../../frontend/.env
           echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> ../../frontend/.env
 
       # 빌드 실행
