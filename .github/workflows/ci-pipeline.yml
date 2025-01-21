@@ -114,9 +114,7 @@ jobs:
 
       # test에 필요한 의존성 설치
       - name: Install Jest dependencies from test package
-        run:
-          cd /home/runner/work/refactor-web39-OctoDocs/refactor-web39-OctoDocs/apps/backend/test
-          yarn install
+        run: cd /home/runner/work/refactor-web39-OctoDocs/refactor-web39-OctoDocs/apps/backend/test && yarn install
 
       # 테스트 실행
       - name: Run tests
