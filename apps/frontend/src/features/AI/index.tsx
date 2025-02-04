@@ -1,1 +1,1 @@
-export { AIButton } from "./ui/AIButton.tsx";
+export { AIButton } from "./ui/AIButton";
