@@ -15,12 +15,6 @@ export type RedisNode = {
   color?: string;
 };
 
-export type RedisEdge = {
-  fromNode?: number;
-  toNode?: number;
-  type?: 'add' | 'delete';
-};
-
 @Injectable()
 export class RedisService {
   constructor(

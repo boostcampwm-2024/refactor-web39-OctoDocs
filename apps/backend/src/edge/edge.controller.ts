@@ -39,12 +39,13 @@ export class EdgeController {
 
   @ApiResponse({ type: MessageResponseDto })
   @ApiOperation({ summary: '엣지를 삭제합니다.' })
-  @Delete('/:id')
+  @Delete('/:fromNode/:toNode') // URL 경로에서 fromNode와 toNode를 추출
   @HttpCode(HttpStatus.OK)
   async deleteEdge(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<{ message: string }> {
-    await this.edgeService.deleteEdge(id);
+    @Param('fromNode', ParseIntPipe) fromNode: number,
+    @Param('toNode', ParseIntPipe) toNode: number,
+  ) {
+    await this.edgeService.deleteEdge(fromNode, toNode);
 
     return {
       message: EdgeResponseMessage.EDGE_DELETED,

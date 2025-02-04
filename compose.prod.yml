@@ -3,6 +3,8 @@ version: "3.8"
 services:
   nginx:
     image: summersummerwhy/octodocs-nginx:latest
+    env_file:
+      - .env.server
     restart: always
     ports:
       - "80:80"
@@ -20,8 +22,8 @@ services:
 
   backend:
     image: summersummerwhy/octodocs-backend:latest
-    volumes:
-      - ./.env.server:/app/apps/backend/.env
+    env_file:
+      - .env.server
     expose:
       - "3000"
     networks:
@@ -48,8 +50,8 @@ services:
 
   websocket:
     image: summersummerwhy/octodocs-websocket:latest
-    volumes:
-      - ./.env.server:/app/apps/websocket/.env
+    env_file:
+      - .env.server
     expose:
       - "4242"
     networks:
@@ -78,9 +80,8 @@ services:
 
   redis:
     image: redis:latest
-    environment:
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
+    env_file:
+      - .env.server
     networks:
       - backend
       - frontend

@@ -68,9 +68,9 @@ jobs:
                           ? context.payload.pull_request.requested_reviewers.map(r => r.login)
                           : [];
 
-                      const BE_reviewers = ['summersummerwhy', 'ezcolin2', 'Tolerblanc'];
-                      const FE_reviewers = ['yewonJin', 'djk01281'];
-                      const doc_reviewers = ['summersummerwhy', 'ezcolin2', 'Tolerblanc', 'yewonJin', 'djk01281'];
+                      const BE_reviewers = ['summersummerwhy', 'ezcolin2'];
+                      const FE_reviewers = ['baegyeong', 'pkh0106'];
+                      const doc_reviewers = ['summersummerwhy', 'ezcolin2', 'baegyeong', 'pkh0106'];
 
                       // Function to filter out assignees, PR author, and current reviewers
                       const filterReviewers = (reviewers) => {

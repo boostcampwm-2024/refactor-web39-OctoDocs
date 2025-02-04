@@ -1,9 +1,9 @@
-name: auto  Workflow
+name: OctoDocs CD Pipeline
 
 on:
   push:
     branches:
-      - main
+      - refactor-be-#47
   workflow_dispatch:
 jobs:
   image-build-and-push:
@@ -27,28 +27,52 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      # 패키지 이미지부터 빌드 후 푸시
+      # 이 이미지를 base로 backend와 websocket 이미지를 만들기 때문
+      # 만약 octodocs-modules 이미지가 존재하면 그 이미지를 base로 하고
+      # 그렇지 않으면 node:20-alpine 버전 사용
+      # 그리고 layer 수가 너무 많으면 node:20-alpine 버전 사용 (50개 이상)
+      - name: package docker image build and push
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hub.docker.com/v2/repositories/summersummerwhy/octodocs-modules)
+          if [ "$STATUS" -eq 404 ]; then
+            echo "octodocs-modules not found"
+            docker build -f ./services/module/Dockerfile.init -t summersummerwhy/octodocs-modules .
+
+          else
+            echo "octodocs-modules found"
+            docker build -f ./services/module/Dockerfile -t summersummerwhy/octodocs-modules .
+            LAYERS=$(docker inspect --format '{{len .RootFS.Layers}}' summersummerwhy/octodocs-modules)
+              if [ $LAYERS -gt 50 ]; then
+                echo "too many layers"
+                docker build -f ./services/module/Dockerfile.init -t summersummerwhy/octodocs-modules .
+              fi
+          fi
       # Docker 이미지 빌드
       - name: docker image build
         run: |
-          docker build -f ./services/module/Dockerfile -t summersummerwhy/octodocs-modules .
-          docker build -f ./services/backend/Dockerfile.prod -t summersummerwhy/octodocs-backend .
-          docker build -f ./services/nginx/Dockerfile.prod -t summersummerwhy/octodocs-nginx .
-          docker build -f ./services/websocket/Dockerfile.prod -t summersummerwhy/octodocs-websocket .
+          docker build -f ./services/backend/Dockerfile.prod -t summersummerwhy/octodocs-backend . &
+          docker build -f ./services/nginx/Dockerfile.prod -t summersummerwhy/octodocs-nginx . &
+          docker build -f ./services/websocket/Dockerfile.prod -t summersummerwhy/octodocs-websocket . &
+          wait
 
       # Docker 이미지 푸시
       - name: docker image push
         run: |
-          docker push summersummerwhy/octodocs-modules
-          docker push summersummerwhy/octodocs-backend
-          docker push summersummerwhy/octodocs-nginx
-          docker push summersummerwhy/octodocs-websocket
+          docker push summersummerwhy/octodocs-modules &
+          docker push summersummerwhy/octodocs-backend &
+          docker push summersummerwhy/octodocs-nginx &
+          docker push summersummerwhy/octodocs-websocket &
+          wait
 
   deploy:
     needs: image-build-and-push
     runs-on: ubuntu-latest
 
     steps:
-      - name: deploy
+      # octodocs-modules먼저 pull 한 뒤 나머지 이미지 pull
+      # octodocs-modules를 base로 하는 이미지가 있기 때문
+      - name: image-pulling
         env:
           REMOTE_HOST: ${{ secrets.REMOTE_SERVER_IP }}
           REMOTE_USER: ${{ secrets.REMOTE_SERVER_USER }}
@@ -61,6 +85,22 @@ jobs:
 
           ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
             cd /root/octodocs
-            docker-compose -f compose.prod.yml down
+            docker pull summersummerwhy/octodocs-modules
             docker-compose -f compose.prod.yml pull
+      - name: deploy
+        env:
+          REMOTE_HOST: ${{ secrets.REMOTE_SERVER_IP }}
+          REMOTE_USER: ${{ secrets.REMOTE_SERVER_USER }}
+        run: |
+          ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
+            cd /root/octodocs
+            docker-compose -f compose.prod.yml down
             docker-compose -f compose.prod.yml up -d
+      # 사용하지 않는 도커 리소스를 정리한다.
+      - name: cleanup
+        env:
+          REMOTE_HOST: ${{ secrets.REMOTE_SERVER_IP }}
+          REMOTE_USER: ${{ secrets.REMOTE_SERVER_USER }}
+        run: |
+          ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
+            docker system prune -f --all

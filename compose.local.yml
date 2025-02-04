@@ -3,16 +3,14 @@ version: "3.8"
 services:
   postgres:
     image: postgres:16-alpine
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+    env_file:
+      - .env.local
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - net
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -21,9 +19,8 @@ services:
 
   redis:
     image: redis:latest
-    environment:
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
+    env_file:
+      - .env.local
     networks:
       - net
     ports:
@@ -40,9 +37,8 @@ services:
       dockerfile: ./services/frontend/Dockerfile.local
     image: frontend:latest
     env_file:
-      - .env
+      - .env.local
     volumes:
-      - .env:/app/.env
       - ./apps/frontend:/app/apps/frontend
 
     networks:
@@ -56,9 +52,8 @@ services:
       dockerfile: ./services/backend/Dockerfile.local
     image: backend:latest
     env_file:
-      - .env
+      - .env.local
     volumes:
-      - .env:/app/.env
       - ./apps/backend:/app/apps/backend
     depends_on:
       postgres:
@@ -76,9 +71,8 @@ services:
       dockerfile: ./services/websocket/Dockerfile.local
     image: websocket:latest
     env_file:
-      - .env
+      - .env.local
     volumes:
-      - .env:/app/.env
       - ./apps/websocket:/app/apps/websocket
     depends_on:
       postgres:

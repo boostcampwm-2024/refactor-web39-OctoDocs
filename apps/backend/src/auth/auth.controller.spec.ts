@@ -29,6 +29,10 @@ describe('AuthController', () => {
             refreshAccessToken: jest.fn(() => 'mockedAccessToken'),
           },
         },
+        {
+          provide: JwtAuthGuard,
+          useValue: {},
+        },
       ],
     })
       .overrideGuard(JwtAuthGuard)

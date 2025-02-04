@@ -4,8 +4,6 @@ import { WorkspaceRepository } from '../workspace/workspace.repository';
 import { PageRepository } from './page.repository';
 import { Page } from './page.entity';
 import { CreatePageDto } from './dtos/createPage.dto';
-import { UpdatePageDto } from './dtos/updatePage.dto';
-import { UpdatePartialPageDto } from './dtos/updatePartialPage.dto';
 import { PageNotFoundException } from '../exception/page.exception';
 import { WorkspaceNotFoundException } from '../exception/workspace.exception';
 
@@ -61,50 +59,19 @@ export class PageService {
     }
   }
 
-  async updatePage(id: number, dto: UpdatePageDto): Promise<Page> {
-    // 갱신할 페이지를 조회한다.
-    // 페이지를 조회한다.
-    const page = await this.pageRepository.findOneBy({ id });
-
-    // 페이지가 없으면 NotFound 에러
-    if (!page) {
-      throw new PageNotFoundException();
-    }
-    // 페이지 정보를 갱신한다.
-    const newPage = Object.assign({}, page, dto);
-
-    // 변경된 페이지를 저장
-    return await this.pageRepository.save(newPage);
-  }
-
-  async updateBulkPage(pages: UpdatePartialPageDto[]) {
-    await this.pageRepository.bulkUpdate(pages);
-  }
-
   async findPageById(id: number): Promise<Page> {
     // 페이지를 조회한다.
-    const page = await this.pageRepository.findOne({
-      where: { id },
-      relations: ['node'],
-    });
+
+    const page = await this.pageRepository
+      .createQueryBuilder('page')
+      .leftJoinAndSelect('page.node', 'node')
+      .where({ id })
+      .getOne();
 
     // 페이지가 없으면 NotFound 에러
     if (!page) {
       throw new PageNotFoundException();
     }
     return page;
-  }
-
-  async findPagesByWorkspace(workspaceId: string): Promise<Partial<Page>[]> {
-    // 워크스페이스 DB에서 해당 워크스페이스의 내부 id를 찾는다
-    const workspace = await this.workspaceRepository.findOneBy({
-      snowflakeId: workspaceId,
-    });
-
-    if (!workspace) {
-      throw new WorkspaceNotFoundException();
-    }
-
-    return await this.pageRepository.findPagesByWorkspace(workspace.id);
   }
 }

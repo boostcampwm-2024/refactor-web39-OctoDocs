@@ -6,10 +6,8 @@ import { Page } from './page.entity';
 import { Node } from '../node/node.entity';
 import { Workspace } from '../workspace/workspace.entity';
 import { CreatePageDto } from './dtos/createPage.dto';
-import { UpdatePageDto } from './dtos/updatePage.dto';
 import { PageNotFoundException } from '../exception/page.exception';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
-import { WorkspaceNotFoundException } from '../exception/workspace.exception';
 const RED_LOCK_TOKEN = 'RED_LOCK';
 type RedisLock = {
   acquire(): Promise<{ release: () => void }>;
@@ -184,64 +182,6 @@ describe('PageService', () => {
     });
   });
 
-  describe('updatePage', () => {
-    it('id에 해당하는 페이지를 찾아 성공적으로 갱신한다.', async () => {
-      const dto: UpdatePageDto = {
-        title: 'Updated Title',
-        content: {} as JSON,
-        emoji: '📝',
-      };
-      const originDate = new Date();
-      const originPage: Page = {
-        id: 1,
-        title: 'origin title',
-        content: {} as JSON,
-        node: null,
-        createdAt: originDate,
-        updatedAt: originDate,
-        version: 1,
-        emoji: null,
-        workspace: null,
-      };
-      const newDate = new Date();
-      const newPage: Page = {
-        id: 1,
-        title: 'Updated Title',
-        content: {} as JSON,
-        node: null,
-        createdAt: newDate,
-        updatedAt: newDate,
-        version: 1,
-        emoji: '📝',
-        workspace: null,
-      };
-      jest.spyOn(pageRepository, 'findOneBy').mockResolvedValue(originPage);
-      jest.spyOn(pageRepository, 'save').mockResolvedValue(newPage);
-      jest.spyOn(redisLock, 'acquire').mockResolvedValue({
-        release: jest.fn(),
-      });
-      const result = await service.updatePage(1, dto);
-
-      expect(result).toEqual(newPage);
-      expect(pageRepository.findOneBy).toHaveBeenCalledWith({
-        id: 1,
-      });
-      expect(pageRepository.save).toHaveBeenCalledWith(newPage);
-    });
-
-    it('id에 해당하는 페이지가 없을 경우 PageNotFoundException을 throw한다.', async () => {
-      jest
-        .spyOn(nodeRepository, 'findOneBy')
-        .mockResolvedValue({ affected: false } as any);
-      jest.spyOn(redisLock, 'acquire').mockResolvedValue({
-        release: jest.fn(),
-      });
-      await expect(service.updatePage(1, new UpdatePageDto())).rejects.toThrow(
-        PageNotFoundException,
-      );
-    });
-  });
-
   describe('findPageById', () => {
     it('id에 해당하는 페이지를 찾아 성공적으로 반환한다.', async () => {
       const newDate = new Date();
@@ -256,111 +196,36 @@ describe('PageService', () => {
         emoji: null,
         workspace: null,
       };
-      jest.spyOn(pageRepository, 'findOne').mockResolvedValue(expectedPage);
+      // createQueryBuilder를 모킹
+      const createQueryBuilderMock = jest.fn().mockReturnThis();
+      const leftJoinAndSelectMock = jest.fn().mockReturnThis();
+      const whereMock = jest.fn().mockReturnThis();
+      const getOneMock = jest.fn().mockResolvedValue(expectedPage);
 
+      // pageRepository의 메서드 체이닝을 모킹
+      pageRepository.createQueryBuilder = createQueryBuilderMock;
+      createQueryBuilderMock.mockReturnValueOnce({
+        leftJoinAndSelect: leftJoinAndSelectMock,
+        where: whereMock,
+        getOne: getOneMock,
+      });
       await expect(service.findPageById(1)).resolves.toEqual(expectedPage);
     });
 
     it('id에 해당하는 페이지가 없을 경우 PageNotFoundException을 throw한다.', async () => {
-      jest.spyOn(pageRepository, 'findOne').mockResolvedValue(undefined);
+      const createQueryBuilderMock = jest.fn().mockReturnThis();
+      const leftJoinAndSelectMock = jest.fn().mockReturnThis();
+      const whereMock = jest.fn().mockReturnThis();
+      const getOneMock = jest.fn().mockResolvedValue(undefined);
 
+      pageRepository.createQueryBuilder = createQueryBuilderMock;
+      createQueryBuilderMock.mockReturnValueOnce({
+        leftJoinAndSelect: leftJoinAndSelectMock,
+        where: whereMock,
+        getOne: getOneMock,
+      });
       await expect(service.findPageById(1)).rejects.toThrow(
         PageNotFoundException,
-      );
-
-      expect(pageRepository.findOne).toHaveBeenCalledWith({
-        where: { id: 1 },
-        relations: ['node'],
-      });
-    });
-  });
-
-  describe('findPagesByWorkspace', () => {
-    it('특정 워크스페이스에 존재하는 페이지들을 content 없이 반환한다.', async () => {
-      const workspaceId = '123456789012345678'; // Snowflake ID
-      const workspace = {
-        id: 1,
-        snowflakeId: workspaceId,
-        owner: null,
-        title: 'Test Workspace',
-        description: null,
-        visibility: 'private',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        thumbnailUrl: null,
-        edges: [],
-        pages: [],
-        nodes: [],
-      } as Workspace;
-
-      const page1: Page = {
-        id: 1,
-        title: 'Page 1',
-        content: {} as JSON,
-        node: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        version: 1,
-        emoji: '📄',
-        workspace,
-      };
-
-      const expectedPageList = [
-        { id: page1.id, title: page1.title, emoji: page1.emoji },
-      ] as Partial<Page>[];
-
-      jest.spyOn(workspaceRepository, 'findOneBy').mockResolvedValue(workspace);
-      jest
-        .spyOn(pageRepository, 'findPagesByWorkspace')
-        .mockResolvedValue(expectedPageList);
-
-      const result = await service.findPagesByWorkspace(workspaceId);
-
-      expect(result).toEqual(expectedPageList);
-      expect(workspaceRepository.findOneBy).toHaveBeenCalledWith({
-        snowflakeId: workspaceId,
-      });
-      expect(pageRepository.findPagesByWorkspace).toHaveBeenCalledWith(
-        workspace.id,
-      );
-    });
-
-    it('워크스페이스가 존재하지 않을 경우, WorkspaceNotFoundException을 던진다.', async () => {
-      const workspaceId = '123456789012345678';
-
-      jest.spyOn(workspaceRepository, 'findOneBy').mockResolvedValue(null);
-
-      await expect(service.findPagesByWorkspace(workspaceId)).rejects.toThrow(
-        WorkspaceNotFoundException,
-      );
-
-      expect(workspaceRepository.findOneBy).toHaveBeenCalledWith({
-        snowflakeId: workspaceId,
-      });
-      expect(pageRepository.findPagesByWorkspace).not.toHaveBeenCalled();
-    });
-
-    it('워크스페이스에 페이지가 없을 경우, 빈 배열을 반환한다.', async () => {
-      const workspaceId = '123456789012345678';
-      const workspace = {
-        id: 1,
-        snowflakeId: workspaceId,
-      };
-
-      jest
-        .spyOn(workspaceRepository, 'findOneBy')
-        .mockResolvedValue(workspace as Workspace);
-
-      jest.spyOn(pageRepository, 'findPagesByWorkspace').mockResolvedValue([]);
-
-      const result = await service.findPagesByWorkspace(workspaceId);
-
-      expect(result).toEqual([]);
-      expect(workspaceRepository.findOneBy).toHaveBeenCalledWith({
-        snowflakeId: workspaceId,
-      });
-      expect(pageRepository.findPagesByWorkspace).toHaveBeenCalledWith(
-        workspace.id,
       );
     });
   });
