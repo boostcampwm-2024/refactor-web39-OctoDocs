@@ -1,7 +1,24 @@
+import { UseMutateFunction } from "@tanstack/react-query";
 import { ArrowDown } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import {
+  PostLangchainResponse,
+  PostLangchainResquest,
+} from "../../model/langchainTypes";
+interface QuestionFormType {
+  onHandlePrevQustion: React.Dispatch<React.SetStateAction<string>>;
+  mutate: UseMutateFunction<
+    PostLangchainResponse,
+    Error,
+    PostLangchainResquest,
+    unknown
+  >;
+}
 
-export function QuestionForm() {
+export function QuestionForm({
+  onHandlePrevQustion,
+  mutate,
+}: QuestionFormType) {
   const [question, setQuestion] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -12,8 +29,19 @@ export function QuestionForm() {
     }
   }, [question]);
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!question) return;
+    onHandlePrevQustion(question);
+    setQuestion("");
+    mutate({ query: question });
+  };
+
   return (
-    <form className="flex w-full justify-between rounded-md border-[1px] border-[#d0d9e0] bg-[#f5f6fa] px-3 py-2">
+    <form
+      className="flex w-full justify-between rounded-md border-[1px] border-[#d0d9e0] bg-[#f5f6fa] px-3 py-2"
+      onSubmit={handleSubmit}
+    >
       <textarea
         ref={textareaRef}
         value={question}
