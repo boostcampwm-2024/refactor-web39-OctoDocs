@@ -87,6 +87,9 @@ export class TasksService {
 
       // TODO : 페이지가 없으면 affect : 0을 반환하는데 이 부분 처리도 하는 게 좋을 듯...?
       await pageRepository.update(pageId, updateData);
+      await queryRunner.query(
+        `DELETE FROM document WHERE metadata->>'id' = '${pageId}';`,
+      );
 
       // redis에서 데이터 삭제
       redisRunner.del(key);
