@@ -8,7 +8,14 @@ import { OpenAIEmbeddings } from '@langchain/openai';
 import { PoolConfig } from 'pg';
 import type { Document } from '@langchain/core/documents';
 import { v4 as uuidv4 } from 'uuid';
+import { ChatOpenAI } from '@langchain/openai';
+import { pull } from 'langchain/hub';
+import { ChatPromptTemplate } from '@langchain/core/prompts';
 
+const llm = new ChatOpenAI({
+  model: 'gpt-4o-mini',
+  temperature: 0,
+});
 type DocumentInfo = {
   id: number;
   content: string;
@@ -60,5 +67,19 @@ export class LangchainService implements OnModuleInit {
     });
     const ids = Array(documents.length).fill(uuidv4());
     await this.vectorStore.addDocuments(documents, { ids: ids });
+  }
+
+  async query(question: string) {
+    const promptTemplate = await pull<ChatPromptTemplate>('rlm/rag-prompt');
+    const retrievedDocs = await this.vectorStore.similaritySearch(question, 1);
+
+    const docsContent = retrievedDocs.map((doc) => doc.pageContent).join('\n');
+
+    const messages = await promptTemplate.invoke({
+      question: question,
+      context: docsContent,
+    });
+    const answer = await llm.invoke(messages);
+    return answer.content;
   }
 }
