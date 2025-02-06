@@ -4,17 +4,15 @@
 
 <div align="center">
   
-   ![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fboostcampwm-2024%2Fweb15-OctoDocs&count_bg=%23000000&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false) [![Group 112 (1)](https://github.com/user-attachments/assets/b7b4387e-ffe9-4469-82b7-c14509282d86)](https://octodocs.site)
- [![Group 83 (2)](https://github.com/user-attachments/assets/2d106d94-430c-47bc-a9e2-1f0026f76c2f)](https://github.com/boostcampwm-2024/web15-OctoDocs/wiki) [![Group 84 (2)](https://github.com/user-attachments/assets/b29b191b-8172-42a9-b541-40fdb8f165f3)](https://github.com/orgs/boostcampwm-2024/projects/120)
+   ![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fboostcampwm-2024%2Frefactor-web39-OctoDocs&count_bg=%23000000&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false) [![Group 112 (1)](https://github.com/user-attachments/assets/b7b4387e-ffe9-4469-82b7-c14509282d86)](https://octodocs.shop)
+ [![Group 83 (2)](https://github.com/user-attachments/assets/2d106d94-430c-47bc-a9e2-1f0026f76c2f)](https://github.com/boostcampwm-2024/refactor-web39-OctoDocs/wiki)
 
 </div>
 
 <p align="center">
   <a href="#옥토독스소개">🐙 서비스 소개</a> <br>
-  <a href="#주차별피드백">🏗️ 개발 원칙</a> <br>
   <a href="#핵심경험">🗜️ 팀의 핵심 경험</a> <br>
   <a href="#프로젝트구조">⚙️ 프로젝트 구조</a> <br>
-  <a href="#프로젝트타임라인">🗺️ 프로젝트 타임라인</a> <br>
   <a href="#팀원소개">🍻 팀원 소개</a> <br>
 </p>
 
@@ -66,76 +64,6 @@
 
 <br><br>
 
-<h1 id="주차별피드백">🏗️ 개발 원칙: 피드백을 반영한 점진적 개선 </h1>
-
-<br>
-
-> Octodocs팀은 **애자일한 개발**을 최우선 목표로 삼고, 이를 팀의 색깔로 자리잡게 했습니다. 부스트캠프야 말로 주차별로 고정 테스터를 확보할 수 있고, 이를 통해 **운영과 개발의 경험**을 해볼 수 있는 최적의 환경이라고 생각했기 때문인데요. 빠른 배포 후 매주 다양한 피드백을 받아오며 문제를 해결하고 개선해 나가는 과정을 직접 확인해보세요!
-
-<br>
-
-### 3주차 피드백 반영
-
-→ [🔗 3주차 전체 사용자 피드백 반영 기록 보러가기](https://github.com/boostcampwm-2024/web15-OctoDocs/wiki/3%EF%B8%8F%E2%83%A3-3%EC%A3%BC%EC%B0%A8-%EC%82%AC%EC%9A%A9%EC%9E%90-%ED%94%BC%EB%93%9C%EB%B0%B1-%EB%B0%98%EC%98%81-%EA%B8%B0%EB%A1%9D)
-
-![image 23](https://github.com/user-attachments/assets/a566ce1e-b2ab-4690-80a0-3189613debc2)
-
-🙏🏻 **보드랑, 문서노드에 마우스 포인터가 달랐으면 좋겠어요.**
-
-→ ✅ 캔버스에서 마우스를 움직이는 중인 유저들의 커서를 보여주고, 유저는 자신의 **커서 색깔을 커스텀**할 수 있는 기능을 추가했습니다. [PR 링크](https://github.com/boostcampwm-2024/web15-OctoDocs/pull/219)
-
-<br>
-
-🙏🏻 **연결같은거 하다보면 복잡해지네요**
-
-→ ✅ 엣지들이 엉켜보이는 것이 문제점이라고 판단했고 엣지의 시작점과 끝점이 항상 **최단 경로**가 되게 하는 기능을 추가했습니다. [PR 링크](https://github.com/boostcampwm-2024/web15-OctoDocs/pull/201)
-
-<br>
-
-🙏🏻 **스크린 높이를 작게 한 상태에서 왼쪽 사이드바가 버튼 UI를 가려버려용**
-
-→ ✅ 사이드바 UI를 수정, **사이드바를 닫을 수 있는 기능**을 추가했습니다. [PR 링크](https://github.com/boostcampwm-2024/web15-OctoDocs/pull/228)
-
-<br><br>
-
-### 4주차 피드백 반영
-
-→ [🔗 4주차 전체 사용자 피드백 반영 기록 보러가기](https://github.com/boostcampwm-2024/web15-OctoDocs/wiki/4%EF%B8%8F%E2%83%A3-4%EC%A3%BC%EC%B0%A8-%EC%82%AC%EC%9A%A9%EC%9E%90-%ED%94%BC%EB%93%9C%EB%B0%B1-%EB%B0%98%EC%98%81-%EA%B8%B0%EB%A1%9D)
-
-![Group 115 (1)](https://github.com/user-attachments/assets/1da2266f-247a-43ba-9b75-b7e4f7129b30)
-
-🙏🏻 **테두리가 더 두꺼워서 에디터랑 아래의 기본 배경이 더 구분이 잘 되었으면 좋겠어요! 색상을 변경할 수 있으면 좋겠습니다!**
-
-→ ✅ 노드의 색깔을 사용자가 결정할 수 있으면 공통적인 문제(노드가 배경으로부터 분리되어 보였으면 좋겠다)가 해결된다고 판단했고 **노드의 색깔을 커스텀**할 수 있는 기능을 추가하였습니다. [PR 링크 1(FE)](https://github.com/boostcampwm-2024/web15-OctoDocs/pull/201) [PR 링크 2(BE)](https://github.com/boostcampwm-2024/web15-OctoDocs/pull/373)
-
-<br>
-
-🙏🏻 **favicon에 문어 넣어주세요 문어 귀여워요...**
-
-→ ✅ 현재 배포된 사이트 [**https://octodocs.site**](https://octodocs.site/)를 통해 확인할 수 있습니다.
-
-<br>
-
-🙏🏻 **사용자 프로필 (이름하고 색깔) 변경하는 기능이 잘 눈에 안 띄어요. 사용하기 쉬웠으면 좋겠습니다.**
-
-→ ✅ 프로필을 변경할 수 있는 버튼을 눈에 띄는 곳에 새로 생성한 후, 사용자가 본인의 커서를 직접 보고 체험할 수 있는 **커서 프리뷰 기능**을 추가했습니다. [PR 링크](https://github.com/boostcampwm-2024/web15-OctoDocs/pull/274)
-
-<br><br>
-
-### 5주차 피드백 반영
-
-![스크린샷 2024-12-03 오후 8 09 51 1](https://github.com/user-attachments/assets/74d02bff-e476-425c-8086-a377aa2cb482)
-
-<br>
-
-🚨 **데모 중 서비스가 다운되는 문제가 발생했어요**
-
-> 5주차에는 데모 발표 중 사용자의 트래픽이 몰리면서 예상하지 못했던 버그로 인해 서버가 다운되었습니다. 이 또한 **실사용자로부터 온** 중요한 피드백이라고 생각하였고 다른 피드백보다 **서비스 복구를 최우선 과제로** 삼았습니다. 이 과정에서 어떤 문제가 있었고 이를 어떻게 해결했을까요?
-
-→ [🔗 어? 금지, 모니터 앞에 3명 이상 서있기 금지](https://github.com/boostcampwm-2024/web15-OctoDocs/wiki/5%EF%B8%8F%E2%83%A3-5%EC%A3%BC%EC%B0%A8-%EB%B2%84%EA%B7%B8-%EA%B8%B0%EB%A1%9D)
-
-<br><br>
-
 <h1 id="핵심경험">🗜️ Octodocs 팀의 핵심 경험</h1>
 
 ### 🗣️ 실시간 편집 구현 과정
@@ -154,27 +82,11 @@ Octodocs 팀은 기존 RESTful API 기반 상태 관리를 버리고 **YDoc 중�
 
 <br>
 
-### 🛠️ FE 프로젝트 구조 개선
-
-짧은 기간의 스프린트를 빠르게 반복하여 개발했던 Octodocs 팀은 어느 순간부터 기능을 추가하고 유지보수하기 어렵다는 문제점을 마주하였습니다. 기존 **프로젝트 구조**의 문제점을 어떻게 파악했고, 어떤 방법으로 개선 했을까요?
-
-→ [🔗 FSD, 힙하지만 막 갖다 쓰진 않았습니다](https://github.com/boostcampwm-2024/web15-OctoDocs/wiki/FE-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B5%AC%EC%A1%B0-%EA%B0%9C%EC%84%A0-%EA%B3%BC%EC%A0%95)
-
-<br>
-
 ### 🔑 워크스페이스 별 권한 부여
 
 Octodocs 팀은 배포를 끝낸 사이트를 발표에 직접 이용하다가, 발표를 듣는 사용자들이 발표 자료를 멋대로 변경할 수도 있다는 걱정을 마주했고 **사용자들이 워크스페이스별 권한을 관리**할 수 있어야겠다는 결론을 내렸습니다. 하지만 워크스페이스에 초대를 하면 알림이 가는 시스템을 만들기에는 개발 기간이 얼마 남지 않은 상태였어요. Octodocs 팀은 어떻게 워크스페이스별 권한 관리를 구현하였을까요?
 
 → [🔗 발표 자료 워크스페이스 접근 금지](https://github.com/boostcampwm-2024/web15-OctoDocs/wiki/%EC%9B%8C%ED%81%AC%EC%8A%A4%ED%8E%98%EC%9D%B4%EC%8A%A4-%EA%B6%8C%ED%95%9C-%EC%84%A4%EA%B3%84%2C-%EA%B5%AC%ED%98%84-%EA%B3%BC%EC%A0%95)
-
-<br>
-
-### ✨ 드래그 이벤트 발생 시 쿼리 최적화
-
-노트 카드를 **드래그할 때 너무 많은 쿼리가 발생**해 서버가 멈추는 치명적인 문제가 있었습니다. 핵심 기능인 캔버스를 아예 이용할 수 없었기에, 반드시 해결해야 하는 과제였습니다. Octodocs 팀은 소수점 단위로 변하는 좌표를 DB에 저장하기 위해 어떤 최적화를 도입했을까요?
-
-→ [🔗 우측으로 1mm만 옮겨주세요](https://github.com/boostcampwm-2024/web15-OctoDocs/wiki/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B4%80%EC%B0%B0%2C-%EC%BF%BC%EB%A6%AC-%EB%B0%9C%EC%83%9D-%EC%B5%9C%EC%A0%81%ED%99%94-%EA%B3%BC%EC%A0%95)
 
 <br>
 
@@ -191,6 +103,22 @@ Octodocs 팀은 배포를 끝낸 사이트를 발표에 직접 이용하다가, 
 Octodocs 팀은 사용자 경험 향상은 물론, 일관된 코드 품질 유지와 **개발자 친화적인 쾌적한 개발 환경 조성**을 위해 많은 노력을 기울였습니다. 멀티 레포에서 모노레포로의 전환, GitHub Actions를 활용한 CI/CD 구축, Docker와 Docker Compose의 도입까지—우리는 어떤 변화를 거쳤을까요?
 
 → [🔗 환경 개선의 여정 따라가기](https://github.com/boostcampwm-2024/web15-OctoDocs/wiki/%EA%B0%9C%EB%B0%9C-%ED%99%98%EA%B2%BD%2C-%EB%B0%B0%ED%8F%AC-%ED%99%98%EA%B2%BD-%EB%B0%8F-CI-CD%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B0%9C%EC%84%A0-%EA%B3%BC%EC%A0%95)
+
+<br>
+
+### 🔄불필요한 리렌더링 개선
+
+사용자가 자주 이용하는 페이지 리스트 기능이 매번 전체 페이지를 리렌더링하면서 사용자 경험을 저하시키고 성능 문제를 야기했습니다. 이 문제는 어떤 원인에서 비롯되었으며, 우리 팀은 어떤 접근 방식으로 해결할 수 있었을까요?
+
+→ [🔗페이지 리스트 렌더링 시 전체 리렌더링 발생 문제 개선](https://github.com/boostcampwm-2024/refactor-web39-OctoDocs/wiki/%ED%8E%98%EC%9D%B4%EC%A7%80-%EB%A6%AC%EC%8A%A4%ED%8A%B8-%EB%A0%8C%EB%8D%94%EB%A7%81-%EC%8B%9C-%EC%A0%84%EC%B2%B4-%EB%A6%AC%EB%A0%8C%EB%8D%94%EB%A7%81-%EB%B0%9C%EC%83%9D-%EB%AC%B8%EC%A0%9C-%EA%B0%9C%EC%84%A0)
+
+<br>
+
+### ⚡ FCP, LCP 점수 개선하기
+
+웹 페이지의 첫 인상을 결정짓는 중요한 지표인 FCP와 LCP가 각각 1.1초, 1.3초로 측정되었습니다. 우리 팀은 이 성능 지표를 1초 미만으로 단축시키는 목표를 설정하고, 이를 성공적으로 35% 이상 개선할 수 있었습니다. 이 성과는 어떻게 달성할 수 있었을까요?
+
+→ [🔗FCP(사용하지 않는 자바스크립트 줄이기)](https://github.com/boostcampwm-2024/refactor-web39-OctoDocs/wiki/lighthouse-%EA%B0%9C%EC%84%A0(1)-FCP(%EC%82%AC%EC%9A%A9%ED%95%98%EC%A7%80-%EC%95%8A%EB%8A%94-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%A4%84%EC%9D%B4%EA%B8%B0)), [🔗FCP(lazy loading)](https://github.com/boostcampwm-2024/refactor-web39-OctoDocs/wiki/lighthouse-%EA%B0%9C%EC%84%A0(2)-FCP(lazy-loading)), [🔗LCP(useSuspenseQuery)](https://github.com/boostcampwm-2024/refactor-web39-OctoDocs/wiki/lighthouse-%EA%B0%9C%EC%84%A0(3)-LCP(useSuspenseQuery))
 
 <br><br>
 
@@ -278,16 +206,9 @@ Octodocs 팀은 사용자 경험 향상은 물론, 일관된 코드 품질 유�
 </table>
 <br><br>
 
-<h1 id="프로젝트타임라인">🗺️ 프로젝트 타임라인</h1>
-
-![Overview-variant (18)](https://github.com/user-attachments/assets/a503f8fe-bab9-4cf3-8d9d-98ff43ab0c3e)
-
-<br><br>
-
 <h1 id="팀원소개">🍻 팀원 소개</h1>
 
-|                                               [J032\_김동준](https://github.com/djk01281)                                                |                                                  [J075\_김현준](https://github.com/Tolerblanc)                                                  |                                               [J097\_민서진](https://github.com/summersummerwhy)                                                |                                                   [J162\_유성민](https://github.com/ezcolin2)                                                   |                                                   [J248\_진예원](https://github.com/yewonJin)                                                   |
-| :--------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: |
-| <img width="204" alt="스크린샷 2024-10-29 오후 4" src="https://github.com/user-attachments/assets/71a5a38e-f60c-4f60-97e3-30d7a73a3c77"> | <img width="204" alt="스크린샷 2024-10-29 오후 11 41 04" src="https://github.com/user-attachments/assets/e093f852-a6ea-4937-b0ce-b89276bd7135"> | <img width="204" alt="스크린샷 2024-10-29 오후 11 41 55" src="https://github.com/user-attachments/assets/0f638ba9-a1ad-47b8-a874-957c0119384c"> | <img width="204" alt="스크린샷 2024-10-29 오후 11 41 00" src="https://github.com/user-attachments/assets/1d77b650-70f1-4dee-9489-dc0122b7c9ff"> | <img width="204" alt="스크린샷 2024-10-29 오후 11 40 31" src="https://github.com/user-attachments/assets/db99b6b2-ae06-4758-8687-17ebb860a52b"> |
-|                                                                 **INFJ**                                                                 |                                                                    **INFJ**                                                                     |                                                                    **INTP**                                                                     |                                                                    **INFP**                                                                     |                                                                    **ISTJ**                                                                     |
-|                                                                 **`FE`**                                                                 |                                                                    **`BE`**                                                                     |                                                                    **`BE`**                                                                     |                                                                    **`BE`**                                                                     |                                                                    **`FE`**                                                                     |
+|  [J097\_민서진](https://github.com/summersummerwhy)  |  [J100\_박경희](https://github.com/pkh0106)  |  [J162\_유성민](https://github.com/ezcolin2)  |  [J239\_조배경](https://github.com/baegyeong)  |
+| :---------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: |
+| <img width="204" alt="스크린샷 2024-10-29 오후 11 41 04" src="https://github.com/user-attachments/assets/e093f852-a6ea-4937-b0ce-b89276bd7135"> | <img width="204" alt="스크린샷 2024-10-29 오후 11 41 55" src="https://github.com/user-attachments/assets/0f638ba9-a1ad-47b8-a874-957c0119384c"> | <img width="204" alt="스크린샷 2024-10-29 오후 11 41 00" src="https://github.com/user-attachments/assets/1d77b650-70f1-4dee-9489-dc0122b7c9ff"> | <img width="204" alt="스크린샷 2024-10-29 오후 11 40 31" src="https://github.com/user-attachments/assets/db99b6b2-ae06-4758-8687-17ebb860a52b"> |
+|   **`BE`**               |          **`FE`**          |           **`BE`**          |    **`FE`**               |
