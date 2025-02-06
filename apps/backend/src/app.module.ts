@@ -20,6 +20,7 @@ import { WorkspaceModule } from './workspace/workspace.module';
 import { RoleModule } from './role/role.module';
 import { TasksModule } from './tasks/tasks.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { LangchainModule } from './langchain/langchain.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     WorkspaceModule,
     RoleModule,
     TasksModule,
+    LangchainModule,
   ],
   controllers: [AppController],
   providers: [AppService],
