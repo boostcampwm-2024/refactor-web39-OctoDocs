@@ -3,6 +3,7 @@ import { useSyncedUsers } from "@/entities/user";
 import { useProtectedWorkspace } from "@/features/workspace";
 import { CanvasView } from "@/widgets/CanvasView";
 import { PageSideBarView } from "@/widgets/PageSideBarView";
+import { AIToolView } from "@/widgets/AIToolView";
 import { CanvasToolsView } from "@/widgets/CanvasToolsView";
 import { SideWrapper, Skeleton } from "@/shared/ui";
 import { usePageStore } from "@/entities/page";
@@ -42,6 +43,7 @@ function App() {
         className="left-4 top-4 flex flex-row items-start gap-2"
       >
         <PageSideBarView />
+        <AIToolView />
         <CanvasToolsView />
         {currentPage && (
           <Suspense
