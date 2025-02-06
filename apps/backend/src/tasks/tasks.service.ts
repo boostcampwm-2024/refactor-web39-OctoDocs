@@ -7,6 +7,7 @@ import { Page } from '../page/page.entity';
 import { Node } from '../node/node.entity';
 import { Inject } from '@nestjs/common';
 import Redis from 'ioredis';
+import { LangchainService } from '../langchain/langchain.service';
 
 const REDIS_CLIENT_TOKEN = 'REDIS_CLIENT';
 
@@ -16,6 +17,7 @@ export class TasksService {
   constructor(
     @Inject(REDIS_CLIENT_TOKEN) private readonly redisClient: Redis,
     @InjectDataSource() private readonly dataSource: DataSource,
+    private readonly langchainService: LangchainService,
   ) {}
 
   @Cron(CronExpression.EVERY_10_SECONDS)
@@ -85,6 +87,9 @@ export class TasksService {
 
       // TODO : 페이지가 없으면 affect : 0을 반환하는데 이 부분 처리도 하는 게 좋을 듯...?
       await pageRepository.update(pageId, updateData);
+      await queryRunner.query(
+        `DELETE FROM document WHERE metadata->>'id' = '${pageId}';`,
+      );
 
       // redis에서 데이터 삭제
       redisRunner.del(key);
@@ -92,6 +97,15 @@ export class TasksService {
       // 트랜잭션 커밋
       await queryRunner.commitTransaction();
       await redisRunner.exec();
+
+      // document vector 삽입
+      const pageContent = await this.extractTextValues(updateData.content);
+      await this.langchainService.insertDocuments([
+        {
+          content: pageContent,
+          id: pageId,
+        },
+      ]);
     } catch (err) {
       // 실패하면 postgres는 roll back하고 redis의 값을 살린다.
       this.logger.error(err.stack);
@@ -160,5 +174,36 @@ export class TasksService {
       // 리소스 정리
       await queryRunner.release();
     }
+  }
+  /**
+   *
+   * @param pageContent 페이지 변경 사항 JSON
+   * @returns JSON 중 text key만 추출해서 합친 문자열
+   */
+  async extractTextValues(pageContent: object) {
+    const result: string[] = [];
+    const stack: any[] = [pageContent]; // 스택을 사용하여 JSON 탐색
+
+    while (stack.length > 0) {
+      const current = stack.pop();
+
+      if (typeof current === 'object' && current !== null) {
+        if (Array.isArray(current)) {
+          // 배열이면 모든 요소를 스택에 추가
+          stack.push(...current);
+        } else {
+          // 객체면 다시 탐색
+          for (const [key, value] of Object.entries(current)) {
+            if (key === 'text') {
+              result.push(String(value));
+            } else {
+              stack.push(value);
+            }
+          }
+        }
+      }
+    }
+
+    return result.join('\n');
   }
 }
