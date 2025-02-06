@@ -3,7 +3,7 @@ name: OctoDocs CD Pipeline
 on:
   push:
     branches:
-      - refactor-be-#47
+      - main
   workflow_dispatch:
 jobs:
   image-build-and-push:
