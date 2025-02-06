@@ -173,6 +173,40 @@ export const novelEditorSchema = new Schema({
         },
       ],
     },
+
+    horizontalRule: {
+      group: 'block',
+      toDOM: () => ['hr'],
+      parseDOM: [{ tag: 'hr' }],
+    },
   },
-  marks: {},
+  marks: {
+    bold: {
+      toDOM: () => ['strong', 0],
+      parseDOM: [{ tag: 'strong' }, { tag: 'b', getAttrs: () => null }],
+    },
+    italic: {
+      toDOM: () => ['em', 0],
+      parseDOM: [{ tag: 'em' }, { tag: 'i', getAttrs: () => null }],
+    },
+    underline: {
+      toDOM: () => ['u', 0],
+      parseDOM: [{ tag: 'u' }],
+    },
+    link: {
+      attrs: { href: {} },
+      inclusive: false,
+      toDOM: (node) => ['a', { href: node.attrs.href }, 0],
+      parseDOM: [
+        {
+          tag: 'a[href]',
+          getAttrs: (dom) => ({ href: dom.getAttribute('href') }),
+        },
+      ],
+    },
+    code: {
+      toDOM: () => ['code', 0],
+      parseDOM: [{ tag: 'code' }],
+    },
+  },
 });
