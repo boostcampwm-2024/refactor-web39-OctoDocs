@@ -12,3 +12,13 @@ export const postLangchain = async (query: PostLangchainResquest) => {
   );
   return res.data;
 };
+
+export const postFetchLangchain = async (query: PostLangchainResquest) => {
+  const url = `/api/langchain`;
+  const res = await Post<PostLangchainResponse, PostLangchainResquest>(
+    url,
+    query,
+  );
+  return res.data;
+};
+
