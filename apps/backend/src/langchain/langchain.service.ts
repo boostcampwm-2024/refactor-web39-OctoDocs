@@ -79,7 +79,6 @@ export class LangchainService implements OnModuleInit {
       question: question,
       context: docsContent,
     });
-    const answer = await llm.invoke(messages);
-    return answer.content;
+    return await llm.stream(messages);
   }
 }

@@ -1,23 +1,13 @@
-import { UseMutateFunction } from "@tanstack/react-query";
 import { ArrowDown } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import {
-  PostLangchainResponse,
-  PostLangchainResquest,
-} from "../../model/langchainTypes";
 interface QuestionFormType {
   onHandlePrevQustion: React.Dispatch<React.SetStateAction<string>>;
-  mutate: UseMutateFunction<
-    PostLangchainResponse,
-    Error,
-    PostLangchainResquest,
-    unknown
-  >;
+  onHandleAnswer: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export function QuestionForm({
   onHandlePrevQustion,
-  mutate,
+  onHandleAnswer,
 }: QuestionFormType) {
   const [question, setQuestion] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -29,12 +19,30 @@ export function QuestionForm({
     }
   }, [question]);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!question) return;
     onHandlePrevQustion(question);
-    setQuestion("");
-    mutate({ query: question });
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + "/api/langchain",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "text/event-stream",
+        },
+        body: JSON.stringify({ query: question }),
+      },
+    );
+
+    const reader = response.body
+      .pipeThrough(new TextDecoderStream())
+      .getReader();
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      console.log("Received: ", value);
+      onHandleAnswer((prev) => prev + value);
+    }
   };
 
   return (
