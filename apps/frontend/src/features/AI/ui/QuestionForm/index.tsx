@@ -41,12 +41,12 @@ export function QuestionForm({
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
         rows={1}
-        className="mt-[2px] max-h-[150px] w-[360px] resize-none overflow-y-auto bg-[#f5f6fa] outline-none"
+        className="mt-[2px] max-h-[150px] flex-1 resize-none overflow-y-auto bg-[#f5f6fa] outline-none"
         placeholder="어떤 정보를 찾고 계신가요? 질문을 남겨주세요."
       />
       <button
         aria-label="AISubmitBtn"
-        className="flex size-7 items-center justify-center rounded-full bg-black"
+        className="ml-2 flex size-7 items-center justify-center rounded-full bg-black"
       >
         <ArrowDown size={20} color="#ffffff" />
       </button>
