@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { QuestionForm } from "../QuestionForm";
+import { Divider } from "@/shared/ui";
 
 export function AIPanel() {
   const [question, setQuestion] = useState("");
@@ -16,7 +17,7 @@ export function AIPanel() {
         {question ? (
           <div className="text-md">
             <div className="font-bold">{question}</div>
-            <hr className="my-3" />
+            <Divider direction="horizontal" className="my-3" />
             <div className="font-light">{answer}</div>
           </div>
         ) : (
