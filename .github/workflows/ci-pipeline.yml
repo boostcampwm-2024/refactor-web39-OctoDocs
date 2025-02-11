@@ -3,10 +3,10 @@ name: OctoDocs CI Pipeline
 on:
   pull_request:
     branches:
-      - develop
+      - "**"
   push:
     branches:
-      - develop
+      - "**"
 
 jobs:
   setup:

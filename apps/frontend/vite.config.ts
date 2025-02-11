@@ -8,7 +8,7 @@ import removeConsole from "vite-plugin-remove-console";
 function getHostFromUrl(url: string) {
   // 정규식을 사용해 http:// 또는 https:// 프로토콜을 제거하고
   // 호스트 이름만 반환
-  return url.replace(/^https?:\/\//, "");
+  return url?.replace(/^https?:\/\//, "");
 }
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
