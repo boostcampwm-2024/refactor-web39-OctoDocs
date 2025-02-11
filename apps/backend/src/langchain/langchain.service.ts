@@ -4,13 +4,13 @@ import {
   PGVectorStore,
   DistanceStrategy,
 } from '@langchain/community/vectorstores/pgvector';
-import { OpenAIEmbeddings } from '@langchain/openai';
 import { PoolConfig } from 'pg';
 import type { Document } from '@langchain/core/documents';
 import { v4 as uuidv4 } from 'uuid';
 import { ChatOpenAI } from '@langchain/openai';
 import { pull } from 'langchain/hub';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
+import { HuggingFaceTransformersEmbeddings } from '@langchain/community/embeddings/huggingface_transformers';
 
 const llm = new ChatOpenAI({
   model: 'gpt-4o-mini',
@@ -21,8 +21,8 @@ type DocumentInfo = {
   content: string;
 };
 // Embeddings 초기화
-const embeddings = new OpenAIEmbeddings({
-  model: 'text-embedding-3-small',
+const embeddings = new HuggingFaceTransformersEmbeddings({
+  model: 'Xenova/all-MiniLM-L6-v2',
 });
 
 @Injectable()

@@ -1,7 +1,7 @@
 # COPY 명령어는 여러 디렉토리를 목적지로 파일 복사하는 것이 불가능하다.
 # 빌드 스테이지에서 COPY 명령어를 여러 번 생성해서 여러 디렉토리로 파일을 복사한다.
 # 그 후 그 디렉토리 자체를 다음 스테이지에서 그대로 복사하여 layer의 개수를 줄인다.
-FROM node:20-alpine as builder 
+FROM node:20-slim as builder 
 
 WORKDIR /app
 
