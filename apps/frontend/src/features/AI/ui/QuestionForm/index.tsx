@@ -1,17 +1,12 @@
 import { ArrowDown } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useLangchain } from "../../model/useLangchain";
-interface QuestionFormType {
-  onHandlePrevQustion: React.Dispatch<React.SetStateAction<string>>;
-  onHandleAnswer: React.Dispatch<React.SetStateAction<string>>;
-}
+import { useLangchainStore } from "../../model/useLangchainStore";
 
-export function QuestionForm({
-  onHandlePrevQustion,
-  onHandleAnswer,
-}: QuestionFormType) {
-  const [question, setQuestion] = useState("");
+export function QuestionForm() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [newQuestion, setnewQuestion] = useState("");
+  const { setAnswer, setQuestion } = useLangchainStore();
   const { mutateLangchain } = useLangchain();
 
   useEffect(() => {
@@ -19,15 +14,16 @@ export function QuestionForm({
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
-  }, [question]);
+  }, [newQuestion]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onHandleAnswer("");
-    onHandlePrevQustion(question);
+    setnewQuestion("");
+    setAnswer("");
+    setQuestion(newQuestion);
 
-    await mutateLangchain(question, (chunk: string) => {
-      onHandleAnswer((prev) => prev + chunk);
+    await mutateLangchain(newQuestion, (chunk: string) => {
+      setAnswer((prev) => prev + chunk);
     });
   };
 
@@ -38,11 +34,11 @@ export function QuestionForm({
     >
       <textarea
         ref={textareaRef}
-        value={question}
-        onChange={(e) => setQuestion(e.target.value)}
+        value={newQuestion}
+        onChange={(e) => setnewQuestion(e.target.value)}
         rows={1}
         className="mt-[2px] max-h-[150px] flex-1 resize-none overflow-y-auto bg-[#f5f6fa] outline-none"
-        placeholder="어떤 정보를 찾고 계신가요? 질문을 남겨주세요."
+        placeholder="어떤 정보 찾고 계신가요? 질문을 남겨주세요."
       />
       <button
         aria-label="AISubmitBtn"
