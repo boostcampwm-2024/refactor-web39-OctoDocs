@@ -1,5 +1,6 @@
 import { ArrowDown } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { useLangchain } from "../../model/useLangchain";
 interface QuestionFormType {
   onHandlePrevQustion: React.Dispatch<React.SetStateAction<string>>;
   onHandleAnswer: React.Dispatch<React.SetStateAction<string>>;
@@ -11,6 +12,7 @@ export function QuestionForm({
 }: QuestionFormType) {
   const [question, setQuestion] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { mutateLangchain } = useLangchain();
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -21,28 +23,12 @@ export function QuestionForm({
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    onHandleAnswer("");
     onHandlePrevQustion(question);
-    const response = await fetch(
-      import.meta.env.VITE_API_URL + "/api/langchain",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "text/event-stream",
-        },
-        body: JSON.stringify({ query: question }),
-      },
-    );
 
-    const reader = response.body
-      .pipeThrough(new TextDecoderStream())
-      .getReader();
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-      console.log("Received: ", value);
-      onHandleAnswer((prev) => prev + value);
-    }
+    await mutateLangchain(question, (chunk: string) => {
+      onHandleAnswer((prev) => prev + chunk);
+    });
   };
 
   return (
