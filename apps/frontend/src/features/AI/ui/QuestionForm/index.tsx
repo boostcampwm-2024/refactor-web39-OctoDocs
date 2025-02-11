@@ -1,48 +1,30 @@
 import { ArrowDown } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
-interface QuestionFormType {
-  onHandlePrevQustion: React.Dispatch<React.SetStateAction<string>>;
-  onHandleAnswer: React.Dispatch<React.SetStateAction<string>>;
-}
+import { useLangchain } from "../../model/useLangchain";
+import { useLangchainStore } from "../../model/useLangchainStore";
 
-export function QuestionForm({
-  onHandlePrevQustion,
-  onHandleAnswer,
-}: QuestionFormType) {
-  const [question, setQuestion] = useState("");
+export function QuestionForm() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [newQuestion, setnewQuestion] = useState("");
+  const { setAnswer, setQuestion } = useLangchainStore();
+  const { mutateLangchain } = useLangchain();
 
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
-  }, [question]);
+  }, [newQuestion]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onHandlePrevQustion(question);
-    const response = await fetch(
-      import.meta.env.VITE_API_URL + "/api/langchain",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "text/event-stream",
-        },
-        body: JSON.stringify({ query: question }),
-      },
-    );
+    setnewQuestion("");
+    setAnswer("");
+    setQuestion(newQuestion);
 
-    const reader = response
-      .body!.pipeThrough(new TextDecoderStream())
-      .getReader();
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-      console.log("Received: ", value);
-      onHandleAnswer((prev) => prev + value);
-    }
+    await mutateLangchain(newQuestion, (chunk: string) => {
+      setAnswer((prev) => prev + chunk);
+    });
   };
 
   return (
@@ -52,15 +34,15 @@ export function QuestionForm({
     >
       <textarea
         ref={textareaRef}
-        value={question}
-        onChange={(e) => setQuestion(e.target.value)}
+        value={newQuestion}
+        onChange={(e) => setnewQuestion(e.target.value)}
         rows={1}
-        className="mt-[2px] max-h-[150px] w-[360px] resize-none overflow-y-auto bg-[#f5f6fa] outline-none"
-        placeholder="어떤 정보를 찾고 계신가요? 질문을 남겨주세요."
+        className="mt-[2px] max-h-[150px] flex-1 resize-none overflow-y-auto bg-[#f5f6fa] outline-none"
+        placeholder="어떤 정보 찾고 계신가요? 질문을 남겨주세요."
       />
       <button
         aria-label="AISubmitBtn"
-        className="flex size-7 items-center justify-center rounded-full bg-black"
+        className="ml-2 flex size-7 items-center justify-center rounded-full bg-black"
       >
         <ArrowDown size={20} color="#ffffff" />
       </button>
