@@ -3,13 +3,16 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { RedisPage, RedisNode } from '../redis/redis.service';
 import { DataSource } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { Page } from '../page/page.entity';
 import { Node } from '../node/node.entity';
 import { Inject } from '@nestjs/common';
 import Redis from 'ioredis';
-import { LangchainService } from '../langchain/langchain.service';
+import { HuggingFaceTransformersEmbeddings } from '@langchain/community/embeddings/huggingface_transformers';
 
 const REDIS_CLIENT_TOKEN = 'REDIS_CLIENT';
+// Embeddings 초기화
+const embeddings = new HuggingFaceTransformersEmbeddings({
+  model: 'Xenova/all-MiniLM-L6-v2',
+});
 
 @Injectable()
 export class TasksService {
@@ -17,7 +20,6 @@ export class TasksService {
   constructor(
     @Inject(REDIS_CLIENT_TOKEN) private readonly redisClient: Redis,
     @InjectDataSource() private readonly dataSource: DataSource,
-    private readonly langchainService: LangchainService,
   ) {}
 
   @Cron(CronExpression.EVERY_10_SECONDS)
@@ -66,14 +68,8 @@ export class TasksService {
 
     const { title, content, emoji } = redisData;
 
-    const updateData: Partial<Page> = {};
-
-    if (title) updateData.title = title;
-    if (content) updateData.content = JSON.parse(content);
-    if (emoji) updateData.emoji = emoji;
-
     // 업데이트 대상이 없다면 리턴
-    if (Object.keys(updateData).length === 0) return;
+    if (!title && !content && !emoji) return;
     const pageId = parseInt(key.split(':')[1]);
 
     // 트랜잭션 시작
@@ -83,13 +79,37 @@ export class TasksService {
       await queryRunner.startTransaction();
 
       // 갱신 시작
-      const pageRepository = queryRunner.manager.getRepository(Page);
+      // prepared statement 준비
+      const updateFields: string[] = [];
+      const params = [];
+      let sequence = 1;
 
-      // TODO : 페이지가 없으면 affect : 0을 반환하는데 이 부분 처리도 하는 게 좋을 듯...?
-      await pageRepository.update(pageId, updateData);
-      await queryRunner.query(
-        `DELETE FROM document WHERE metadata->>'id' = '${pageId}';`,
-      );
+      if (title) {
+        updateFields.push(`title = $${sequence++}`);
+        params.push(title);
+      }
+      if (content) {
+        updateFields.push(`content = $${sequence++}`);
+        updateFields.push(`embedding = $${sequence++}`);
+        // content가 있으면 임베딩 진행
+        const vector = await embeddings.embedDocuments([
+          this.extractTextValues(JSON.parse(content)),
+        ]);
+        params.push(content);
+        params.push(`[${vector[0].join(',')}]`);
+      }
+      if (emoji) {
+        updateFields.push(`emoji = $${sequence++}`);
+        params.push(emoji);
+      }
+      params.push(`${pageId}`);
+
+      if (updateFields.length > 0) {
+        const query = `UPDATE page SET ${updateFields.join(', ')} WHERE id = $${sequence}`;
+        console.log('Query');
+        console.log(query);
+        await queryRunner.query(query, params);
+      }
 
       // redis에서 데이터 삭제
       redisRunner.del(key);
@@ -97,15 +117,6 @@ export class TasksService {
       // 트랜잭션 커밋
       await queryRunner.commitTransaction();
       await redisRunner.exec();
-
-      // document vector 삽입
-      const pageContent = await this.extractTextValues(updateData.content);
-      await this.langchainService.insertDocuments([
-        {
-          content: pageContent,
-          id: pageId,
-        },
-      ]);
     } catch (err) {
       // 실패하면 postgres는 roll back하고 redis의 값을 살린다.
       this.logger.error(err.stack);
@@ -180,7 +191,7 @@ export class TasksService {
    * @param pageContent 페이지 변경 사항 JSON
    * @returns JSON 중 text key만 추출해서 합친 문자열
    */
-  async extractTextValues(pageContent: object) {
+  extractTextValues(pageContent: object) {
     const result: string[] = [];
     const stack: any[] = [pageContent]; // 스택을 사용하여 JSON 탐색
 

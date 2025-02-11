@@ -35,7 +35,7 @@ export function QuestionForm({
     );
 
     const reader = response
-      .body!!.pipeThrough(new TextDecoderStream())
+      .body!.pipeThrough(new TextDecoderStream())
       .getReader();
     while (true) {
       const { value, done } = await reader.read();
