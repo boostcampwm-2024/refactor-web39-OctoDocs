@@ -6,6 +6,12 @@ import { InjectDataSource } from '@nestjs/typeorm';
 @Injectable()
 export class PageRepository extends Repository<Page> implements OnModuleInit {
   async onModuleInit() {
+    // vector extension 활성화
+    await this.dataSource.query(`
+      CREATE EXTENSION IF NOT EXISTS vector
+    `);
+
+    // vector 컬럼 추가
     await this.dataSource.query(`
       ALTER TABLE page ADD COLUMN embedding vector(384);
       `);
