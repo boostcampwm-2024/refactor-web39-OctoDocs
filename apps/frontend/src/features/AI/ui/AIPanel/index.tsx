@@ -1,6 +1,7 @@
 import { QuestionForm } from "../QuestionForm";
 import { Divider } from "@/shared/ui";
 import { useLangchainStore } from "../../model/useLangchainStore";
+import { ExampleBlock } from "../ExampleBlock";
 
 export function AIPanel() {
   const { question, answer } = useLangchainStore();
@@ -17,10 +18,14 @@ export function AIPanel() {
             <div className="font-light">{answer}</div>
           </div>
         ) : (
-          <div className="text-md flex h-full w-full items-center justify-center text-center font-medium">
+          <div className="flex h-full w-full flex-col items-center justify-center gap-6 text-center text-lg font-medium">
             문서에서 원하는 정보를 찾아드릴게요.
             <br />
             질문을 입력해 주세요!
+            <div className="flex w-full justify-center gap-6">
+              <ExampleBlock>2월 12일에 하기로 한 작업이 있었나?</ExampleBlock>
+              <ExampleBlock>모든 회의록을 모아서 요약해줘</ExampleBlock>
+            </div>
           </div>
         )}
       </div>

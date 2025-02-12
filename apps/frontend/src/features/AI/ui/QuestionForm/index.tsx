@@ -38,7 +38,7 @@ export function QuestionForm() {
         onChange={(e) => setnewQuestion(e.target.value)}
         rows={1}
         className="mt-[2px] max-h-[150px] flex-1 resize-none overflow-y-auto bg-[#f5f6fa] outline-none"
-        placeholder="어떤 정보 찾고 계신가요? 질문을 남겨주세요."
+        placeholder="어떤 정보를 알고 싶으신가요? 질문을 남겨주세요."
       />
       <button
         aria-label="AISubmitBtn"
