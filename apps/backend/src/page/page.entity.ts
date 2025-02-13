@@ -20,8 +20,11 @@ export class Page {
   @Column({ nullable: true })
   title: string;
 
-  @Column('json', { nullable: true }) //TODO: Postgres에서는 jsonb로 변경
+  @Column('json', { nullable: true })
   content: JSON;
+
+  @Column({ nullable: true })
+  document: string;
 
   @CreateDateColumn()
   createdAt: Date;
