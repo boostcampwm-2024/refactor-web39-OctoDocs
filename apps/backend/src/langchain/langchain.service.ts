@@ -30,7 +30,7 @@ export class LangchainService {
       select document from hybrid_search(
         '${question}',
         '[${queryEmbeddings.join(',')}]'::vector(384),
-        1
+        5
       );
       `,
     );
