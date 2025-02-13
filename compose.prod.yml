@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   nginx:
-    image: summersummerwhy/octodocs-nginx:latest
+    image: growth123/octodocs-nginx:latest
     env_file:
       - .env.server
     restart: always
@@ -21,7 +21,7 @@ services:
         condition: service_healthy
 
   backend:
-    image: summersummerwhy/octodocs-backend:latest
+    image: growth123/octodocs-backend:latest
     env_file:
       - .env.server
     expose:
@@ -49,7 +49,7 @@ services:
     restart: always
 
   websocket:
-    image: summersummerwhy/octodocs-websocket:latest
+    image: growth123/octodocs-websocket:latest
     env_file:
       - .env.server
     expose:

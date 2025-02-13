@@ -1,4 +1,4 @@
-FROM summersummerwhy/octodocs-modules:latest
+FROM growth123/octodocs-modules:latest
 
 # 소스 코드 복사
 COPY . .
@@ -7,7 +7,7 @@ WORKDIR /app/apps/backend
 
 
 # 빌드
-RUN yarn build
+RUN apt update && apt install wget -y && yarn build
 
 # 프로덕션 모드로 실행
 ENV NODE_ENV=production

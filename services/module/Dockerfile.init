@@ -14,10 +14,11 @@ COPY apps/websocket/package.json ./apps/websocket/
 # node_modules를 가지고 있는 이미지
 # 이 이미지를 기반으로 각 workspace 별 이미지를 만들면 
 # yarn install 레이어를 공유하게 된다.
-FROM node:20-alpine
+FROM node:20-slim
 
 # 호이스팅을 위해
-COPY --from=builder /app/apps /app/apps
+COPY --from=builder /app /app
+WORKDIR /app
 
 # 의존성 설치
-RUN yarn install --check-files
+RUN yarn install --check-files && yarn cache clean
