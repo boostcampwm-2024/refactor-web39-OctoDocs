@@ -38,6 +38,14 @@ export class Page {
   @Column({ nullable: true })
   emoji: string | null;
 
+  @Column({
+    generatedType: 'STORED',
+    type: 'tsvector',
+    asExpression: `to_tsvector('english', document)`,
+    nullable: true,
+  })
+  fts: string;
+
   @OneToOne(() => Node, (node) => node.page, {
     onDelete: 'CASCADE',
   })
