@@ -20,8 +20,11 @@ export class Page {
   @Column({ nullable: true })
   title: string;
 
-  @Column('json', { nullable: true }) //TODO: Postgres에서는 jsonb로 변경
+  @Column('json', { nullable: true })
   content: JSON;
+
+  @Column({ nullable: true })
+  document: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -34,6 +37,14 @@ export class Page {
 
   @Column({ nullable: true })
   emoji: string | null;
+
+  @Column({
+    generatedType: 'STORED',
+    type: 'tsvector',
+    asExpression: `to_tsvector('english', document)`,
+    nullable: true,
+  })
+  fts: string;
 
   @OneToOne(() => Node, (node) => node.page, {
     onDelete: 'CASCADE',

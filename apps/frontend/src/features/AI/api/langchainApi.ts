@@ -1,14 +1,11 @@
-import { Post } from "@/shared/api";
-import {
-  PostLangchainResponse,
-  PostLangchainResquest,
-} from "../model/langchainTypes";
-
-export const postLangchain = async (query: PostLangchainResquest) => {
-  const url = `/api/langchain`;
-  const res = await Post<PostLangchainResponse, PostLangchainResquest>(
-    url,
-    query,
-  );
-  return res.data;
+export const postLangchain = async (query: string): Promise<Response> => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  return fetch(`${apiUrl}/api/langchain`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "text/event-stream",
+    },
+    body: JSON.stringify({ query }),
+  });
 };

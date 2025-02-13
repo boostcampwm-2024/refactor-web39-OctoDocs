@@ -4,6 +4,6 @@ import { LangchainController } from './langchain.controller';
 
 @Module({
   providers: [LangchainService],
-  controllers: [LangchainController]
+  controllers: [LangchainController],
 })
 export class LangchainModule {}

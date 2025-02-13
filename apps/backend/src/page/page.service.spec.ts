@@ -8,17 +8,12 @@ import { Workspace } from '../workspace/workspace.entity';
 import { CreatePageDto } from './dtos/createPage.dto';
 import { PageNotFoundException } from '../exception/page.exception';
 import { WorkspaceRepository } from '../workspace/workspace.repository';
-const RED_LOCK_TOKEN = 'RED_LOCK';
-type RedisLock = {
-  acquire(): Promise<{ release: () => void }>;
-};
 
 describe('PageService', () => {
   let service: PageService;
   let pageRepository: PageRepository;
   let nodeRepository: NodeRepository;
   let workspaceRepository: WorkspaceRepository;
-  let redisLock: RedisLock;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -48,12 +43,6 @@ describe('PageService', () => {
             findOneBy: jest.fn(),
           },
         },
-        {
-          provide: RED_LOCK_TOKEN,
-          useValue: {
-            acquire: jest.fn(),
-          },
-        },
       ],
     }).compile();
 
@@ -61,7 +50,6 @@ describe('PageService', () => {
     pageRepository = module.get<PageRepository>(PageRepository);
     nodeRepository = module.get<NodeRepository>(NodeRepository);
     workspaceRepository = module.get<WorkspaceRepository>(WorkspaceRepository);
-    redisLock = module.get<RedisLock>(RED_LOCK_TOKEN);
   });
 
   it('서비스 클래스가 정상적으로 인스턴스화된다.', () => {
@@ -69,7 +57,6 @@ describe('PageService', () => {
     expect(pageRepository).toBeDefined();
     expect(nodeRepository).toBeDefined();
     expect(workspaceRepository).toBeDefined();
-    expect(redisLock).toBeDefined();
   });
 
   describe('createPage', () => {
@@ -111,6 +98,8 @@ describe('PageService', () => {
         node: null,
         emoji: null,
         workspace: workspace1,
+        document: null,
+        fts: null,
       };
 
       // 노드 엔티티
@@ -161,9 +150,6 @@ describe('PageService', () => {
         .spyOn(pageRepository, 'delete')
         .mockResolvedValue({ affected: true } as any);
       jest.spyOn(pageRepository, 'findOneBy').mockResolvedValue(new Page());
-      jest.spyOn(redisLock, 'acquire').mockResolvedValue({
-        release: jest.fn(),
-      });
       await service.deletePage(1);
 
       expect(pageRepository.delete).toHaveBeenCalledWith(1);
@@ -173,9 +159,6 @@ describe('PageService', () => {
       jest
         .spyOn(pageRepository, 'delete')
         .mockResolvedValue({ affected: false } as any);
-      jest.spyOn(redisLock, 'acquire').mockResolvedValue({
-        release: jest.fn(),
-      });
       await expect(service.deletePage(1)).rejects.toThrow(
         PageNotFoundException,
       );
@@ -195,6 +178,8 @@ describe('PageService', () => {
         version: 1,
         emoji: null,
         workspace: null,
+        document: null,
+        fts: null,
       };
       // createQueryBuilder를 모킹
       const createQueryBuilderMock = jest.fn().mockReturnThis();
