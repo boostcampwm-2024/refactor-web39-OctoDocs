@@ -34,35 +34,35 @@ jobs:
       # 그리고 layer 수가 너무 많으면 node:20-alpine 버전 사용 (50개 이상)
       - name: package docker image build and push
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hub.docker.com/v2/repositories/summersummerwhy/octodocs-modules)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hub.docker.com/v2/repositories/growth123/octodocs-modules)
           if [ "$STATUS" -eq 404 ]; then
             echo "octodocs-modules not found"
-            docker build -f ./services/module/Dockerfile.init -t summersummerwhy/octodocs-modules .
+            docker build -f ./services/module/Dockerfile.init -t growth123/octodocs-modules .
 
           else
             echo "octodocs-modules found"
-            docker build -f ./services/module/Dockerfile -t summersummerwhy/octodocs-modules .
-            LAYERS=$(docker inspect --format '{{len .RootFS.Layers}}' summersummerwhy/octodocs-modules)
+            docker build -f ./services/module/Dockerfile -t growth123/octodocs-modules .
+            LAYERS=$(docker inspect --format '{{len .RootFS.Layers}}' growth123/octodocs-modules)
               if [ $LAYERS -gt 50 ]; then
                 echo "too many layers"
-                docker build -f ./services/module/Dockerfile.init -t summersummerwhy/octodocs-modules .
+                docker build -f ./services/module/Dockerfile.init -t growth123/octodocs-modules .
               fi
           fi
       # Docker 이미지 빌드
       - name: docker image build
         run: |
-          docker build -f ./services/backend/Dockerfile.prod -t summersummerwhy/octodocs-backend . &
-          docker build -f ./services/nginx/Dockerfile.prod -t summersummerwhy/octodocs-nginx . &
-          docker build -f ./services/websocket/Dockerfile.prod -t summersummerwhy/octodocs-websocket . &
+          docker build -f ./services/backend/Dockerfile.prod -t growth123/octodocs-backend . &
+          docker build -f ./services/nginx/Dockerfile.prod -t growth123/octodocs-nginx . &
+          docker build -f ./services/websocket/Dockerfile.prod -t growth123/octodocs-websocket . &
           wait
 
       # Docker 이미지 푸시
       - name: docker image push
         run: |
-          docker push summersummerwhy/octodocs-modules &
-          docker push summersummerwhy/octodocs-backend &
-          docker push summersummerwhy/octodocs-nginx &
-          docker push summersummerwhy/octodocs-websocket &
+          docker push growth123/octodocs-modules &
+          docker push growth123/octodocs-backend &
+          docker push growth123/octodocs-nginx &
+          docker push growth123/octodocs-websocket &
           wait
 
   deploy:
@@ -85,7 +85,7 @@ jobs:
 
           ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
             cd /root/octodocs
-            docker pull summersummerwhy/octodocs-modules
+            docker pull growth123/octodocs-modules
             docker-compose -f compose.prod.yml pull
       - name: deploy
         env:

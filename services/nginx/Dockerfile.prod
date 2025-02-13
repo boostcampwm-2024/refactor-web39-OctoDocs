@@ -1,5 +1,5 @@
 # 빌드 스테이지
-FROM summersummerwhy/octodocs-modules:latest as builder
+FROM growth123/octodocs-modules:latest as builder
 
 # 소스 코드 복사
 COPY . .

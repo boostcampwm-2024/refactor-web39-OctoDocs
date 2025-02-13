@@ -14,7 +14,7 @@ COPY apps/websocket/package.json ./apps/websocket/
 # node_modules를 가지고 있는 이미지
 # 이 이미지를 기반으로 각 workspace 별 이미지를 만들면 
 # yarn install 레이어를 공유하게 된다.
-FROM summersummerwhy/octodocs-modules:latest
+FROM growth123/octodocs-modules:latest
 
 # 호이스팅을 위해
 COPY --from=builder /app/apps /app/apps
