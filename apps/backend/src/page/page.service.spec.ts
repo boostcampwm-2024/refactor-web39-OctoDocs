@@ -98,6 +98,8 @@ describe('PageService', () => {
         node: null,
         emoji: null,
         workspace: workspace1,
+        document: null,
+        fts: null,
       };
 
       // 노드 엔티티
@@ -176,6 +178,8 @@ describe('PageService', () => {
         version: 1,
         emoji: null,
         workspace: null,
+        document: null,
+        fts: null,
       };
       // createQueryBuilder를 모킹
       const createQueryBuilderMock = jest.fn().mockReturnThis();

@@ -61,6 +61,8 @@ describe('PageController', () => {
         node: null,
         emoji: null,
         workspace: null,
+        document: null,
+        fts: null,
       });
 
       const result = await controller.createPage(dto);
@@ -126,6 +128,8 @@ describe('PageController', () => {
         version: 1,
         emoji: null,
         workspace: null,
+        document: null,
+        fts: null,
       };
 
       jest.spyOn(pageService, 'findPageById').mockResolvedValue(expectedPage);

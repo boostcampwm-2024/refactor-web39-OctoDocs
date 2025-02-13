@@ -90,12 +90,15 @@ export class TasksService {
       }
       if (content) {
         updateFields.push(`content = $${sequence++}`);
+        updateFields.push(`document = $${sequence++}`);
         updateFields.push(`embedding = $${sequence++}`);
+
+        // document는 JSON 타입에서 의미있는 문자열만 뽑아서 합친 문자열
+        const document = this.extractTextValues(JSON.parse(content));
         // content가 있으면 임베딩 진행
-        const vector = await embeddings.embedDocuments([
-          this.extractTextValues(JSON.parse(content)),
-        ]);
+        const vector = await embeddings.embedDocuments([document]);
         params.push(content);
+        params.push(document);
         params.push(`[${vector[0].join(',')}]`);
       }
       if (emoji) {

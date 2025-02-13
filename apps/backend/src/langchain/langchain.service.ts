@@ -22,18 +22,28 @@ export class LangchainService {
   async query(question: string) {
     const promptTemplate = await pull<ChatPromptTemplate>('rlm/rag-prompt');
     const queryEmbeddings = await embeddings.embedQuery(question);
+    // const retrievedDocs = await this.dataSource.query(
+    //   `SELECT content FROM page ORDER BY embedding <=> '[${queryEmbeddings.join(',')}]' LIMIT 1;`,
+    // );
     const retrievedDocs = await this.dataSource.query(
-      `SELECT content FROM page ORDER BY embedding <=> '[${queryEmbeddings.join(',')}]' LIMIT 1;`,
+      `
+      select document from hybrid_search(
+        '${question}',
+        '[${queryEmbeddings.join(',')}]'::vector(384),
+        1
+      );
+      `,
     );
     // const retrievedDocs = await this.vectorStore.similaritySearch(question, 1);
     retrievedDocs.forEach((doc) => {
-      console.log(doc.content);
+      console.log(doc.document);
     });
-    const docsContent = retrievedDocs
-      .map((doc) => {
-        return this.extractTextValues(JSON.parse(JSON.stringify(doc.content)));
-      })
-      .join('\n');
+    // const docsContent = retrievedDocs
+    //   .map((doc) => {
+    //     return this.extractTextValues(JSON.parse(JSON.stringify(doc.content)));
+    //   })
+    //   .join('\n');
+    const docsContent = retrievedDocs.map((doc) => doc.document).join('\n');
 
     const messages = await promptTemplate.invoke({
       question: question,
