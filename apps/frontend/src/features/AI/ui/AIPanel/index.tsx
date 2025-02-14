@@ -1,21 +1,23 @@
 import { QuestionForm } from "../QuestionForm";
-import { Divider } from "@/shared/ui";
 import { useLangchainStore } from "../../model/useLangchainStore";
 import { ExampleBlock } from "../ExampleBlock";
+import { QnA } from "../QnA";
 
 export function AIPanel() {
-  const { question, answer } = useLangchainStore();
+  const { prevQustions, prevAnswers, currQuestion, currAnswer } =
+    useLangchainStore();
 
   return (
     <div className="z-8 absolute left-0 top-full mt-2 flex h-[76vh] w-[26vw] min-w-[340px] flex-col items-center rounded-md border-[1px] border-neutral-200 bg-white p-4 text-black shadow-md">
       <QuestionForm />
 
       <div className="mt-4 flex w-full flex-grow overflow-y-auto px-4">
-        {question ? (
+        {currQuestion ? (
           <div className="text-md w-full">
-            <div className="font-bold">{question}</div>
-            <Divider direction="horizontal" className="my-3" />
-            <div className="font-light">{answer}</div>
+            {prevQustions.map((q, i) => (
+              <QnA question={q} answer={prevAnswers[i]} />
+            ))}
+            <QnA question={currQuestion} answer={currAnswer} />
           </div>
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-6 text-center text-lg font-medium">

@@ -2,12 +2,14 @@ import { ArrowDown } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useLangchain } from "../../model/useLangchain";
 import { useLangchainStore } from "../../model/useLangchainStore";
+import { useQnA } from "../../model/useQnA";
 
 export function QuestionForm() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [newQuestion, setnewQuestion] = useState("");
-  const { setAnswer, setQuestion } = useLangchainStore();
+  const { setCurrAnswer } = useLangchainStore();
   const { mutateLangchain } = useLangchain();
+  const { updateQnA } = useQnA();
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -19,11 +21,10 @@ export function QuestionForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setnewQuestion("");
-    setAnswer("");
-    setQuestion(newQuestion);
+    updateQnA(newQuestion);
 
     await mutateLangchain(newQuestion, (chunk: string) => {
-      setAnswer((prev) => prev + chunk);
+      setCurrAnswer((prev) => prev + chunk);
     });
   };
 
