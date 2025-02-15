@@ -3,5 +3,8 @@ FROM octodocs-modules:latest
 EXPOSE 4242
 
 COPY ./apps/backend /app/apps/backend
+COPY ./tsconfig.json /app/tsconfig.json
+COPY ./nest-cli.json /app/nest-cli.json
+COPY ./libs /app/libs
 
 CMD ["sh", "-c", "cd app/apps/backend && yarn dev"]
