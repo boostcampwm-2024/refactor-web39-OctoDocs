@@ -1,9 +1,7 @@
 FROM octodocs-modules:latest
 
-WORKDIR /app/apps/backend
+EXPOSE 4242
 
-# 소스 코드는 볼륨으로 마운트할 예정이므로 COPY 불필요
-EXPOSE 3000
+COPY ./apps/backend /app/apps/backend
 
-# 개발 모드로 실행
-CMD ["yarn", "dev"]
+CMD ["sh", "-c", "cd app/apps/backend && yarn dev"]

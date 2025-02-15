@@ -1,8 +1,7 @@
 FROM octodocs-modules:latest
 
-WORKDIR /app/apps/websocket
-
 EXPOSE 4242
 
-# Start the application
-CMD ["yarn", "dev"] 
+COPY ./apps/backend /app/apps/websocket
+
+CMD ["sh", "-c", "cd app/apps/websocket && yarn dev"]
