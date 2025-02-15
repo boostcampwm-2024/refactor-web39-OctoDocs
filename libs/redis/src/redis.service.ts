@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { Inject } from '@nestjs/common';
-import Redis from 'ioredis';
-const REDIS_CLIENT_TOKEN = 'REDIS_CLIENT';
+import { Injectable } from "@nestjs/common";
+import { Inject } from "@nestjs/common";
+import Redis from "ioredis";
+const REDIS_CLIENT_TOKEN = "REDIS_CLIENT";
 
 export type RedisPage = {
   title?: string;
@@ -18,7 +18,7 @@ export type RedisNode = {
 @Injectable()
 export class RedisService {
   constructor(
-    @Inject(REDIS_CLIENT_TOKEN) private readonly redisClient: Redis,
+    @Inject(REDIS_CLIENT_TOKEN) private readonly redisClient: Redis
   ) {}
   async getAllKeys(pattern) {
     return await this.redisClient.keys(pattern);
@@ -31,7 +31,7 @@ export class RedisService {
   async get(key: string) {
     const data = await this.redisClient.hgetall(key);
     return Object.fromEntries(
-      Object.entries(data).map(([field, value]) => [field, value]),
+      Object.entries(data).map(([field, value]) => [field, value])
     );
   }
 
