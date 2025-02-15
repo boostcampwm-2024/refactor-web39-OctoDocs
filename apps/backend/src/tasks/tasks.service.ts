@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { RedisPage, RedisNode } from '../redis/redis.service';
+import { RedisPage, RedisNode } from '@app/redis/redis.service';
 import { DataSource } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { Node } from '../node/node.entity';

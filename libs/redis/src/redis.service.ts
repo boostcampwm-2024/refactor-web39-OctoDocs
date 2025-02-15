@@ -17,7 +17,9 @@ export type RedisNode = {
 
 @Injectable()
 export class RedisService {
-  constructor(private readonly redisClient: Redis) {}
+  constructor(
+    @Inject(REDIS_CLIENT_TOKEN) private readonly redisClient: Redis
+  ) {}
   async getAllKeys(pattern) {
     return await this.redisClient.keys(pattern);
   }

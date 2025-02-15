@@ -16,7 +16,7 @@ import {
 import { novelEditorSchema } from './yjs.schema';
 import type { Node } from './types/node.entity';
 import type { Edge } from './types/edge.entity';
-import { RedisService } from '../redis/redis.service';
+import { RedisService } from '@app/redis/redis.service';
 import axios from 'axios';
 
 // Y.Doc에는 name 컬럼이 없어서 생성했습니다.

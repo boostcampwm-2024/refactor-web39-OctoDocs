@@ -2,6 +2,6 @@ FROM octodocs-modules:latest
 
 EXPOSE 4242
 
-COPY ./apps/backend /app/apps/websocket
+COPY ./apps/websocket /app/apps/websocket
 
 CMD ["sh", "-c", "cd app/apps/websocket && yarn dev"]
