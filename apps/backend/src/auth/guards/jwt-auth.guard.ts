@@ -4,7 +4,6 @@ import { LoginRequiredException } from '@app/exception/login.exception';
 import { InvalidTokenException } from '@app/exception/invalid.exception';
 import { TokenExpiredError } from 'jsonwebtoken';
 import { TokenService } from '@app/token/token.service';
-import { Response } from 'express';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
