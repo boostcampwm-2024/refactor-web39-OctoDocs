@@ -1,6 +1,6 @@
 FROM octodocs-modules:latest
 
-EXPOSE 4242
+EXPOSE 3000
 
 COPY ./apps/backend /app/apps/backend
 COPY ./tsconfig.json /app/tsconfig.json

@@ -48,6 +48,20 @@ services:
       start_period: 10s
     restart: always
 
+  scheduler:
+    image: growth123/octodocs-scheduler:latest
+    env_file:
+      - .env.server
+    expose:
+      - "3001"
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: always
+
   websocket:
     image: growth123/octodocs-websocket:latest
     env_file:
