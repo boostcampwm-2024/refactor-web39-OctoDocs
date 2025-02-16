@@ -3,7 +3,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { RedisPage, RedisNode } from '@app/redis/redis.service';
 import { DataSource } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { Node } from '../node/node.entity';
+import { Node } from '@app/node/node.entity';
 import { Inject } from '@nestjs/common';
 import Redis from 'ioredis';
 import { HuggingFaceTransformersEmbeddings } from '@langchain/community/embeddings/huggingface_transformers';

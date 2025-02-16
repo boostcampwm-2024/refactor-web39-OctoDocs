@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PageController } from './page.controller';
-import { PageService } from './page.service';
-import { CreatePageDto } from './dtos/createPage.dto';
+import { PageService } from '@app/page/page.service';
+import { CreatePageDto } from '@app/page/dtos/createPage.dto';
 import { PageResponseMessage } from './page.controller';
-import { PageNotFoundException } from '../exception/page.exception';
-import { Page } from './page.entity';
-import { WorkspaceNotFoundException } from '../exception/workspace.exception';
+import { PageNotFoundException } from '@app/exception/page.exception';
+import { Page } from '@app/page/page.entity';
+import { WorkspaceNotFoundException } from '@app/exception/workspace.exception';
 
 describe('PageController', () => {
   let controller: PageController;

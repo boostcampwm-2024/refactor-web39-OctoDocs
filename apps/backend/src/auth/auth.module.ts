@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { UserRepository } from '../user/user.repository';
-import { UserModule } from '../user/user.module';
+import { UserRepository } from '@app/user/user.repository';
+import { UserModule } from '@app/user/user.module';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { NaverStrategy } from './strategies/naver.strategy';
 import { KakaoStrategy } from './strategies/kakao.strategy';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { TokenModule } from './token/token.module';
+import { TokenModule } from '@app/token/token.module';
 
 @Module({
   imports: [UserModule, TokenModule],

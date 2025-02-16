@@ -13,14 +13,14 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { WorkspaceService } from './workspace.service';
+import { WorkspaceService } from '@app/workspace/workspace.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { MessageResponseDto } from './dtos/messageResponse.dto';
-import { CreateWorkspaceDto } from './dtos/createWorkspace.dto';
-import { CreateWorkspaceResponseDto } from './dtos/createWorkspaceResponse.dto';
-import { GetUserWorkspacesResponseDto } from './dtos/getUserWorkspacesResponse.dto';
-import { CreateWorkspaceInviteUrlDto } from './dtos/createWorkspaceInviteUrl.dto';
-import { GetWorkspaceResponseDto } from './dtos/getWorkspaceResponse.dto';
+import { MessageResponseDto } from '@app/workspace/dtos/messageResponse.dto';
+import { CreateWorkspaceDto } from '@app/workspace/dtos/createWorkspace.dto';
+import { CreateWorkspaceResponseDto } from '@app/workspace/dtos/createWorkspaceResponse.dto';
+import { GetUserWorkspacesResponseDto } from '@app/workspace/dtos/getUserWorkspacesResponse.dto';
+import { CreateWorkspaceInviteUrlDto } from '@app/workspace/dtos/createWorkspaceInviteUrl.dto';
+import { GetWorkspaceResponseDto } from '@app/workspace/dtos/getWorkspaceResponse.dto';
 
 export enum WorkspaceResponseMessage {
   WORKSPACE_CREATED = '워크스페이스를 생성했습니다.',

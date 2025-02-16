@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { UserRepository } from '../user/user.repository';
+import { UserRepository } from '@app/user/user.repository';
 import { SignUpDto } from './dtos/signUp.dto';
-import { User } from '../user/user.entity';
+import { User } from '@app/user/user.entity';
 import { UpdateUserDto } from './dtos/UpdateUser.dto';
-import { UserNotFoundException } from '../exception/user.exception';
+import { UserNotFoundException } from '@app/exception/user.exception';
 import { Snowflake } from '@theinternetfolks/snowflake';
 
 describe('AuthService', () => {

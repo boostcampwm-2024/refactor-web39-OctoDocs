@@ -15,7 +15,7 @@ import { Response } from 'express';
 import { MessageResponseDto } from './dtos/messageResponse.dto';
 import { LoginResponseDto } from './dtos/loginResponse.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { TokenService } from './token/token.service';
+import { TokenService } from '@app/token/token.service';
 import { UpdateUserDto } from './dtos/UpdateUser.dto';
 
 export enum AuthResponseMessage {

@@ -1,9 +1,9 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { LoginRequiredException } from '../../exception/login.exception';
-import { InvalidTokenException } from '../../exception/invalid.exception';
+import { LoginRequiredException } from '@app/exception/login.exception';
+import { InvalidTokenException } from '@app/exception/invalid.exception';
 import { TokenExpiredError } from 'jsonwebtoken';
-import { TokenService } from '../token/token.service';
+import { TokenService } from '@app/token/token.service';
 import { Response } from 'express';
 
 @Injectable()

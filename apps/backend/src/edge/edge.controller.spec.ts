@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EdgeController } from './edge.controller';
-import { EdgeService } from './edge.service';
-import { CreateEdgeDto } from './dtos/createEdge.dto';
+import { EdgeService } from '@app/edge/edge.service';
+import { CreateEdgeDto } from '@app/edge/dtos/createEdge.dto';
 import { EdgeResponseMessage } from './edge.controller';
-import { EdgeNotFoundException } from '../exception/edge.exception';
-import { Edge } from './edge.entity';
-import { Node } from '../node/node.entity';
+import { EdgeNotFoundException } from '@app/exception/edge.exception';
+import { Edge } from '@app/edge/edge.entity';
+import { Node } from '@app/node/node.entity';
 
 describe('EdgeController', () => {
   let controller: EdgeController;

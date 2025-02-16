@@ -9,11 +9,11 @@ import {
   HttpStatus,
   ParseIntPipe,
 } from '@nestjs/common';
-import { EdgeService } from './edge.service';
-import { CreateEdgeDto } from './dtos/createEdge.dto';
+import { EdgeService } from '@app/edge/edge.service';
+import { CreateEdgeDto } from '@app/edge/dtos/createEdge.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { MessageResponseDto } from './dtos/messageResponse.dto';
-import { FindEdgesResponseDto } from './dtos/findEdgesResponse.dto';
+import { MessageResponseDto } from '@app/edge/dtos/messageResponse.dto';
+import { FindEdgesResponseDto } from '@app/edge/dtos/findEdgesResponse.dto';
 
 export enum EdgeResponseMessage {
   EDGES_RETURNED = '워크스페이스의 모든 엣지를 가져왔습니다.',

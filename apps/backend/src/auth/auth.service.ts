@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { UserRepository } from '../user/user.repository';
-import { User } from '../user/user.entity';
+import { UserRepository } from '@app/user/user.repository';
+import { User } from '@app/user/user.entity';
 import { SignUpDto } from './dtos/signUp.dto';
 import { UpdateUserDto } from './dtos/UpdateUser.dto';
-import { UserNotFoundException } from '../exception/user.exception';
+import { UserNotFoundException } from '@app/exception/user.exception';
 import { Snowflake } from '@theinternetfolks/snowflake';
 
 @Injectable()
