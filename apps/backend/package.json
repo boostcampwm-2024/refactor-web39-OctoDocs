@@ -114,16 +114,16 @@
       "src"
     ],
     "moduleNameMapper": {
-      "src/(.*)$": "<rootDir>/$1",
       "@root/(.*)$": "<rootDir>/../../$1",
-      "@redis/(.*)$": "<rootDir>/../libs/redis/src/$1",
-      "@page/(.*)$": "<rootDir>/../libs/page/src/$1",
-      "@node/(.*)$": "<rootDir>/../libs/node/src/$1",
-      "@edge/(.*)$": "<rootDir>/../libs/edge/src/$1",
-      "@workspace/(.*)$": "<rootDir>/../libs/workspace/src/$1",
-      "@user/(.*)$": "<rootDir>/../libs/user/src/$1",
-      "@role/(.*)$": "<rootDir>/../libs/role/src/$1",
-      "@token/(.*)$": "<rootDir>/../libs/token/src/$1"
+      "@app/redis/(.*)$": "<rootDir>/../../../libs/redis/src/$1",
+      "@app/page/(.*)$": "<rootDir>/../../../libs/page/src/$1",
+      "@app/node/(.*)$": "<rootDir>/../../../libs/node/src/$1",
+      "@app/edge/(.*)$": "<rootDir>/../../../libs/edge/src/$1",
+      "@app/workspace/(.*)$": "<rootDir>/../../../libs/workspace/src/$1",
+      "@app/user/(.*)$": "<rootDir>/../../../libs/user/src/$1",
+      "@app/role/(.*)$": "<rootDir>/../../../libs/role/src/$1",
+      "@app/token/(.*)$": "<rootDir>/../../../libs/token/src/$1",
+      "@app/exception/(.*)$": "<rootDir>/../../../libs/exception/$1"
     }
   }
 }
