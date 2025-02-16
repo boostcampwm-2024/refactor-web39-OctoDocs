@@ -13,19 +13,13 @@ import { User } from '@app/user/user.entity';
 import { Workspace } from '@app/workspace/workspace.entity';
 import { Role } from '@app/role/role.entity';
 import * as path from 'path';
-import { UploadModule } from './upload/upload.module';
-import { AuthModule } from './auth/auth.module';
 import { UserModule } from '@app/user/user.module';
 import { WorkspaceModule } from '@app/workspace/workspace.module';
 import { RoleModule } from '@app/role/role.module';
+import { TasksModule } from './tasks/tasks.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { LangchainModule } from './langchain/langchain.module';
-import { NodeController } from './node/node.controller';
-import { PageController } from './page/page.controller';
-import { EdgeController } from './edge/edge.controller';
-import { WorkspaceController } from './workspace/workspace.controller';
 import { TokenModule } from '@app/token/token.module';
-import { TokenService } from '@app/token/token.service';
 
 @Module({
   imports: [
@@ -52,21 +46,14 @@ import { TokenService } from '@app/token/token.service';
     NodeModule,
     PageModule,
     EdgeModule,
-    UploadModule,
-    AuthModule,
     UserModule,
     TokenModule,
     WorkspaceModule,
     RoleModule,
+    TasksModule,
     LangchainModule,
   ],
-  controllers: [
-    AppController,
-    NodeController,
-    PageController,
-    EdgeController,
-    WorkspaceController,
-  ],
-  providers: [AppService, TokenService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

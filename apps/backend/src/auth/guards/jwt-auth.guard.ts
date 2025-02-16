@@ -15,7 +15,7 @@ export class JwtAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const response = context.switchToHttp().getResponse<Response>();
+    const response = context.switchToHttp().getResponse();
 
     const cookies = request.cookies; // 쿠키에서 가져오기
 

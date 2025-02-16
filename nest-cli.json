@@ -71,9 +71,31 @@
       "compilerOptions": {
         "tsConfigPath": "libs/token/tsconfig.lib.json"
       }
+    },
+    "octodocs": {
+      "type": "application",
+      "root": "apps/octodocs",
+      "entryFile": "main",
+      "sourceRoot": "apps/octodocs/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/octodocs/tsconfig.app.json"
+      }
+    },
+    "scheduler": {
+      "type": "application",
+      "root": "apps/scheduler",
+      "entryFile": "main",
+      "sourceRoot": "apps/scheduler/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/scheduler/tsconfig.app.json"
+      }
     }
   },
   "compilerOptions": {
-    "webpack": true
-  }
+    "webpack": true,
+    "tsConfigPath": "apps/octodocs/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/octodocs",
+  "sourceRoot": "apps/octodocs/src"
 }

@@ -6,7 +6,7 @@ import { CreateWorkspaceDto } from '@app/workspace/dtos/createWorkspace.dto';
 import { WorkspaceResponseMessage } from './workspace.controller';
 import { NotWorkspaceOwnerException } from '@app/exception/workspace-auth.exception';
 import { UserWorkspaceDto } from '@app/workspace/dtos/userWorkspace.dto';
-import { TokenService } from '../auth/token/token.service';
+import { TokenService } from '@app/token/token.service';
 import { WorkspaceNotFoundException } from '@app/exception/workspace.exception';
 import { ForbiddenAccessException } from '@app/exception/access.exception';
 
