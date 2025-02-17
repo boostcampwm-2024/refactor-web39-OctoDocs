@@ -1,21 +1,35 @@
 import { create } from "zustand";
 
 interface langchainStore {
-  question: string;
-  answer: string;
-  setQuestion: (question: string) => void;
-  setAnswer: (answer: string | ((prev: string) => string)) => void;
+  prevQustions: string[];
+  prevAnswers: string[];
+  setPrevQustions: (currQuestion: string) => void;
+  setPrevAnswers: (currQuestion: string) => void;
+  currQuestion: string;
+  currAnswer: string;
+  setCurrQuestion: (newQuestion: string) => void;
+  setCurrAnswer: (answerOrUpdater: string | ((prev: string) => string)) => void;
 }
 
 export const useLangchainStore = create<langchainStore>((set) => ({
-  question: "",
-  answer: "",
-  setQuestion: (question: string) => set({ question }),
-  setAnswer: (answerOrUpdater: string | ((prev: string) => string)) =>
+  prevQustions: [],
+  prevAnswers: [],
+  setPrevQustions: (currQuestion: string) =>
     set((state) => ({
-      answer:
+      prevQustions: [currQuestion, ...state.prevQustions],
+    })),
+  setPrevAnswers: (currAnswer: string) =>
+    set((state) => ({
+      prevAnswers: [currAnswer, ...state.prevAnswers],
+    })),
+  currQuestion: "",
+  currAnswer: "",
+  setCurrQuestion: (newQuestion: string) => set({ currQuestion: newQuestion }),
+  setCurrAnswer: (answerOrUpdater: string | ((prev: string) => string)) =>
+    set((state) => ({
+      currAnswer:
         typeof answerOrUpdater === "function"
-          ? answerOrUpdater(state.answer)
+          ? answerOrUpdater(state.currAnswer)
           : answerOrUpdater,
     })),
 }));
