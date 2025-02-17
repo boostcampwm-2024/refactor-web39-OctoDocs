@@ -11,10 +11,13 @@ export const useQnA = () => {
   } = useLangchainStore();
 
   const updateQnA = (newQuestion: string) => {
-    setPrevQustions(currQuestion);
-    setPrevAnswers(currAnswer);
+    if (currQuestion && currAnswer) {
+      setPrevQustions(currQuestion);
+      setPrevAnswers(currAnswer);
 
-    setCurrAnswer("");
+      setCurrAnswer("");
+    }
+
     setCurrQuestion(newQuestion);
   };
 
