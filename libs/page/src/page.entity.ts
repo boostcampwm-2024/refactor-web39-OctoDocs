@@ -8,19 +8,19 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   VersionColumn,
-} from 'typeorm';
-import { Node } from '@app/node/node.entity';
-import { Workspace } from '@app/workspace/workspace.entity';
+} from "typeorm";
+import { Node } from "@app/node/node.entity";
+import { Workspace } from "@app/workspace/workspace.entity";
 
 @Entity()
 export class Page {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn("increment")
   id: number;
 
   @Column({ nullable: true })
   title: string;
 
-  @Column('json', { nullable: true })
+  @Column("json", { nullable: true })
   content: JSON;
 
   @Column({ nullable: true })
@@ -39,21 +39,21 @@ export class Page {
   emoji: string | null;
 
   @Column({
-    generatedType: 'STORED',
-    type: 'tsvector',
-    asExpression: `to_tsvector('english', document)`,
+    generatedType: "STORED",
+    type: "tsvector",
+    asExpression: `COALESCE(title, '') || ' ' || COALESCE(document, '')`,
     nullable: true,
   })
   fts: string;
 
   @OneToOne(() => Node, (node) => node.page, {
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
   })
   node: Node;
 
   @ManyToOne(() => Workspace, (workspace) => workspace.pages, {
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
   })
-  @JoinColumn({ name: 'workspace_id' })
+  @JoinColumn({ name: "workspace_id" })
   workspace: Workspace;
 }
