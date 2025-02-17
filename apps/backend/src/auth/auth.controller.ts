@@ -15,7 +15,7 @@ import { Response } from 'express';
 import { MessageResponseDto } from './dtos/messageResponse.dto';
 import { LoginResponseDto } from './dtos/loginResponse.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { TokenService } from './token/token.service';
+import { TokenService } from '@app/token/token.service';
 import { UpdateUserDto } from './dtos/UpdateUser.dto';
 
 export enum AuthResponseMessage {
@@ -40,7 +40,7 @@ export class AuthController {
 
   @Get('naver/callback')
   @UseGuards(AuthGuard('naver'))
-  async naverCallback(@Req() req, @Res() res: Response) {
+  async naverCallback(@Req() req, @Res() res) {
     // 네이버 인증 후 사용자 정보 반환
     const user = req.user;
 
@@ -66,7 +66,7 @@ export class AuthController {
 
   @Get('kakao/callback')
   @UseGuards(AuthGuard('kakao'))
-  async kakaoCallback(@Req() req, @Res() res: Response) {
+  async kakaoCallback(@Req() req, @Res() res) {
     /// 카카오 인증 후 사용자 정보 반환
     const user = req.user;
 
@@ -87,7 +87,7 @@ export class AuthController {
   @ApiOperation({ summary: '사용자가 로그아웃합니다.' })
   @Post('logout')
   @UseGuards(JwtAuthGuard) // JWT 인증 검사
-  logout(@Req() req, @Res() res: Response) {
+  logout(@Req() req, @Res() res) {
     // 쿠키 삭제 (옵션이 일치해야 삭제됨)
     this.tokenService.clearCookies(res);
     // 현재 자동로그인에 사용되는 refresh Token db에서 삭제

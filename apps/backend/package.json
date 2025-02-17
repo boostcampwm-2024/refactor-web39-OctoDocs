@@ -21,10 +21,9 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.693.0",
-    "@huggingface/transformers": "^3.3.3",
-    "@langchain/community": "^0.3.28",
-    "@langchain/core": "^0.3.37",
-    "@langchain/openai": "^0.4.2",
+    "@langchain/community": "^0.3.30",
+    "@langchain/core": "^0.3.40",
+    "@langchain/openai": "^0.4.4",
     "@langchain/textsplitters": "^0.1.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",
@@ -108,6 +107,22 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
+    "moduleNameMapper": {
+      "@root/(.*)$": "<rootDir>/../../$1",
+      "@app/redis/(.*)$": "<rootDir>/../../../libs/redis/src/$1",
+      "@app/page/(.*)$": "<rootDir>/../../../libs/page/src/$1",
+      "@app/node/(.*)$": "<rootDir>/../../../libs/node/src/$1",
+      "@app/edge/(.*)$": "<rootDir>/../../../libs/edge/src/$1",
+      "@app/workspace/(.*)$": "<rootDir>/../../../libs/workspace/src/$1",
+      "@app/user/(.*)$": "<rootDir>/../../../libs/user/src/$1",
+      "@app/role/(.*)$": "<rootDir>/../../../libs/role/src/$1",
+      "@app/token/(.*)$": "<rootDir>/../../../libs/token/src/$1",
+      "@app/exception/(.*)$": "<rootDir>/../../../libs/exception/$1"
+    }
   }
 }

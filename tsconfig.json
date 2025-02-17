@@ -22,7 +22,55 @@
       ],
       "@app/redis/*": [
         "libs/redis/src/*"
+      ],
+      "@app/page": [
+        "libs/page/src"
+      ],
+      "@app/page/*": [
+        "libs/page/src/*"
+      ],
+      "@app/node": [
+        "libs/node/src"
+      ],
+      "@app/node/*": [
+        "libs/node/src/*"
+      ],
+      "@app/edge": [
+        "libs/edge/src"
+      ],
+      "@app/edge/*": [
+        "libs/edge/src/*"
+      ],
+      "@app/workspace": [
+        "libs/workspace/src"
+      ],
+      "@app/workspace/*": [
+        "libs/workspace/src/*"
+      ],
+      "@app/user": [
+        "libs/user/src"
+      ],
+      "@app/user/*": [
+        "libs/user/src/*"
+      ],
+      "@app/exception": [
+        "libs/exception"
+      ],
+      "@app/exception/*": [
+        "libs/exception/*"
+      ],
+      "@app/role": [
+        "libs/role/src"
+      ],
+      "@app/role/*": [
+        "libs/role/src/*"
+      ],
+      "@app/token": [
+        "libs/token/src"
+      ],
+      "@app/token/*": [
+        "libs/token/src/*"
       ]
-    },
+    }
   }
 }

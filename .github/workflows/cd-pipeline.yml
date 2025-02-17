@@ -54,6 +54,7 @@ jobs:
           docker build -f ./services/backend/Dockerfile.prod -t growth123/octodocs-backend . &
           docker build -f ./services/nginx/Dockerfile.prod -t growth123/octodocs-nginx . &
           docker build -f ./services/websocket/Dockerfile.prod -t growth123/octodocs-websocket . &
+          docker build -f ./services/scheduler/Dockerfile.prod -t growth123/octodocs-scheduler . &
           wait
 
       # Docker 이미지 푸시
@@ -63,6 +64,7 @@ jobs:
           docker push growth123/octodocs-backend &
           docker push growth123/octodocs-nginx &
           docker push growth123/octodocs-websocket &
+          docker push growth123/octodocs-scheduler &
           wait
 
   deploy:

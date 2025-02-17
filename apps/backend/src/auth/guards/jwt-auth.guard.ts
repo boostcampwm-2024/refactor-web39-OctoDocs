@@ -1,10 +1,9 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { LoginRequiredException } from '../../exception/login.exception';
-import { InvalidTokenException } from '../../exception/invalid.exception';
+import { LoginRequiredException } from '@app/exception/login.exception';
+import { InvalidTokenException } from '@app/exception/invalid.exception';
 import { TokenExpiredError } from 'jsonwebtoken';
-import { TokenService } from '../token/token.service';
-import { Response } from 'express';
+import { TokenService } from '@app/token/token.service';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
@@ -15,7 +14,7 @@ export class JwtAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const response = context.switchToHttp().getResponse<Response>();
+    const response = context.switchToHttp().getResponse();
 
     const cookies = request.cookies; // 쿠키에서 가져오기
 

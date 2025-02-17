@@ -8,9 +8,94 @@
       "compilerOptions": {
         "tsConfigPath": "libs/redis/tsconfig.lib.json"
       }
+    },
+    "page": {
+      "type": "library",
+      "root": "libs/page",
+      "entryFile": "index",
+      "sourceRoot": "libs/page/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/page/tsconfig.lib.json"
+      }
+    },
+    "node": {
+      "type": "library",
+      "root": "libs/node",
+      "entryFile": "index",
+      "sourceRoot": "libs/node/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/node/tsconfig.lib.json"
+      }
+    },
+    "edge": {
+      "type": "library",
+      "root": "libs/edge",
+      "entryFile": "index",
+      "sourceRoot": "libs/edge/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/edge/tsconfig.lib.json"
+      }
+    },
+    "workspace": {
+      "type": "library",
+      "root": "libs/workspace",
+      "entryFile": "index",
+      "sourceRoot": "libs/workspace/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/workspace/tsconfig.lib.json"
+      }
+    },
+    "user": {
+      "type": "library",
+      "root": "libs/user",
+      "entryFile": "index",
+      "sourceRoot": "libs/user/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/user/tsconfig.lib.json"
+      }
+    },
+    "role": {
+      "type": "library",
+      "root": "libs/role",
+      "entryFile": "index",
+      "sourceRoot": "libs/role/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/role/tsconfig.lib.json"
+      }
+    },
+    "token": {
+      "type": "library",
+      "root": "libs/token",
+      "entryFile": "index",
+      "sourceRoot": "libs/token/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/token/tsconfig.lib.json"
+      }
+    },
+    "octodocs": {
+      "type": "application",
+      "root": "apps/octodocs",
+      "entryFile": "main",
+      "sourceRoot": "apps/octodocs/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/octodocs/tsconfig.app.json"
+      }
+    },
+    "scheduler": {
+      "type": "application",
+      "root": "apps/scheduler",
+      "entryFile": "main",
+      "sourceRoot": "apps/scheduler/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/scheduler/tsconfig.app.json"
+      }
     }
   },
   "compilerOptions": {
-    "webpack": true
-  }
+    "webpack": true,
+    "tsConfigPath": "apps/octodocs/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/octodocs",
+  "sourceRoot": "apps/octodocs/src"
 }

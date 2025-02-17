@@ -65,6 +65,25 @@ services:
     ports:
       - "3000:3000" # 백엔드 API 포트
 
+  scheduler:
+    build:
+      context: .
+      dockerfile: ./services/scheduler/Dockerfile.local
+    image: scheduler:latest
+    env_file:
+      - .env.local
+    volumes:
+      - ./apps/scheduler:/app/apps/scheduler
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - net
+    ports:
+      - "3001:3000" # 백엔드 API 포트
+
   websocket:
     build:
       context: .

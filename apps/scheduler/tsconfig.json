@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+  },
+  "watchOptions": {
+    "watchFile": "fixedPollingInterval"
+  },
+  "extends": "../../tsconfig.json"
+}

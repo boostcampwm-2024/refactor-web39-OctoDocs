@@ -6,7 +6,6 @@ COPY . ./app
 
 WORKDIR /app/apps/backend
 
-
 # 빌드
 RUN apt update && apt install wget -y && yarn build
 

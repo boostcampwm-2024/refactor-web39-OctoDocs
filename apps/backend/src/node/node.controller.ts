@@ -1,7 +1,7 @@
 import { Controller, Get, Param, HttpCode, HttpStatus } from '@nestjs/common';
-import { NodeService } from './node.service';
+import { NodeService } from '@app/node/node.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { FindNodesResponseDto } from './dtos/findNodesResponse.dto.';
+import { FindNodesResponseDto } from '@app/node/dtos/findNodesResponse.dto.';
 
 export enum NodeResponseMessage {
   NODES_RETURNED = '워크스페이스의 모든 노드를 가져왔습니다.',

@@ -2,25 +2,30 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { NodeModule } from './node/node.module';
-import { PageModule } from './page/page.module';
-import { EdgeModule } from './edge/edge.module';
+import { NodeModule } from '@app/node/node.module';
+import { PageModule } from '@app/page/page.module';
+import { EdgeModule } from '@app/edge/edge.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Page } from './page/page.entity';
-import { Edge } from './edge/edge.entity';
-import { Node } from './node/node.entity';
-import { User } from './user/user.entity';
-import { Workspace } from './workspace/workspace.entity';
-import { Role } from './role/role.entity';
+import { Page } from '@app/page/page.entity';
+import { Edge } from '@app/edge/edge.entity';
+import { Node } from '@app/node/node.entity';
+import { User } from '@app/user/user.entity';
+import { Workspace } from '@app/workspace/workspace.entity';
+import { Role } from '@app/role/role.entity';
 import * as path from 'path';
 import { UploadModule } from './upload/upload.module';
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
-import { WorkspaceModule } from './workspace/workspace.module';
-import { RoleModule } from './role/role.module';
-import { TasksModule } from './tasks/tasks.module';
+import { UserModule } from '@app/user/user.module';
+import { WorkspaceModule } from '@app/workspace/workspace.module';
+import { RoleModule } from '@app/role/role.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { LangchainModule } from './langchain/langchain.module';
+import { NodeController } from './node/node.controller';
+import { PageController } from './page/page.controller';
+import { EdgeController } from './edge/edge.controller';
+import { WorkspaceController } from './workspace/workspace.controller';
+import { TokenModule } from '@app/token/token.module';
+import { TokenService } from '@app/token/token.service';
 
 @Module({
   imports: [
@@ -50,12 +55,18 @@ import { LangchainModule } from './langchain/langchain.module';
     UploadModule,
     AuthModule,
     UserModule,
+    TokenModule,
     WorkspaceModule,
     RoleModule,
-    TasksModule,
     LangchainModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [
+    AppController,
+    NodeController,
+    PageController,
+    EdgeController,
+    WorkspaceController,
+  ],
+  providers: [AppService, TokenService],
 })
 export class AppModule {}
