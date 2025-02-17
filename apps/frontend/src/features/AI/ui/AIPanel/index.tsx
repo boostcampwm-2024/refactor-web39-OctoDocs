@@ -7,22 +7,29 @@ import { useEffect, useRef } from "react";
 export function AIPanel() {
   const { prevQustions, prevAnswers, currQuestion, currAnswer } =
     useLangchainStore();
-  const QnAsRef = useRef<HTMLDivElement>(null);
+  const currQnARef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (QnAsRef.current) QnAsRef.current.scrollTop = 0;
+    if (currQnARef.current) {
+      currQnARef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
   }, [currQuestion]);
 
   return (
     <div className="z-8 absolute left-0 top-full mt-2 flex h-[76vh] w-[26vw] min-w-[340px] flex-col items-center rounded-md border-[1px] border-neutral-200 bg-white p-4 text-black shadow-md">
       <QuestionForm />
 
-      <div ref={QnAsRef} className="mt-2 flex w-full flex-grow overflow-y-auto">
+      <div className="mt-2 flex w-full flex-grow overflow-y-auto">
         {currQuestion ? (
           <div className="text-md w-full p-1">
-            <QnA question={currQuestion} answer={currAnswer} />
+            <div ref={currQnARef}>
+              <QnA question={currQuestion} answer={currAnswer} />
+            </div>
             {prevQustions.map((q, i) => (
-              <QnA question={q} answer={prevAnswers[i]} />
+              <QnA key={i} question={q} answer={prevAnswers[i]} />
             ))}
           </div>
         ) : (
