@@ -21,6 +21,7 @@
     "dev": "nest start --tsc --watch --preserveWatchOutput --watchAssets"
   },
   "dependencies": {
+    "@huggingface/transformers": "^3.3.3",
     "@langchain/community": "^0.3.30",
     "@langchain/core": "^0.3.40",
     "@nestjs/common": "^10.0.0",
