@@ -11,7 +11,7 @@ export function AIPanel() {
     <div className="z-8 absolute left-0 top-full mt-2 flex h-[76vh] w-[26vw] min-w-[340px] flex-col items-center rounded-md border-[1px] border-neutral-200 bg-white p-4 text-black shadow-md">
       <QuestionForm />
 
-      <div className="mt-4 flex w-full flex-grow overflow-y-auto px-4">
+      <div className="mt-2 flex w-full flex-grow overflow-y-auto">
         {currQuestion ? (
           <div className="text-md w-full">
             {prevQustions.map((q, i) => (

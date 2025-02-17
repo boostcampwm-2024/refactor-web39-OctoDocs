@@ -1,5 +1,3 @@
-import { Divider } from "@/shared/ui";
-
 interface QnAType {
   question: string;
   answer: string;
@@ -7,10 +5,11 @@ interface QnAType {
 
 export function QnA({ question, answer }: QnAType) {
   return (
-    <div>
-      <div className="font-bold">{question}</div>
-      <Divider direction="horizontal" className="my-3" />
-      <div className="font-light">{answer}</div>
+    <div className="py-3">
+      <div className="mb-1 w-full rounded-md border-[1px] border-[#d0d9e0] bg-[#f5f6fa] px-3 py-2 font-bold">
+        {question}
+      </div>
+      <div className="p-2 font-light">{answer}</div>
     </div>
   );
 }
