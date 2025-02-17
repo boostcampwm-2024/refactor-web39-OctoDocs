@@ -16,11 +16,11 @@ export const useLangchainStore = create<langchainStore>((set) => ({
   prevAnswers: [],
   setPrevQustions: (currQuestion: string) =>
     set((state) => ({
-      prevQustions: [...state.prevQustions, currQuestion],
+      prevQustions: [currQuestion, ...state.prevQustions],
     })),
   setPrevAnswers: (currAnswer: string) =>
     set((state) => ({
-      prevAnswers: [...state.prevAnswers, currAnswer],
+      prevAnswers: [currAnswer, ...state.prevAnswers],
     })),
   currQuestion: "",
   currAnswer: "",

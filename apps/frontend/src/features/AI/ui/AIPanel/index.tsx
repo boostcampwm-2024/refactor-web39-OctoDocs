@@ -10,9 +10,7 @@ export function AIPanel() {
   const QnAsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (QnAsRef.current) {
-      QnAsRef.current.scrollTop = QnAsRef.current.scrollHeight;
-    }
+    if (QnAsRef.current) QnAsRef.current.scrollTop = 0;
   }, [currQuestion]);
 
   return (
@@ -21,11 +19,11 @@ export function AIPanel() {
 
       <div ref={QnAsRef} className="mt-2 flex w-full flex-grow overflow-y-auto">
         {currQuestion ? (
-          <div className="text-md w-full">
+          <div className="text-md w-full p-1">
+            <QnA question={currQuestion} answer={currAnswer} />
             {prevQustions.map((q, i) => (
               <QnA question={q} answer={prevAnswers[i]} />
             ))}
-            <QnA question={currQuestion} answer={currAnswer} />
           </div>
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-6 text-center text-lg font-medium">
