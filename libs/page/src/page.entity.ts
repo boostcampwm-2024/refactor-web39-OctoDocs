@@ -38,13 +38,23 @@ export class Page {
   @Column({ nullable: true })
   emoji: string | null;
 
+  // dodcument 키워드 추출
   @Column({
     generatedType: "STORED",
     type: "tsvector",
-    asExpression: `to_tsvector('korean', COALESCE(title, '') || ' ' || COALESCE(document, ''))`,
+    asExpression: `to_tsvector('korean', COALESCE(document, ''))`,
     nullable: true,
   })
-  fts: string;
+  documentFts: string;
+
+  // title 키워드 추출
+  @Column({
+    generatedType: "STORED",
+    type: "tsvector",
+    asExpression: `to_tsvector('korean', COALESCE(title, ''))`,
+    nullable: true,
+  })
+  titleFts: string;
 
   @OneToOne(() => Node, (node) => node.page, {
     onDelete: "CASCADE",
