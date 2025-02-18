@@ -41,7 +41,7 @@ export class Page {
   @Column({
     generatedType: "STORED",
     type: "tsvector",
-    asExpression: `COALESCE(title, '') || ' ' || COALESCE(document, '')`,
+    asExpression: `to_tsvector('korean', COALESCE(title, '') || ' ' || COALESCE(document, ''))`,
     nullable: true,
   })
   fts: string;

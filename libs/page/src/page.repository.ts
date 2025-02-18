@@ -1,7 +1,7 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
-import { Page } from './page.entity';
-import { InjectDataSource } from '@nestjs/typeorm';
+import { Injectable, OnModuleInit } from "@nestjs/common";
+import { DataSource, Repository } from "typeorm";
+import { Page } from "./page.entity";
+import { InjectDataSource } from "@nestjs/typeorm";
 
 @Injectable()
 export class PageRepository extends Repository<Page> implements OnModuleInit {
@@ -60,7 +60,7 @@ export class PageRepository extends Repository<Page> implements OnModuleInit {
 
     create or replace function hybrid_search(
       query_text text,
-      query_embedding vector(512),
+      query_embedding vector(384),
       match_count int,
       full_text_weight float = 1,
       semantic_weight float = 1,
@@ -119,7 +119,7 @@ export class PageRepository extends Repository<Page> implements OnModuleInit {
                    AND attname = 'fts') 
     THEN 
       ALTER TABLE page 
-      ADD COLUMN fts tsvector GENERATED ALWAYS AS (to_tsvector('english', document)) STORED;
+      ADD COLUMN fts tsvector GENERATED ALWAYS AS (to_tsvector('korean', COALESCE(title, '') || ' ' || COALESCE(document, ''))) STORED;
     END IF; 
   END $$;
 `);

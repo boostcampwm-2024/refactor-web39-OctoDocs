@@ -2,7 +2,10 @@ version: "3.8"
 
 services:
   postgres:
-    image: pgvector/pgvector:0.8.0-pg16
+    build:
+      context: .
+      dockerfile: ./services/postgres/Dockerfile
+    image: postgres-pgvector-mecab
     env_file:
       - .env.local
     volumes:
@@ -55,6 +58,7 @@ services:
       - .env.local
     volumes:
       - ./apps/backend:/app/apps/backend
+      - ./libs:/app/libs
     depends_on:
       postgres:
         condition: service_healthy
@@ -74,6 +78,8 @@ services:
       - .env.local
     volumes:
       - ./apps/scheduler:/app/apps/scheduler
+      - ./libs:/app/libs
+
     depends_on:
       postgres:
         condition: service_healthy
@@ -93,6 +99,8 @@ services:
       - .env.local
     volumes:
       - ./apps/websocket:/app/apps/websocket
+      - ./libs:/app/libs
+
     depends_on:
       postgres:
         condition: service_healthy
