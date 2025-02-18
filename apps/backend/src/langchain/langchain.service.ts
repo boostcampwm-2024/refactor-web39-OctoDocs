@@ -26,7 +26,7 @@ export class LangchainService {
     // );
     const retrievedDocs = await this.dataSource.query(
       `
-      select document from hybrid_search(
+      select title, document from hybrid_search(
         '${question}',
         '[${queryEmbeddings.join(',')}]'::vector(384),
         5
@@ -42,7 +42,9 @@ export class LangchainService {
     //     return this.extractTextValues(JSON.parse(JSON.stringify(doc.content)));
     //   })
     //   .join('\n');
-    const docsContent = retrievedDocs.map((doc) => doc.document).join('\n');
+    const docsContent = retrievedDocs
+      .map((doc) => `제목 : ${doc.title}\n내용 : ${doc.document}\n==========\n`)
+      .join('\n');
 
     const messages = await promptTemplate.invoke({
       question: question,

@@ -1,7 +1,7 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
-import { Page } from './page.entity';
-import { InjectDataSource } from '@nestjs/typeorm';
+import { Injectable, OnModuleInit } from "@nestjs/common";
+import { DataSource, Repository } from "typeorm";
+import { Page } from "./page.entity";
+import { InjectDataSource } from "@nestjs/typeorm";
 
 @Injectable()
 export class PageRepository extends Repository<Page> implements OnModuleInit {
@@ -44,23 +44,35 @@ export class PageRepository extends Repository<Page> implements OnModuleInit {
             EXECUTE 'CREATE INDEX page_embedding_hnsw_idx ON page USING hnsw (embedding vector_ip_ops)';
         END IF;
 
-        -- GIN 인덱스 존재 여부 확인
+        -- document GIN 인덱스 존재 여부 확인
         SELECT EXISTS (
             SELECT 1 
             FROM pg_indexes 
             WHERE tablename = 'page' 
-            AND indexname = 'page_fts_gin_idx'
+            AND indexname = 'page_document_fts_gin_idx'
         ) INTO index_exists;
     
         IF NOT index_exists THEN
             -- GIN 인덱스 생성
-            EXECUTE 'CREATE INDEX page_fts_gin_idx ON page USING gin(fts)';
+            EXECUTE 'CREATE INDEX page_document_fts_gin_idx ON page USING gin("documentFts")';
+        END IF;
+        -- title GIN 인덱스 존재 여부 확인
+        SELECT EXISTS (
+            SELECT 1 
+            FROM pg_indexes 
+            WHERE tablename = 'page' 
+            AND indexname = 'page_title_fts_gin_idx'
+        ) INTO index_exists;
+    
+        IF NOT index_exists THEN
+            -- GIN 인덱스 생성
+            EXECUTE 'CREATE INDEX page_title_fts_gin_idx ON page USING gin("titleFts")';
         END IF;
     END $$;
 
     create or replace function hybrid_search(
       query_text text,
-      query_embedding vector(512),
+      query_embedding vector(384),
       match_count int,
       full_text_weight float = 1,
       semantic_weight float = 1,
@@ -74,12 +86,14 @@ export class PageRepository extends Repository<Page> implements OnModuleInit {
         id,
         -- Note: ts_rank_cd is not indexable but will only rank matches of the where clause
         -- which shouldn't be too big
-        row_number() over(order by ts_rank_cd(fts, websearch_to_tsquery(query_text)) desc) as rank_ix
+        row_number() over(order by ts_rank_cd(setweight("titleFts", 'A') || setweight("documentFts", 'D'), to_tsquery(replace(websearch_to_tsquery('korean', query_text)::text, '&', '|'))) desc) as rank_ix
       from
         page
-      where
-        fts @@ websearch_to_tsquery(query_text)
-      order by rank_ix
+      where(
+        "titleFts" @@ to_tsquery(replace(websearch_to_tsquery('korean', query_text)::text, '&', '|')) OR
+        "documentFts" @@ to_tsquery(replace(websearch_to_tsquery('korean', query_text)::text, '&', '|'))
+      )
+        order by rank_ix
       limit least(match_count, 30) * 2
     ),
     semantic as (
@@ -108,20 +122,6 @@ export class PageRepository extends Repository<Page> implements OnModuleInit {
     $$;
     
     
-`);
-
-    // fts 컬럼 추가 (존재 여부 확인 후 추가)
-    await this.dataSource.query(`
-  DO $$ 
-  BEGIN 
-    IF NOT EXISTS (SELECT 1 FROM pg_attribute 
-                   WHERE attrelid = 'page'::regclass 
-                   AND attname = 'fts') 
-    THEN 
-      ALTER TABLE page 
-      ADD COLUMN fts tsvector GENERATED ALWAYS AS (to_tsvector('english', document)) STORED;
-    END IF; 
-  END $$;
 `);
   }
 
