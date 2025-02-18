@@ -94,7 +94,7 @@ export class TasksService {
         updateFields.push(`embedding = $${sequence++}`);
 
         // document는 JSON 타입에서 의미있는 문자열만 뽑아서 합친 문자열
-        let document = this.extractTextValues(JSON.parse(content));
+        const document = this.extractTextValues(JSON.parse(content));
 
         // content가 있으면 임베딩 진행
         const vector = await embeddings.embedDocuments([document]);

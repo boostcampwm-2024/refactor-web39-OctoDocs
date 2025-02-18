@@ -131,7 +131,8 @@ describe('PageController', () => {
         workspace: null,
         document: null,
         documentFts: null,
-        titleFts: null,      };
+        titleFts: null,
+      };
 
       jest.spyOn(pageService, 'findPageById').mockResolvedValue(expectedPage);
 
