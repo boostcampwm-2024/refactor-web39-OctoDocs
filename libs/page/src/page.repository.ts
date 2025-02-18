@@ -74,11 +74,11 @@ export class PageRepository extends Repository<Page> implements OnModuleInit {
         id,
         -- Note: ts_rank_cd is not indexable but will only rank matches of the where clause
         -- which shouldn't be too big
-        row_number() over(order by ts_rank_cd(fts, websearch_to_tsquery(query_text)) desc) as rank_ix
+        row_number() over(order by ts_rank_cd(fts, to_tsquery(replace(websearch_to_tsquery('korean', query_text)::text, '&', '|'))) desc) as rank_ix
       from
         page
       where
-        fts @@ websearch_to_tsquery(query_text)
+        fts @@ to_tsquery(replace(websearch_to_tsquery('korean', query_text)::text, '&', '|'))
       order by rank_ix
       limit least(match_count, 30) * 2
     ),
