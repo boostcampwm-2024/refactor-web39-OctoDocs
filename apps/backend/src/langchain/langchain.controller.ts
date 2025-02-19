@@ -48,10 +48,8 @@ export class LangchainController {
       body.query,
       abortController,
     );
+
     for await (const chunk of response) {
-      await new Promise((resolve) => {
-        setTimeout(resolve, 1000);
-      });
       res.write(`${chunk.content}\n\n`);
     }
     res.end();

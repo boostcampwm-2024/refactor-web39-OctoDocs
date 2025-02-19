@@ -26,6 +26,12 @@ export class ChatAbortService {
   abortRequest(requestId: string): boolean {
     const entry = this.controllers.get(requestId);
     if (entry) {
+      if (entry.controller.signal.aborted) {
+        // 이미 취소된 경우, 추가 작업을 하지 않음
+        console.log(`Request with ID ${requestId} is already aborted.`);
+        return false;
+      }
+
       entry.controller.abort();
       this.controllers.delete(requestId);
       return true;
