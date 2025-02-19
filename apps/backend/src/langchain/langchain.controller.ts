@@ -9,6 +9,7 @@ import {
   HttpStatus,
   Res,
   Headers,
+  Logger,
 } from '@nestjs/common';
 import { ChatAbortService } from '../abort/chat-abort.service';
 export enum LangchainResponseMessage {
@@ -44,15 +45,26 @@ export class LangchainController {
     res.setHeader('X-Request-Id', requestId);
 
     res.flushHeaders();
-    const response = await this.landchainService.query(
-      body.query,
-      abortController,
-    );
-
-    for await (const chunk of response) {
-      res.write(`${chunk.content}\n\n`);
+    try {
+      const response = await this.landchainService.query(
+        body.query,
+        abortController,
+      );
+      for await (const chunk of response) {
+        res.write(`${chunk.content}\n\n`);
+      }
+      res.end();
+    } catch (error) {
+      Logger.log('error name : ', error.name);
+      if (error.name === 'AbortError') {
+        Logger.error('LLM API request abort', error.message, error.stack);
+      } else {
+        // AbortError가 아니면 exceptional handler에서 처리
+        throw error;
+      }
+      // 오류 생기면 바로 종료
+      res.end();
     }
-    res.end();
     res.on('close', () => {
       res.end();
     });
