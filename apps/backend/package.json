@@ -48,7 +48,6 @@
     "cookie-parser": "^1.4.7",
     "ioredis": "^5.4.1",
     "lib0": "^0.2.98",
-    "node-cache": "^5.1.2",
     "passport": "^0.7.0",
     "passport-kakao": "^1.0.1",
     "passport-naver": "^1.0.6",

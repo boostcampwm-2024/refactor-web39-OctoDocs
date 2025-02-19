@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Param } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { AbortService } from './abort.service';
 
 export enum AbortResponseMessage {
