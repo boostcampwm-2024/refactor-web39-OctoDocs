@@ -1,4 +1,4 @@
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, Square } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useLangchain } from "../../model/useLangchain";
 import { useLangchainStore } from "../../model/useLangchainStore";
@@ -8,7 +8,7 @@ export function QuestionForm() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [newQuestion, setnewQuestion] = useState("");
   const { setCurrAnswer } = useLangchainStore();
-  const { mutateLangchain } = useLangchain();
+  const { mutateLangchain, stopStreaming, isLoading } = useLangchain();
   const { updateQnA } = useQnA();
 
   useEffect(() => {
@@ -20,12 +20,17 @@ export function QuestionForm() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setnewQuestion("");
-    updateQnA(newQuestion);
 
-    await mutateLangchain(newQuestion, (chunk: string) => {
-      setCurrAnswer((prev) => prev + chunk);
-    });
+    if (isLoading) stopStreaming();
+    else if (!newQuestion) return;
+    else {
+      setnewQuestion("");
+      updateQnA(newQuestion);
+
+      await mutateLangchain(newQuestion, (chunk: string) => {
+        setCurrAnswer((prev) => prev + chunk);
+      });
+    }
   };
 
   return (
@@ -45,7 +50,11 @@ export function QuestionForm() {
         aria-label="AISubmitBtn"
         className="ml-2 flex size-7 items-center justify-center rounded-full bg-black"
       >
-        <ArrowDown size={20} color="#ffffff" />
+        {isLoading ? (
+          <Square size={16} color="#ffffff" />
+        ) : (
+          <ArrowDown size={20} color="#ffffff" />
+        )}
       </button>
     </form>
   );

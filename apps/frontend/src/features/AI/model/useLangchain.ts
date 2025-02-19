@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { postLangchain } from "../api/langchainApi";
 
 export const useLangchain = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const readerRef = useRef<ReadableStreamDefaultReader<string> | null>(null);
 
-  async function mutateLangchain(
+  const mutateLangchain = async (
     query: string,
     onData: (chunk: string) => void,
-  ) {
+  ) => {
     setIsLoading(true);
     try {
       const response = await postLangchain(query);
@@ -17,11 +18,11 @@ export const useLangchain = () => {
       const reader = response.body
         .pipeThrough(new TextDecoderStream())
         .getReader();
+      readerRef.current = reader;
 
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
-
         const convertValue = value.replace(/\n/g, "");
 
         onData(convertValue);
@@ -29,7 +30,14 @@ export const useLangchain = () => {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
-  return { mutateLangchain, isLoading };
+  const stopStreaming = () => {
+    if (readerRef.current) {
+      readerRef.current.cancel();
+      readerRef.current = null;
+    }
+  };
+
+  return { mutateLangchain, stopStreaming, isLoading };
 };

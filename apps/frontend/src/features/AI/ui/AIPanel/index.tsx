@@ -5,8 +5,7 @@ import { QnA } from "../QnA";
 import { useEffect, useRef } from "react";
 
 export function AIPanel() {
-  const { prevQustions, prevAnswers, currQuestion, currAnswer } =
-    useLangchainStore();
+  const { history, currQuestion, currAnswer } = useLangchainStore();
   const currQnARef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -28,8 +27,8 @@ export function AIPanel() {
             <div ref={currQnARef}>
               <QnA question={currQuestion} answer={currAnswer} />
             </div>
-            {prevQustions.map((q, i) => (
-              <QnA key={i} question={q} answer={prevAnswers[i]} />
+            {history.map((h, i) => (
+              <QnA key={i} question={h.question} answer={h.answer} />
             ))}
           </div>
         ) : (

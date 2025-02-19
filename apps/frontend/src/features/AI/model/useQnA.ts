@@ -2,8 +2,7 @@ import { useLangchainStore } from "./useLangchainStore";
 
 export const useQnA = () => {
   const {
-    setPrevQustions,
-    setPrevAnswers,
+    setHistory,
     currQuestion,
     currAnswer,
     setCurrAnswer,
@@ -12,9 +11,7 @@ export const useQnA = () => {
 
   const updateQnA = (newQuestion: string) => {
     if (currQuestion && currAnswer) {
-      setPrevQustions(currQuestion);
-      setPrevAnswers(currAnswer);
-
+      setHistory(currQuestion, currAnswer);
       setCurrAnswer("");
     }
 

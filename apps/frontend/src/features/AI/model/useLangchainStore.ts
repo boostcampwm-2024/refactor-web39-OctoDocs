@@ -1,10 +1,8 @@
 import { create } from "zustand";
 
 interface langchainStore {
-  prevQustions: string[];
-  prevAnswers: string[];
-  setPrevQustions: (currQuestion: string) => void;
-  setPrevAnswers: (currQuestion: string) => void;
+  history: { question: string; answer: string }[];
+  setHistory: (currQuestion: string, currAnswer: string) => void;
   currQuestion: string;
   currAnswer: string;
   setCurrQuestion: (newQuestion: string) => void;
@@ -12,15 +10,13 @@ interface langchainStore {
 }
 
 export const useLangchainStore = create<langchainStore>((set) => ({
-  prevQustions: [],
-  prevAnswers: [],
-  setPrevQustions: (currQuestion: string) =>
+  history: [],
+  setHistory: (currQuestion: string, currAnswer: string) =>
     set((state) => ({
-      prevQustions: [currQuestion, ...state.prevQustions],
-    })),
-  setPrevAnswers: (currAnswer: string) =>
-    set((state) => ({
-      prevAnswers: [currAnswer, ...state.prevAnswers],
+      history: [
+        { question: currQuestion, answer: currAnswer },
+        ...state.history,
+      ],
     })),
   currQuestion: "",
   currAnswer: "",
