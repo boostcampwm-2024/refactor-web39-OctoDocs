@@ -18,7 +18,7 @@ const embeddings = new HuggingFaceTransformersEmbeddings({
 export class LangchainService {
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
 
-  async query(question: string) {
+  async query(question: string, abortController: AbortController) {
     const promptTemplate = await pull('rlm/rag-prompt');
     const queryEmbeddings = await embeddings.embedQuery(question);
     // const retrievedDocs = await this.dataSource.query(
@@ -50,7 +50,7 @@ export class LangchainService {
       question: question,
       context: docsContent,
     });
-    return await llm.stream(messages);
+    return await llm.stream(messages, { signal: abortController.signal });
   }
   /**
    *
