@@ -12,7 +12,7 @@ describe('AbortService', () => {
     abortService = module.get<AbortService>(AbortService);
   });
 
-  it('AbortController를 생성하고 저장해야 한다.', () => {
+  it('AbortController를 생성 성공 테스트', () => {
     const requestId = 'test';
 
     const controller = abortService.createController(requestId);
@@ -24,7 +24,7 @@ describe('AbortService', () => {
     expect(storedController).toBe(controller); // 저장된 컨트롤러가 동일한지 확인
   });
 
-  it('요청을 중단하고 캐시에서 삭제해야 한다.', () => {
+  it('요청을 중단하고 캐시 삭제 성공 테스트', () => {
     const requestId = 'test';
     const controller = abortService.createController(requestId);
 
@@ -37,7 +37,7 @@ describe('AbortService', () => {
     expect(abortService.getController(requestId)).toBeUndefined(); // 캐시에서 삭제되었는지 확인
   });
 
-  it('존재하지 않는 requestId로 요청 중단 시 false를 반환해야 한다.', () => {
+  it('존재하지 않는 requestId로 요청 중단 실패 테스트', () => {
     const success = abortService.abortRequest('non-existent-id');
     expect(success).toBe(false); // 존재하지 않는 요청은 중단할 수 없어야 함
   });
