@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AbortService } from './abort.service';
+import { ChatAbortService } from './chat-abort.service';
 
 describe('AbortService', () => {
-  let abortService: AbortService;
+  let abortService: ChatAbortService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AbortService],
+      providers: [ChatAbortService],
     }).compile();
 
-    abortService = module.get<AbortService>(AbortService);
+    abortService = module.get<ChatAbortService>(ChatAbortService);
   });
 
   it('AbortController를 생성 성공 테스트', () => {

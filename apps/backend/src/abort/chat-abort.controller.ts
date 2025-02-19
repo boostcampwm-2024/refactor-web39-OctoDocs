@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { AbortService } from './abort.service';
+import { ChatAbortService } from './chat-abort.service';
 
 export enum AbortResponseMessage {
   ABORT_SUCCESS = '웹 요청 중단에 성공했습니다.',
@@ -7,8 +7,8 @@ export enum AbortResponseMessage {
 }
 
 @Controller('abort')
-export class AbortController {
-  constructor(private readonly abortService: AbortService) {}
+export class ChatAbortController {
+  constructor(private readonly abortService: ChatAbortService) {}
 
   @Get('/:requestId')
   abort(@Param('requestId') requestId: string) {

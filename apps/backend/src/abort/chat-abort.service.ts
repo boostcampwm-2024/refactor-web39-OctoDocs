@@ -6,7 +6,7 @@ interface AbortEntry {
 }
 
 @Injectable()
-export class AbortService {
+export class ChatAbortService {
   private controllers: Map<string, AbortEntry> = new Map();
   private readonly TTL = 10 * 1000; // 10초 후 자동 삭제
   private readonly CHECK_INTERVAL = 2 * 1000; // 2초마다 체크
@@ -32,7 +32,6 @@ export class AbortService {
     if (entry) {
       entry.controller.abort();
       this.controllers.delete(requestId);
-      console.log(`🚫 요청 중단됨: ${requestId}`);
       return true;
     }
     return false;
@@ -42,7 +41,6 @@ export class AbortService {
     const now = Date.now();
     for (const [requestId, entry] of this.controllers) {
       if (now - entry.createdAt > this.TTL) {
-        console.log(`⏳ TTL 만료: ${requestId} 요청 자동 중단`);
         entry.controller.abort();
         this.controllers.delete(requestId);
       }

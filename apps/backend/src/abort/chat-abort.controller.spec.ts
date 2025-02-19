@@ -1,20 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AbortController } from './abort.controller';
-import { AbortService } from './abort.service';
-import { AbortResponseMessage } from './abort.controller';
+import { ChatAbortController } from './chat-abort.controller';
+import { ChatAbortService } from './chat-abort.service';
+import { AbortResponseMessage } from './chat-abort.controller';
 
 describe('AbortController', () => {
-  let abortController: AbortController;
-  let abortService: AbortService;
+  let abortController: ChatAbortController;
+  let abortService: ChatAbortService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [AbortController],
-      providers: [AbortService],
+      controllers: [ChatAbortController],
+      providers: [ChatAbortService],
     }).compile();
 
-    abortController = module.get<AbortController>(AbortController);
-    abortService = module.get<AbortService>(AbortService);
+    abortController = module.get<ChatAbortController>(ChatAbortController);
+    abortService = module.get<ChatAbortService>(ChatAbortService);
   });
 
   it('should be defined', () => {
