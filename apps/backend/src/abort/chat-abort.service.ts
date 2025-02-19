@@ -1,25 +1,21 @@
 import { Injectable } from '@nestjs/common';
 
-interface AbortEntry {
-  controller: AbortController;
-  createdAt: number;
-}
-
 @Injectable()
 export class ChatAbortService {
-  private controllers: Map<string, AbortEntry> = new Map();
-  private readonly TTL = 10 * 1000; // 10초 후 자동 삭제
-  private readonly CHECK_INTERVAL = 2 * 1000; // 2초마다 체크
+  private controllers: Map<
+    string,
+    { controller: AbortController; timestamp: number }
+  > = new Map();
+  private ttl: number = 60000;
 
   constructor() {
-    // 주기적으로 오래된 요청 정리
-    setInterval(() => this.cleanupExpiredControllers(), this.CHECK_INTERVAL);
+    setInterval(() => this.cleanup(), 10000);
   }
 
   createController(requestId: string): AbortController {
     const controller = new AbortController();
-    this.controllers.set(requestId, { controller, createdAt: Date.now() });
-
+    const timestamp = Date.now();
+    this.controllers.set(requestId, { controller, timestamp });
     return controller;
   }
 
@@ -37,13 +33,12 @@ export class ChatAbortService {
     return false;
   }
 
-  private cleanupExpiredControllers(): void {
+  private cleanup(): void {
     const now = Date.now();
-    for (const [requestId, entry] of this.controllers) {
-      if (now - entry.createdAt > this.TTL) {
-        entry.controller.abort();
+    this.controllers.forEach((entry, requestId) => {
+      if (now - entry.timestamp > this.ttl) {
         this.controllers.delete(requestId);
       }
-    }
+    });
   }
 }

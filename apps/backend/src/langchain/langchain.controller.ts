@@ -41,6 +41,7 @@ export class LangchainController {
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Connection', 'keep-alive');
+    res.setHeader('X-Request-Id', requestId);
 
     res.flushHeaders();
     const response = await this.landchainService.query(
@@ -48,6 +49,9 @@ export class LangchainController {
       abortController,
     );
     for await (const chunk of response) {
+      await new Promise((resolve) => {
+        setTimeout(resolve, 1000);
+      });
       res.write(`${chunk.content}\n\n`);
     }
     res.end();

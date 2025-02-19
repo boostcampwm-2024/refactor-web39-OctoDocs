@@ -26,6 +26,8 @@ import { EdgeController } from './edge/edge.controller';
 import { WorkspaceController } from './workspace/workspace.controller';
 import { TokenModule } from '@app/token/token.module';
 import { TokenService } from '@app/token/token.service';
+import { ChatAbortModule } from './abort/chat-abort.module';
+import { ChatAbortService } from './abort/chat-abort.service';
 
 @Module({
   imports: [
@@ -59,6 +61,7 @@ import { TokenService } from '@app/token/token.service';
     WorkspaceModule,
     RoleModule,
     LangchainModule,
+    ChatAbortModule,
   ],
   controllers: [
     AppController,
