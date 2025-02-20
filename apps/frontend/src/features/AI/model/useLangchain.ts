@@ -27,9 +27,8 @@ export const useLangchain = () => {
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
-        const convertValue = value.replace(/\n/g, "");
 
-        onData(convertValue);
+        onData(value);
       }
     } finally {
       setIsLoading(false);
