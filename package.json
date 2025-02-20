@@ -16,7 +16,7 @@
     "start:websocket": "node apps/websocket/dist/main.js",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "docker:dev": "docker build -t octodocs-modules -f ./Dockerfile.module . && docker compose -f compose.local.yml up",
+    "docker:dev": "docker build -t octodocs-modules -f ./services/module/Dockerfile.init . && docker compose -f compose.local.yml up",
     "docker:dev:down": "docker compose -f compose.local.yml down",
     "docker:dev:clean": "docker compose -v -f compose.local.yml down",
     "docker:dev:fclean": "docker compose -v -f compose.local.yml down --rmi all",

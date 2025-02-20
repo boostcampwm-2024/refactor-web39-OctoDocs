@@ -2,7 +2,10 @@ version: "3.8"
 
 services:
   postgres:
-    image: pgvector/pgvector:0.8.0-pg16
+    build:
+      context: .
+      dockerfile: ./services/postgres/Dockerfile
+    image: postgres-pgvector-mecab
     env_file:
       - .env.local
     volumes:
@@ -55,6 +58,7 @@ services:
       - .env.local
     volumes:
       - ./apps/backend:/app/apps/backend
+      - ./libs:/app/libs
     depends_on:
       postgres:
         condition: service_healthy
@@ -65,6 +69,27 @@ services:
     ports:
       - "3000:3000" # 백엔드 API 포트
 
+  scheduler:
+    build:
+      context: .
+      dockerfile: ./services/scheduler/Dockerfile.local
+    image: scheduler:latest
+    env_file:
+      - .env.local
+    volumes:
+      - ./apps/scheduler:/app/apps/scheduler
+      - ./libs:/app/libs
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - net
+    ports:
+      - "3001:3000" # 백엔드 API 포트
+
   websocket:
     build:
       context: .
@@ -74,6 +99,8 @@ services:
       - .env.local
     volumes:
       - ./apps/websocket:/app/apps/websocket
+      - ./libs:/app/libs
+
     depends_on:
       postgres:
         condition: service_healthy

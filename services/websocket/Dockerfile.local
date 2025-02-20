@@ -1,8 +1,10 @@
 FROM octodocs-modules:latest
 
-WORKDIR /app/apps/websocket
-
 EXPOSE 4242
 
-# Start the application
-CMD ["yarn", "dev"] 
+COPY ./apps/websocket /app/apps/websocket
+COPY ./tsconfig.json /app/tsconfig.json
+COPY ./nest-cli.json /app/nest-cli.json
+COPY ./libs /app/libs
+
+CMD ["sh", "-c", "cd app/apps/websocket && yarn dev"]

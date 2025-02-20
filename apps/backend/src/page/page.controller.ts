@@ -9,12 +9,12 @@ import {
   HttpStatus,
   ParseIntPipe,
 } from '@nestjs/common';
-import { PageService } from './page.service';
-import { CreatePageDto } from './dtos/createPage.dto';
+import { PageService } from '@app/page/page.service';
+import { CreatePageDto } from '@app/page/dtos/createPage.dto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { MessageResponseDto } from './dtos/messageResponse.dto';
-import { FindPageResponseDto } from './dtos/findPageResponse.dto';
-import { CreatePageResponseDto } from './dtos/createPageResponse.dto';
+import { MessageResponseDto } from '@app/page/dtos/messageResponse.dto';
+import { FindPageResponseDto } from '@app/page/dtos/findPageResponse.dto';
+import { CreatePageResponseDto } from '@app/page/dtos/createPageResponse.dto';
 
 export enum PageResponseMessage {
   PAGE_CREATED = '페이지와 노드를 생성했습니다.',

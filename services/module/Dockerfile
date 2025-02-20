@@ -10,6 +10,7 @@ COPY package.json yarn.lock ./
 COPY apps/backend/package.json ./apps/backend/
 COPY apps/frontend/package.json ./apps/frontend/
 COPY apps/websocket/package.json ./apps/websocket/
+COPY apps/scheduler/package.json ./apps/scheduler/
 
 # node_modules를 가지고 있는 이미지
 # 이 이미지를 기반으로 각 workspace 별 이미지를 만들면 
@@ -18,7 +19,6 @@ FROM growth123/octodocs-modules:latest
 
 # 호이스팅을 위해
 COPY --from=builder /app /app
-WORKDIR /app
 
 # 의존성 설치
-RUN yarn install --check-files && yarn cache clean
+RUN cd /app && yarn install --check-files && yarn cache clean

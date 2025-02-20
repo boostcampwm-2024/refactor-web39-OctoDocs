@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { WorkspaceController } from './workspace.controller';
-import { WorkspaceService } from './workspace.service';
+import { WorkspaceService } from '@app/workspace/workspace.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { CreateWorkspaceDto } from './dtos/createWorkspace.dto';
+import { CreateWorkspaceDto } from '@app/workspace/dtos/createWorkspace.dto';
 import { WorkspaceResponseMessage } from './workspace.controller';
-import { NotWorkspaceOwnerException } from '../exception/workspace-auth.exception';
-import { UserWorkspaceDto } from './dtos/userWorkspace.dto';
-import { TokenService } from '../auth/token/token.service';
-import { WorkspaceNotFoundException } from '../exception/workspace.exception';
-import { ForbiddenAccessException } from '../exception/access.exception';
+import { NotWorkspaceOwnerException } from '@app/exception/workspace-auth.exception';
+import { UserWorkspaceDto } from '@app/workspace/dtos/userWorkspace.dto';
+import { TokenService } from '@app/token/token.service';
+import { WorkspaceNotFoundException } from '@app/exception/workspace.exception';
+import { ForbiddenAccessException } from '@app/exception/access.exception';
 
 describe('WorkspaceController', () => {
   let controller: WorkspaceController;

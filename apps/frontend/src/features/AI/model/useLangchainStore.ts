@@ -1,21 +1,31 @@
 import { create } from "zustand";
 
 interface langchainStore {
-  question: string;
-  answer: string;
-  setQuestion: (question: string) => void;
-  setAnswer: (answer: string | ((prev: string) => string)) => void;
+  history: { question: string; answer: string }[];
+  setHistory: (currQuestion: string, currAnswer: string) => void;
+  currQuestion: string;
+  currAnswer: string;
+  setCurrQuestion: (newQuestion: string) => void;
+  setCurrAnswer: (answerOrUpdater: string | ((prev: string) => string)) => void;
 }
 
 export const useLangchainStore = create<langchainStore>((set) => ({
-  question: "",
-  answer: "",
-  setQuestion: (question: string) => set({ question }),
-  setAnswer: (answerOrUpdater: string | ((prev: string) => string)) =>
+  history: [],
+  setHistory: (currQuestion: string, currAnswer: string) =>
     set((state) => ({
-      answer:
+      history: [
+        { question: currQuestion, answer: currAnswer },
+        ...state.history,
+      ],
+    })),
+  currQuestion: "",
+  currAnswer: "",
+  setCurrQuestion: (newQuestion: string) => set({ currQuestion: newQuestion }),
+  setCurrAnswer: (answerOrUpdater: string | ((prev: string) => string)) =>
+    set((state) => ({
+      currAnswer:
         typeof answerOrUpdater === "function"
-          ? answerOrUpdater(state.answer)
+          ? answerOrUpdater(state.currAnswer)
           : answerOrUpdater,
     })),
 }));

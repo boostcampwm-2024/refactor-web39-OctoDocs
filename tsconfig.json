@@ -1,0 +1,76 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": true,
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@app/redis": [
+        "libs/redis/src"
+      ],
+      "@app/redis/*": [
+        "libs/redis/src/*"
+      ],
+      "@app/page": [
+        "libs/page/src"
+      ],
+      "@app/page/*": [
+        "libs/page/src/*"
+      ],
+      "@app/node": [
+        "libs/node/src"
+      ],
+      "@app/node/*": [
+        "libs/node/src/*"
+      ],
+      "@app/edge": [
+        "libs/edge/src"
+      ],
+      "@app/edge/*": [
+        "libs/edge/src/*"
+      ],
+      "@app/workspace": [
+        "libs/workspace/src"
+      ],
+      "@app/workspace/*": [
+        "libs/workspace/src/*"
+      ],
+      "@app/user": [
+        "libs/user/src"
+      ],
+      "@app/user/*": [
+        "libs/user/src/*"
+      ],
+      "@app/exception": [
+        "libs/exception"
+      ],
+      "@app/exception/*": [
+        "libs/exception/*"
+      ],
+      "@app/role": [
+        "libs/role/src"
+      ],
+      "@app/role/*": [
+        "libs/role/src/*"
+      ],
+      "@app/token": [
+        "libs/token/src"
+      ],
+      "@app/token/*": [
+        "libs/token/src/*"
+      ]
+    }
+  }
+}

@@ -30,6 +30,8 @@ services:
       - frontend
       - backend
     depends_on:
+      postgres:
+        condition: service_healthy    
       redis:
         condition: service_healthy
     healthcheck:
@@ -48,6 +50,22 @@ services:
       start_period: 10s
     restart: always
 
+  scheduler:
+    image: growth123/octodocs-scheduler:latest
+    env_file:
+      - .env.server
+    expose:
+      - "3001"
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      postgres:
+        condition: service_healthy    
+      redis:
+        condition: service_healthy
+    restart: always
+
   websocket:
     image: growth123/octodocs-websocket:latest
     env_file:
@@ -58,6 +76,8 @@ services:
       - frontend
       - backend
     depends_on:
+      postgres:
+        condition: service_healthy
       backend:
         condition: service_healthy
       redis:
@@ -77,6 +97,23 @@ services:
       retries: 5
       start_period: 10s
     restart: always
+
+
+  postgres:
+    image: growth123/postgres-pgvector-mecab
+    env_file:
+      - .env.server
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
 
   redis:
     image: redis:latest

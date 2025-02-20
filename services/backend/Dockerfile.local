@@ -1,9 +1,10 @@
 FROM octodocs-modules:latest
 
-WORKDIR /app/apps/backend
-
-# 소스 코드는 볼륨으로 마운트할 예정이므로 COPY 불필요
 EXPOSE 3000
 
-# 개발 모드로 실행
-CMD ["yarn", "dev"]
+COPY ./apps/backend /app/apps/backend
+COPY ./tsconfig.json /app/tsconfig.json
+COPY ./nest-cli.json /app/nest-cli.json
+COPY ./libs /app/libs
+
+CMD ["sh", "-c", "cd app/apps/backend && yarn dev"]

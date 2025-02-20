@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { YjsService } from './yjs.service';
-import { RedisModule } from '../redis/redis.module';
+import { RedisModule } from '@app/redis/redis.module';
 
 @Module({
   imports: [RedisModule],

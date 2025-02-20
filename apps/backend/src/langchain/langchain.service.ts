@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ChatOpenAI } from '@langchain/openai';
 import { pull } from 'langchain/hub';
-import { ChatPromptTemplate } from '@langchain/core/prompts';
 import { HuggingFaceTransformersEmbeddings } from '@langchain/community/embeddings/huggingface_transformers';
 import { DataSource } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
@@ -19,37 +18,30 @@ const embeddings = new HuggingFaceTransformersEmbeddings({
 export class LangchainService {
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
 
-  async query(question: string) {
-    const promptTemplate = await pull<ChatPromptTemplate>('rlm/rag-prompt');
+  async query(question: string, abortController: AbortController) {
+    const promptTemplate = await pull('rlm/rag-prompt');
     const queryEmbeddings = await embeddings.embedQuery(question);
-    // const retrievedDocs = await this.dataSource.query(
-    //   `SELECT content FROM page ORDER BY embedding <=> '[${queryEmbeddings.join(',')}]' LIMIT 1;`,
-    // );
     const retrievedDocs = await this.dataSource.query(
       `
-      select document from hybrid_search(
+      select title, document from hybrid_search(
         '${question}',
         '[${queryEmbeddings.join(',')}]'::vector(384),
         5
       );
       `,
     );
-    // const retrievedDocs = await this.vectorStore.similaritySearch(question, 1);
     retrievedDocs.forEach((doc) => {
       console.log(doc.document);
     });
-    // const docsContent = retrievedDocs
-    //   .map((doc) => {
-    //     return this.extractTextValues(JSON.parse(JSON.stringify(doc.content)));
-    //   })
-    //   .join('\n');
-    const docsContent = retrievedDocs.map((doc) => doc.document).join('\n');
+    const docsContent = retrievedDocs
+      .map((doc) => `제목 : ${doc.title}\n내용 : ${doc.document}\n==========\n`)
+      .join('\n');
 
     const messages = await promptTemplate.invoke({
       question: question,
       context: docsContent,
     });
-    return await llm.stream(messages);
+    return await llm.stream(messages, { signal: abortController.signal });
   }
   /**
    *

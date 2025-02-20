@@ -1,4 +1,4 @@
-import { InvalidFileException } from '../exception/upload.exception';
+import { InvalidFileException } from '@app/exception/upload.exception';
 
 export const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5MB
 

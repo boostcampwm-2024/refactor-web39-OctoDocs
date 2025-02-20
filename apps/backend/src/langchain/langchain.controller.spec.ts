@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LangchainController } from './langchain.controller';
 import { LangchainService } from './langchain.service';
+import { ChatAbortService } from '../abort/chat-abort.service';
 describe('LangchainController', () => {
   let controller: LangchainController;
 
@@ -15,6 +16,10 @@ describe('LangchainController', () => {
             query: jest.fn(),
             insertDocuments: jest.fn(),
           },
+        },
+        {
+          provide: ChatAbortService,
+          useValue: {},
         },
       ],
     }).compile();
