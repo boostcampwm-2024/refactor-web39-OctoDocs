@@ -21,9 +21,6 @@ export class LangchainService {
   async query(question: string, abortController: AbortController) {
     const promptTemplate = await pull('rlm/rag-prompt');
     const queryEmbeddings = await embeddings.embedQuery(question);
-    // const retrievedDocs = await this.dataSource.query(
-    //   `SELECT content FROM page ORDER BY embedding <=> '[${queryEmbeddings.join(',')}]' LIMIT 1;`,
-    // );
     const retrievedDocs = await this.dataSource.query(
       `
       select title, document from hybrid_search(
@@ -33,15 +30,9 @@ export class LangchainService {
       );
       `,
     );
-    // const retrievedDocs = await this.vectorStore.similaritySearch(question, 1);
     retrievedDocs.forEach((doc) => {
       console.log(doc.document);
     });
-    // const docsContent = retrievedDocs
-    //   .map((doc) => {
-    //     return this.extractTextValues(JSON.parse(JSON.stringify(doc.content)));
-    //   })
-    //   .join('\n');
     const docsContent = retrievedDocs
       .map((doc) => `제목 : ${doc.title}\n내용 : ${doc.document}\n==========\n`)
       .join('\n');

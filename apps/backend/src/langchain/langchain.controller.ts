@@ -51,7 +51,7 @@ export class LangchainController {
         abortController,
       );
       for await (const chunk of response) {
-        res.write(`${chunk.content}\n\n`);
+        res.write(`${chunk.content}`);
       }
       res.end();
     } catch (error) {
