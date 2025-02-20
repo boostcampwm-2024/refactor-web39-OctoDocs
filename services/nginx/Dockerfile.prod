@@ -2,7 +2,7 @@
 FROM growth123/octodocs-modules:latest as builder
 
 # 소스 코드 복사
-COPY . .
+COPY . /app
 COPY ./.env.client /app/apps/frontend/.env
 COPY ./.env.client /app/apps/frontend/.env.local
 
