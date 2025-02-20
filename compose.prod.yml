@@ -15,8 +15,6 @@ services:
     networks:
       - frontend
     depends_on:
-      backend:
-        condition: service_healthy
       websocket:
         condition: service_healthy
 
@@ -78,8 +76,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      backend:
-        condition: service_healthy
       redis:
         condition: service_healthy
     healthcheck:
@@ -106,7 +102,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - net
+      - backend
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
@@ -144,3 +140,5 @@ networks:
     driver: bridge
   backend:
     driver: bridge
+volumes:
+  postgres_data:

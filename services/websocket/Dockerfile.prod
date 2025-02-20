@@ -2,7 +2,7 @@ FROM growth123/octodocs-modules:latest
 
 # 소스 코드 복사 
 # 덮어씌워지지만 node_modules를 .dockerignore에 등록했기 때문에 node_modules는 원래 있던 그대로
-COPY . ./app
+COPY . /app
 
 WORKDIR /app/apps/websocket
 
@@ -14,4 +14,4 @@ ENV NODE_ENV=production
 
 EXPOSE 4242
 
-CMD ["yarn", "start:prod"]
+CMD ["yarn", "start"]
