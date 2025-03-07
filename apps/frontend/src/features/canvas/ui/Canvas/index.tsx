@@ -15,6 +15,8 @@ import { useCanvas } from "../../model/useCanvas";
 import { MemoizedGroupNode, NoteNode, NoteNodeType } from "@/entities/node";
 import { cn } from "@/shared/lib";
 import { useConnectionStatus } from "@/shared/model/useConnectionStatus";
+import { useNoteList } from "@/features/pageSidebar/model/useNoteList";
+import { RemoveNoteModal } from "@/features/pageSidebar/ui/RemoveNoteModal";
 
 interface CanvasProps {
   className?: string;
@@ -37,6 +39,8 @@ export function Canvas({ className }: CanvasProps) {
     onNodeDragStop,
     onConnect,
   } = useCanvas();
+  const { isModalOpen, onConfirm, onCloseModal } = useNoteList();
+
   const status = useConnectionStatus();
 
   const proOptions = { hideAttribution: true };
@@ -61,6 +65,11 @@ export function Canvas({ className }: CanvasProps) {
 
   return (
     <div className={cn(className)} onMouseMove={handleMouseMove}>
+      <RemoveNoteModal
+        isOpen={isModalOpen}
+        onConfirm={onConfirm}
+        onCloseModal={onCloseModal}
+      />
       <ReactFlow
         nodes={nodes}
         edges={edges}

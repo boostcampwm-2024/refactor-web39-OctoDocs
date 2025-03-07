@@ -1,6 +1,5 @@
 import { Trash2 } from "lucide-react";
 
-import { RemoveNoteModal } from "../RemoveNoteModal";
 import { useNoteList } from "../../model/useNoteList";
 import { cn } from "@/shared/lib";
 import { Button, Emoji } from "@/shared/ui";
@@ -10,22 +9,10 @@ interface NoteListProps {
 }
 
 export function NoteList({ className }: NoteListProps) {
-  const {
-    pages,
-    isModalOpen,
-    handleNoteClick,
-    openModal,
-    onConfirm,
-    onCloseModal,
-  } = useNoteList();
+  const { pages, handleNoteClick, openModal } = useNoteList();
 
   return (
     <div className={cn("flex flex-col gap-0.5 text-sm font-medium", className)}>
-      <RemoveNoteModal
-        isOpen={isModalOpen}
-        onConfirm={onConfirm}
-        onCloseModal={onCloseModal}
-      />
       {pages &&
         pages.map(({ id, title, emoji }) => (
           <Button

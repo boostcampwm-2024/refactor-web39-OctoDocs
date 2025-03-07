@@ -20,6 +20,7 @@ import { useWorkspace } from "@/shared/lib";
 import { useUserStore } from "@/entities/user";
 import { useCanvasConnection } from "./useCanvasConnection";
 import useConnectionStore from "@/shared/model/useConnectionStore";
+import { useNoteList } from "@/features/pageSidebar/model/useNoteList";
 
 export interface YNode extends Node {
   isHolding: boolean;
@@ -41,6 +42,7 @@ export const useCanvas = () => {
   const holdingNodeRef = useRef<string | null>(null);
 
   const { currentPage, setCurrentPage } = usePageStore();
+  const { openModal } = useNoteList();
   const { users } = useUserStore();
 
   const { fitView } = useReactFlow();
@@ -239,7 +241,15 @@ export const useCanvas = () => {
         }
       });
 
-      onNodesChange(changes);
+      const changesWithoutRemove = changes.filter((change) => {
+        if (change.type !== "remove") return true;
+        else {
+          openModal(Number(change.id));
+          return false;
+        }
+      });
+
+      onNodesChange(changesWithoutRemove);
     },
     [nodes, edges, onNodesChange, provider],
   );
