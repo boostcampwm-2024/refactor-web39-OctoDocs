@@ -42,7 +42,7 @@ import { UserModule } from "@app/user/user.module";
         console.log("hello!!!!!!");
         // console.log(configService.get<string>("JWT_SECRET"));
         return {
-          secret: "hello",
+          secret: process.env.JWT_SECRET,
         };
       },
     }),

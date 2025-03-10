@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 
 import { Node, NoteNodeData } from "@/entities/node";
-import { useDeletePage, usePageStore } from "@/entities/page";
+import {
+  useDeletePage,
+  useDeletePageStore,
+  usePageStore,
+} from "@/entities/page";
 import useConnectionStore from "@/shared/model/useConnectionStore";
 
 export const useNoteList = () => {
@@ -31,8 +35,8 @@ export const useNoteList = () => {
     };
   }, [canvas.provider]);
 
-  const [noteIdToDelete, setNoteIdToDelete] = useState<number | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { noteIdToDelete, setNoteIdToDelete, isModalOpen, setIsModalOpen } =
+    useDeletePageStore();
 
   const deleteMutation = useDeletePage();
 
@@ -42,7 +46,7 @@ export const useNoteList = () => {
 
   const openModal = (noteId: number) => {
     setNoteIdToDelete(noteId);
-    setIsModalOpen(true);
+    setIsModalOpen();
   };
 
   const onConfirm = () => {
@@ -56,12 +60,12 @@ export const useNoteList = () => {
     nodesMap.delete(noteIdToDelete.toString());
     deleteMutation.mutate({ id: noteIdToDelete });
 
-    setIsModalOpen(false);
+    setIsModalOpen();
     setCurrentPage(null);
   };
 
   const onCloseModal = () => {
-    setIsModalOpen(false);
+    setIsModalOpen();
   };
 
   return {

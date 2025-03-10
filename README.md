@@ -126,7 +126,7 @@ Octodocs 팀은 사용자 경험 향상은 물론, 일관된 코드 품질 유�
 
 ### System Architecture
 
-![image (13)](https://github.com/user-attachments/assets/bee51119-c814-4f57-8cda-60ea4bfdd2dd)
+![image](https://github.com/user-attachments/assets/7c807c52-d10f-4aed-b965-4ac97fb6577a)
 
 <br>
 
