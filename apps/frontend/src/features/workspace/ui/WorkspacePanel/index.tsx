@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { UserProfile } from "@/entities/user";
-import { Logout, useGetUser, LoginForm } from "@/features/auth";
+import {
+  Logout,
+  useGetUser,
+  LoginForm,
+  useGetUserStatus,
+} from "@/features/auth";
 import {
   WorkspaceAddButton,
   WorkspaceForm,
@@ -9,6 +14,7 @@ import {
 import { Divider } from "@/shared/ui";
 
 export default function WorkspacePanel() {
+  const { data: loggedIn } = useGetUserStatus();
   const { data } = useGetUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -21,7 +27,7 @@ export default function WorkspacePanel() {
   };
   return (
     <div className="w-[280px] px-4 py-4">
-      {data ? (
+      {loggedIn && data ? (
         <div className="flex flex-col gap-1">
           <UserProfile nickname={data.snowflakeId ?? "123"} />
           <Divider direction="horizontal" className="h-0.5" />
