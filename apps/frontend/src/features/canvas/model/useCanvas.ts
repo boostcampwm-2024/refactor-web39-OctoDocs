@@ -20,7 +20,7 @@ import { useWorkspace } from "@/shared/lib";
 import { useUserStore } from "@/entities/user";
 import { useCanvasConnection } from "./useCanvasConnection";
 import useConnectionStore from "@/shared/model/useConnectionStore";
-import { useNoteList } from "@/features/pageSidebar/model/useNoteList";
+import { useNoteList } from "@/shared/model/useNoteList";
 
 export interface YNode extends Node {
   isHolding: boolean;

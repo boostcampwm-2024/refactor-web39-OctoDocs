@@ -1,6 +1,6 @@
 import { Trash2 } from "lucide-react";
 
-import { useNoteList } from "../../model/useNoteList";
+import { useNoteList } from "@/shared/model/useNoteList";
 import { cn } from "@/shared/lib";
 import { Button, Emoji } from "@/shared/ui";
 
