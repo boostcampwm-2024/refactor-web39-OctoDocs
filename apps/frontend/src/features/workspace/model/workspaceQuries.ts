@@ -5,9 +5,11 @@ import { useGetUser, useGetUserStatus } from "@/features/auth";
 import { useWorkspace } from "@/shared/lib/useWorkspace";
 
 export const useUserWorkspace = () => {
+  const { data: loggedIn } = useGetUserStatus();
   return useQuery({
     queryKey: ["userWorkspace"],
     queryFn: getUserWorkspaces,
+    enabled: !!loggedIn,
   });
 };
 
