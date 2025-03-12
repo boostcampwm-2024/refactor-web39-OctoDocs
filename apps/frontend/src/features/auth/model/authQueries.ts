@@ -3,11 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { getUser, getUserStatus } from "../api/authApi";
 
 export const useGetUser = () => {
+  const { data: loggedIn } = useGetUserStatus();
+
   return useQuery({
     queryKey: ["user"],
     queryFn: getUser,
     retry: false,
     refetchOnWindowFocus: false,
+    enabled: !!loggedIn,
   });
 };
 
