@@ -1,9 +1,9 @@
 import { Suspense, useEffect, useState, lazy } from "react";
 
 import { useUserStore } from "@/entities/user";
-import { CursorButton } from "@/features/canvasTools";
+import { CursorButton, ProfilePanelSkeleton } from "@/features/canvasTools";
 import { ShareTool } from "@/features/workspace";
-import { Popover, Skeleton } from "@/shared/ui";
+import { Popover } from "@/shared/ui";
 
 const ProfilePanel = lazy(() => import("@/features/canvasTools"));
 
@@ -25,7 +25,7 @@ export function CanvasToolsView() {
           <CursorButton color={color} />
         </Popover.Trigger>
         <Popover.Content className="rounded-lg border border-neutral-200 bg-white shadow-md">
-          <Suspense fallback={<Skeleton className="h-[240px] w-[448px]" />}>
+          <Suspense fallback={<ProfilePanelSkeleton />}>
             <ProfilePanel
               color={color}
               clientId={clientId}
