@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Sharebutton } from "./ShareButton";
-import { Popover, Skeleton } from "@/shared/ui";
+import { SharePanelSkeleton } from "./SharePanelSkeleton";
+import { Popover } from "@/shared/ui";
 
 const SharePanel = lazy(() => import("./SharePanel"));
 
@@ -12,7 +13,7 @@ export function ShareTool() {
           <Sharebutton />
         </Popover.Trigger>
         <Popover.Content className="rounded-lg border border-neutral-200 bg-white shadow-md">
-          <Suspense fallback={<Skeleton className="h-[92px] w-[240px]" />}>
+          <Suspense fallback={<SharePanelSkeleton />}>
             <SharePanel />
           </Suspense>
         </Popover.Content>

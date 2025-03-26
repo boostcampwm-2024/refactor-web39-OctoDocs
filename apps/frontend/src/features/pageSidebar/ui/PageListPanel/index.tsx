@@ -8,7 +8,7 @@ export default function PageListPanel() {
         <Tools />
       </div>
       <ScrollWrapper className="max-h-[604px] overflow-x-clip scrollbar scrollbar-track-transparent scrollbar-thumb-[#d9d9d9]">
-        <NoteList className="p-4 pb-0 pt-0" />
+        <NoteList className="px-4" />
       </ScrollWrapper>
     </div>
   );
