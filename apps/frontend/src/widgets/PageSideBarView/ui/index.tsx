@@ -1,7 +1,7 @@
 import { useState, lazy, Suspense } from "react";
 
 import { TopNavView } from "@/widgets/TopNavView";
-import { Skeleton } from "@/shared/ui";
+import { PageListPanelSkelton } from "@/features/pageSidebar";
 
 const PageListPanel = lazy(
   () => import("@/features/pageSidebar/ui/PageListPanel"),
@@ -20,9 +20,7 @@ export function PageSideBarView() {
         <TopNavView onExpand={handleExpand} isExpanded={isExpanded} />
       </div>
       {isExpanded && (
-        <Suspense
-          fallback={<Skeleton className="mx-4 mb-4 h-[30px] w-[206px]" />}
-        >
+        <Suspense fallback={<PageListPanelSkelton />}>
           <PageListPanel />
         </Suspense>
       )}
